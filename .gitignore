@@ -85,4 +85,3 @@ apps/*/priv/static/assets/
 apps/*/priv/static/cache_manifest.json
 apps/*/_build/
 apps/*/deps/
-

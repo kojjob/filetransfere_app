@@ -124,8 +124,8 @@ This checklist ensures your landing page is functional, secure, and production-r
 
 ### 15. Domain Configuration
 - [ ] **Set up custom domain(s)**
-  - Landing page: `flowtransfer.com` (or your domain)
-  - API: `api.flowtransfer.com` (or subdomain)
+  - Landing page: `zishare.com` (or your domain)
+  - API: `api.zishare.com` (or subdomain)
   - Configure DNS records
   - **Priority**: 🔴 Critical
 
@@ -370,4 +370,3 @@ This checklist ensures your landing page is functional, secure, and production-r
 ---
 
 **Next Steps**: Start with the "Quick Start Checklist" items marked as critical, then work through the rest based on priority.
-

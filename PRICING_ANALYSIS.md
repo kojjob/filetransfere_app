@@ -1,11 +1,11 @@
 # Pricing Analysis & Competitive Positioning
 
 **Date**: December 2025  
-**Purpose**: Analyze FlowTransfer pricing vs. competitors and recommend adjustments
+**Purpose**: Analyze ZiShare pricing vs. competitors and recommend adjustments
 
 ---
 
-## Current FlowTransfer Pricing
+## Current ZiShare Pricing
 
 | Tier | Price | Transfer/Month | Max File Size | API Calls | Team Size |
 |------|-------|----------------|---------------|-----------|-----------|
@@ -40,7 +40,7 @@
 
 ## Pricing Comparison Analysis
 
-### FlowTransfer vs. Competitors
+### ZiShare vs. Competitors
 
 **Pro Tier ($29/month)**:
 - **WeTransfer Pro**: $12/month (2.4x cheaper)
@@ -53,7 +53,7 @@
 - **Smash Business**: $9.99/month (9.9x cheaper)
 - **Dropbox Professional**: $16.58/month (6x cheaper)
 
-**Verdict**: FlowTransfer is **significantly more expensive** than competitors.
+**Verdict**: ZiShare is **significantly more expensive** than competitors.
 
 ---
 
@@ -200,7 +200,7 @@
 
 ### Against WeTransfer
 
-| Feature | FlowTransfer Pro ($9) | WeTransfer Pro ($12) |
+| Feature | ZiShare Pro ($9) | WeTransfer Pro ($12) |
 |---------|----------------------|---------------------|
 | **Price** | ✅ $9/month | $12/month |
 | **Transfer Limit** | 50GB/month | 200GB storage |
@@ -209,11 +209,11 @@
 | **API Access** | ✅ 500 calls/month | ❌ No |
 | **Resumable Uploads** | ✅ Yes | ❌ No |
 
-**Verdict**: FlowTransfer wins on price + unique features.
+**Verdict**: ZiShare wins on price + unique features.
 
 ### Against Smash
 
-| Feature | FlowTransfer Pro ($9) | Smash Pro ($4.99) |
+| Feature | ZiShare Pro ($9) | Smash Pro ($4.99) |
 |---------|----------------------|------------------|
 | **Price** | $9/month | ✅ $4.99/month |
 | **Transfer Limit** | 50GB/month | Unlimited |
@@ -222,7 +222,7 @@
 | **API Access** | ✅ 500 calls/month | ❌ No |
 | **File Expiration** | Custom | 30 days |
 
-**Verdict**: Smash is cheaper, but FlowTransfer offers unique real-time features + API.
+**Verdict**: Smash is cheaper, but ZiShare offers unique real-time features + API.
 
 ---
 
@@ -242,7 +242,7 @@
 - **$20-50**: Team/business pricing
 - **$50+**: Enterprise consideration
 
-**FlowTransfer Revised**: $9, $19, $49 hits all sweet spots.
+**ZiShare Revised**: $9, $19, $49 hits all sweet spots.
 
 ---
 
@@ -330,4 +330,4 @@ After establishing market presence (6-12 months):
 
 ---
 
-**Conclusion**: Lowering prices to $9/$19/$49 makes FlowTransfer highly competitive while maintaining strong margins and unique value proposition.
+**Conclusion**: Lowering prices to $9/$19/$49 makes ZiShare highly competitive while maintaining strong margins and unique value proposition.

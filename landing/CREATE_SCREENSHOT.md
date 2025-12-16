@@ -21,7 +21,7 @@
 4. **Update the landing page**:
    - Replace the placeholder in `landing/index.html`
    - Find the `<div class="demo-placeholder">` section
-   - Replace with: `<img src="screenshots/dashboard.png" alt="FlowTransfer Dashboard" class="demo-screenshot-img">`
+   - Replace with: `<img src="screenshots/dashboard.png" alt="ZiShare Dashboard" class="demo-screenshot-img">`
 
 ## Alternative: Use Browser DevTools
 
@@ -41,4 +41,4 @@
 - **Professional file icons** and status indicators
 - **Upload area** with drag & drop
 
-This gives visitors a clear picture of what FlowTransfer will look like!
+This gives visitors a clear picture of what ZiShare will look like!

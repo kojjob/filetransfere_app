@@ -1,4 +1,4 @@
-# FlowTransfer
+# ZiShare
 
 > **Real-time file transfer SaaS built with Elixir/Phoenix**
 
@@ -6,7 +6,7 @@
 [![Elixir](https://img.shields.io/badge/Elixir-1.15+-purple.svg)](https://elixir-lang.org/)
 [![Phoenix](https://img.shields.io/badge/Phoenix-1.8+-red.svg)](https://www.phoenixframework.org/)
 
-FlowTransfer is a modern, high-performance file transfer service that provides real-time progress tracking, resumable uploads, and developer-friendly APIs. Built on Elixir and Phoenix for maximum concurrency and reliability.
+ZiShare is a modern, high-performance file transfer service that provides real-time progress tracking, resumable uploads, and developer-friendly APIs. Built on Elixir and Phoenix for maximum concurrency and reliability.
 
 ---
 
@@ -643,4 +643,3 @@ If you find this project useful, please consider giving it a star ⭐!
 ---
 
 **Built with ❤️ using Elixir and Phoenix**
-

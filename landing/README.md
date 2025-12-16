@@ -1,4 +1,4 @@
-# FlowTransfer Landing Page
+# ZiShare Landing Page
 
 Simple landing page with waitlist form for market validation.
 

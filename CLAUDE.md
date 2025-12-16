@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-FlowTransfer is a file transfer application built as an Elixir umbrella project with a separate static landing page for market validation.
+ZiShare is a file transfer application built as an Elixir umbrella project with a separate static landing page for market validation.
 
 ## Build & Development Commands
 
