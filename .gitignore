@@ -1,0 +1,88 @@
+# Elixir/Phoenix
+/_build/
+/deps/
+/cover/
+*.beam
+*.ez
+erl_crash.dump
+*.swp
+*.swo
+*~
+.elixir_ls/
+
+# Phoenix
+/priv/static/assets/
+/priv/static/cache_manifest.json
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.sublime-project
+*.sublime-workspace
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Test coverage
+/cover/
+
+# Archives
+*.zip
+*.tar.gz
+*.rar
+
+# Compiled files
+*.o
+*.so
+*.dylib
+
+# Mix
+.mix/
+
+# Credo
+.credo/
+
+# Dialyzer
+.plt/
+dialyzer-*.plt
+
+# Documentation
+/doc/
+
+# Umbrella specific
+apps/*/priv/static/assets/
+apps/*/priv/static/cache_manifest.json
+apps/*/_build/
+apps/*/deps/
+
