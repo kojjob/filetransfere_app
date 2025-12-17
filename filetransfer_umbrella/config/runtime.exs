@@ -5,6 +5,12 @@ import Config
 # system starts, so it is typically used to load production configuration
 # and secrets from environment variables or elsewhere. Do not define
 # any compile-time configuration in here, as it won't be applied.
+
+# Start Phoenix server if PHX_SERVER is set
+if System.get_env("PHX_SERVER") do
+  config :filetransfer_web, FiletransferWeb.Endpoint, server: true
+end
+
 # The block below contains prod specific runtime configuration.
 if config_env() == :prod do
   # The secret key base is used to sign/encrypt cookies and other secrets.
@@ -19,12 +25,16 @@ if config_env() == :prod do
       You can generate one by calling: mix phx.gen.secret
       """
 
+  host = System.get_env("PHX_HOST") || "example.com"
+  port = String.to_integer(System.get_env("PORT") || "4000")
+
   config :filetransfer_web, FiletransferWeb.Endpoint,
+    url: [host: host, port: 443, scheme: "https"],
     http: [
       # Enable IPv6 and bind on all interfaces.
       # Set it to  {0, 0, 0, 0, 0, 0, 0, 1} for local network only access.
       ip: {0, 0, 0, 0, 0, 0, 0, 0},
-      port: String.to_integer(System.get_env("PORT") || "4000")
+      port: port
     ],
     secret_key_base: secret_key_base
 
@@ -72,6 +82,16 @@ if config_env() == :prod do
 
   config :filetransfer_core, :dns_cluster_query, System.get_env("DNS_CLUSTER_QUERY")
 
+  # Configure Swoosh mailer with Resend for production
+  if resend_api_key = System.get_env("RESEND_API_KEY") do
+    config :filetransfer_web, FiletransferWeb.Mailer,
+      adapter: Swoosh.Adapters.Resend,
+      api_key: resend_api_key
+  end
+
+  # Database configuration
+  # For Fly.io with IPv6, we need to configure explicitly instead of using URL
+  # since URL parsing doesn't handle IPv6 brackets properly
   database_url =
     System.get_env("DATABASE_URL") ||
       raise """
@@ -79,7 +99,43 @@ if config_env() == :prod do
       For example: ecto://USER:PASS@HOST/DATABASE
       """
 
+  # Parse database URL to extract components
+  uri = URI.parse(database_url)
+  userinfo = uri.userinfo || ""
+
+  [username, password] =
+    case String.split(userinfo, ":") do
+      [user, pass] -> [user, pass]
+      [user] -> [user, nil]
+      _ -> [nil, nil]
+    end
+
+  # Handle IPv6 hosts (they come with brackets in URL)
+  host =
+    case uri.host do
+      nil -> "localhost"
+      h when is_binary(h) -> h
+    end
+
+  # Extract database name from path
+  database =
+    case uri.path do
+      "/" <> db -> db
+      db when is_binary(db) -> db
+      _ -> "zipshare_api"
+    end
+
+  pool_size = String.to_integer(System.get_env("POOL_SIZE") || "10")
+
+  # Check if host is an IPv6 address (contains colons)
+  socket_options = if String.contains?(host, ":"), do: [:inet6], else: []
+
   config :filetransfer_core, FiletransferCore.Repo,
-    url: database_url,
-    pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10")
+    username: username,
+    password: password,
+    hostname: host,
+    database: database,
+    port: uri.port || 5432,
+    pool_size: pool_size,
+    socket_options: socket_options
 end

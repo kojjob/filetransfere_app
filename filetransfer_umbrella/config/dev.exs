@@ -1,5 +1,8 @@
 import Config
 
+# Mark this as development environment for admin auth
+config :filetransfer_web, env: :dev
+
 # For development, we disable any cache and enable
 # debugging and code reloading.
 #
