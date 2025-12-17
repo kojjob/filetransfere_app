@@ -141,4 +141,3 @@ If you're running your own ZipShare instance, set the API URL:
 ## License
 
 MIT
-

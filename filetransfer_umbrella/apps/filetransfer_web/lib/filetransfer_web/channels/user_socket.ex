@@ -15,6 +15,17 @@ defmodule FiletransferWeb.UserSocket do
 
   Authenticates the user from the socket params. In production,
   this should use token-based authentication.
+
+  ## Parameters
+
+    * `params` - Connection parameters containing user identification
+    * `socket` - The socket to be connected
+
+  ## Returns
+
+    * `{:ok, socket}` - Connection accepted with user_id assigned
+    * `:error` - Connection rejected
+
   """
   @impl true
   def connect(%{"user_id" => user_id}, socket, _connect_info) when is_integer(user_id) do
@@ -32,6 +43,9 @@ defmodule FiletransferWeb.UserSocket do
 
   @doc """
   Returns unique identifier for this socket.
+
+  Used for per-socket state tracking. Returns nil for
+  unauthenticated connections.
   """
   @impl true
   def id(socket) do

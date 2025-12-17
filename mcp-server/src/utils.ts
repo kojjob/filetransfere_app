@@ -69,4 +69,3 @@ export function isPathSafe(filePath: string): boolean {
   
   return true;
 }
-
