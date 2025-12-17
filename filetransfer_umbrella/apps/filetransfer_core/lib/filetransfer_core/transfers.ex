@@ -29,6 +29,19 @@ defmodule FiletransferCore.Transfers do
   def get_transfer!(id), do: Repo.get!(Transfer, id) |> Repo.preload(:chunks)
 
   @doc """
+  Gets a single transfer by ID.
+
+  Returns `{:ok, transfer}` if found, `{:error, :not_found}` otherwise.
+  """
+  def get_transfer(id) do
+    case Repo.get(Transfer, id) do
+      nil -> {:error, :not_found}
+      transfer -> {:ok, Repo.preload(transfer, :chunks)}
+    end
+  end
+
+
+  @doc """
   Gets a transfer by ID and user ID (for authorization).
   """
   def get_user_transfer(user_id, transfer_id) do
