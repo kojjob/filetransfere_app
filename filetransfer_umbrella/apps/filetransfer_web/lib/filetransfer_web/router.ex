@@ -20,6 +20,10 @@ defmodule FiletransferWeb.Router do
     plug FiletransferWeb.Plugs.RequireAuth
   end
 
+  pipeline :admin_auth do
+    plug FiletransferWeb.Plugs.RequireAdmin
+  end
+
   scope "/", FiletransferWeb do
     pipe_through :browser
 
@@ -47,19 +51,24 @@ defmodule FiletransferWeb.Router do
   scope "/api", FiletransferWeb do
     pipe_through [:api, :authenticated]
 
-    # Transfer routes will go here
+    get "/transfers", TransferController, :index
+    post "/transfers", TransferController, :create
+    get "/transfers/:id", TransferController, :show
+    delete "/transfers/:id", TransferController, :delete
+    get "/transfers/:id/resume", TransferController, :resume
+    post "/transfers/:id/chunks/:index", TransferController, :update_chunk
   end
 
-  # Admin routes (secure these in production!)
+  # Admin routes (protected with Basic Auth in production)
   scope "/admin", FiletransferWeb do
-    pipe_through :browser
+    pipe_through [:browser, :admin_auth]
 
     live "/waitlist", Admin.WaitlistLive, :index
   end
 
-  # Admin API routes (for exports)
+  # Admin API routes (protected with Basic Auth)
   scope "/admin", FiletransferWeb.Admin do
-    pipe_through :api
+    pipe_through [:api, :admin_auth]
 
     get "/waitlist/export", WaitlistController, :export
     get "/waitlist/stats", WaitlistController, :stats

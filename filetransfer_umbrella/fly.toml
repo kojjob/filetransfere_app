@@ -1,0 +1,35 @@
+# fly.toml - ZipShare API Configuration
+# See https://fly.io/docs/reference/configuration/
+
+app = "zipshare-api"
+primary_region = "lax"
+
+[build]
+
+[deploy]
+  # release_command = "/app/bin/migrate"  # Run manually: flyctl ssh console -C "/app/bin/migrate"
+
+[env]
+  PHX_HOST = "zipshare-api.fly.dev"
+  PHX_SERVER = "true"
+  POOL_SIZE = "2"
+
+[http_service]
+  internal_port = 4000
+  force_https = true
+  auto_stop_machines = "suspend"
+  auto_start_machines = true
+  min_machines_running = 1
+  processes = ["app"]
+
+[[http_service.checks]]
+  grace_period = "10s"
+  interval = "30s"
+  method = "GET"
+  timeout = "5s"
+  path = "/"
+
+[[vm]]
+  memory = "1gb"
+  cpu_kind = "shared"
+  cpus = 1
