@@ -26,23 +26,20 @@ defmodule FiletransferWeb.Router do
 
   scope "/", FiletransferWeb do
     pipe_through :browser
-
     get "/", PageController, :home
   end
 
   scope "/api/auth", FiletransferWeb do
     pipe_through :api
-
     post "/register", AuthController, :register
     post "/login", AuthController, :login
     post "/logout", AuthController, :logout
     get "/me", AuthController, :current_user
   end
 
-  # Public API routes (no authentication required)
+  # Public API routes
   scope "/api", FiletransferWeb do
     pipe_through :api
-
     options "/waitlist", WaitlistController, :options
     post "/waitlist", WaitlistController, :create
   end
@@ -51,25 +48,48 @@ defmodule FiletransferWeb.Router do
   scope "/api", FiletransferWeb do
     pipe_through [:api, :authenticated]
 
+    # Transfer management
     get "/transfers", TransferController, :index
     post "/transfers", TransferController, :create
     get "/transfers/:id", TransferController, :show
     delete "/transfers/:id", TransferController, :delete
     get "/transfers/:id/resume", TransferController, :resume
     post "/transfers/:id/chunks/:index", TransferController, :update_chunk
+
+    # Upload operations
+    post "/transfers/:id/upload/init", UploadController, :init_multipart
+    post "/transfers/:id/upload/chunk", UploadController, :upload_chunk
+    post "/transfers/:id/upload/complete", UploadController, :complete_upload
+    post "/transfers/:id/upload/abort", UploadController, :abort_upload
+    get "/transfers/:id/upload/presigned", UploadController, :presigned_url
+
+    # Download operations
+    get "/transfers/:id/download", DownloadController, :download
+    get "/transfers/:id/download/url", DownloadController, :presigned_url
+
+    # Share link management
+    post "/transfers/:id/share", ShareController, :create
+    get "/shares", ShareController, :index
+    get "/shares/:id", ShareController, :show
+    patch "/shares/:id", ShareController, :update
+    delete "/shares/:id", ShareController, :delete
   end
 
-  # Admin routes (protected with Basic Auth in production)
+  # Public share access
+  scope "/s", FiletransferWeb do
+    pipe_through :api
+    get "/:token", ShareController, :access
+    post "/:token/download", ShareController, :download
+  end
+
+  # Admin routes
   scope "/admin", FiletransferWeb do
     pipe_through [:browser, :admin_auth]
-
     live "/waitlist", Admin.WaitlistLive, :index
   end
 
-  # Admin API routes (protected with Basic Auth)
   scope "/admin", FiletransferWeb.Admin do
     pipe_through [:api, :admin_auth]
-
     get "/waitlist/export", WaitlistController, :export
     get "/waitlist/stats", WaitlistController, :stats
   end

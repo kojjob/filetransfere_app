@@ -1,32 +1,48 @@
 # ZipShare
 
-> **Real-time file transfer SaaS built with Elixir/Phoenix**
+> **The File Transfer API for AI Agents & Developers**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Elixir](https://img.shields.io/badge/Elixir-1.15+-purple.svg)](https://elixir-lang.org/)
 [![Phoenix](https://img.shields.io/badge/Phoenix-1.8+-red.svg)](https://www.phoenixframework.org/)
+[![MCP](https://img.shields.io/badge/MCP-Compatible-cyan.svg)](https://modelcontextprotocol.io/)
 
-ZipShare is a modern, high-performance file transfer service that provides real-time progress tracking, resumable uploads, and developer-friendly APIs. Built on Elixir and Phoenix for maximum concurrency and reliability.
+ZipShare is a modern file transfer service built for the AI era. The first file transfer API that AI agents can use natively via MCP (Model Context Protocol). S3 reliability meets live progress tracking.
+
+---
+
+## 🤖 AI-Native
+
+```bash
+# Install the MCP server
+npx @zipshare/mcp-server
+
+# Now Claude/ChatGPT can send files:
+# "Send this report to sarah@company.com"
+```
+
+[Read MCP Server Docs →](./mcp-server/README.md)
 
 ---
 
 ## 🚀 Features
 
-### Core Features
-- **Real-Time Progress Tracking** - WebSocket-powered live updates with speed and ETA
-- **Resumable Uploads** - Never lose progress with intelligent chunked uploads
-- **Large File Support** - Handle GB+ files seamlessly with 5MB chunked transfers
-- **Developer-First API** - REST and WebSocket APIs for automation
-- **Secure Sharing** - Password protection, expiration dates, and download limits
-- **Team Collaboration** - Workspaces, shared folders, and team management
+### For Developers
+- **Simple API** - Send a file with a single API call
+- **Resumable Uploads** - Never lose progress with chunked uploads
+- **Large File Support** - Handle GB+ files with 5MB chunks
+- **Secure Sharing** - Password protection, expiration, download limits
+- **Webhooks** - Get notified on upload/download events
 
-### Technical Highlights
-- **Elixir/Phoenix** - Built for concurrency and fault tolerance
-- **WebSocket Channels** - Real-time bidirectional communication
-- **PostgreSQL** - Reliable data persistence
-- **S3-Compatible Storage** - Scalable file storage
-- **CORS Support** - Cross-origin API access
-- **Rate Limiting** - Protection against abuse
+### For AI Agents
+- **MCP Server** - Native integration with Claude, ChatGPT, Cursor
+- **Tool Calling** - AI can upload, share, and manage files
+- **Automation Ready** - Built for workflows and automations
+
+### Architecture: The Best of Both Worlds
+- **S3 Storage** - 99.999999999% durability, global CDN
+- **Phoenix Channels** - Live progress updates, 2M+ concurrent connections
+- **Elixir/OTP** - Fault tolerance, hot code upgrades
 
 ---
 

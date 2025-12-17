@@ -68,14 +68,12 @@ defmodule FiletransferWeb.TransferChannel do
         {:error, %{reason: "unauthorized"}}
 
       true ->
-        case get_user_transfer(user_id, transfer_id) do
+        case Transfers.get_user_transfer(user_id, transfer_id) do
           nil ->
             # Check if transfer exists at all for better error message
-            try do
-              Transfers.get_transfer!(transfer_id)
-              {:error, %{reason: "unauthorized"}}
-            rescue
-              Ecto.NoResultsError -> {:error, %{reason: "not_found"}}
+            case Transfers.get_transfer(transfer_id) do
+              {:ok, _} -> {:error, %{reason: "unauthorized"}}
+              {:error, :not_found} -> {:error, %{reason: "not_found"}}
             end
 
           transfer ->
@@ -268,10 +266,6 @@ defmodule FiletransferWeb.TransferChannel do
   end
 
   # Private helpers
-
-  defp get_user_transfer(user_id, transfer_id) do
-    Transfers.get_user_transfer(user_id, transfer_id)
-  end
 
   defp init_progress_state(transfer) do
     %{

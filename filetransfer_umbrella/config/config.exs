@@ -72,3 +72,20 @@ config :swoosh, :api_client, Swoosh.ApiClient.Finch
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"
+
+# ExAws S3 Configuration
+config :ex_aws,
+  access_key_id: [{:system, "AWS_ACCESS_KEY_ID"}, :instance_role],
+  secret_access_key: [{:system, "AWS_SECRET_ACCESS_KEY"}, :instance_role],
+  region: "us-east-1"
+
+config :ex_aws, :s3,
+  scheme: "https://",
+  host: {:system, "S3_HOST"},
+  region: "us-east-1"
+
+# Storage configuration
+config :filetransfer_core, FiletransferCore.Storage,
+  bucket: {:system, "S3_BUCKET"},
+  chunk_size: 5_242_880,
+  max_file_size: 10_737_418_240
