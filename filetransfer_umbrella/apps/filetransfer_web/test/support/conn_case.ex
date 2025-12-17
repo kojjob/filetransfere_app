@@ -28,10 +28,15 @@ defmodule FiletransferWeb.ConnCase do
       import Plug.Conn
       import Phoenix.ConnTest
       import FiletransferWeb.ConnCase
+      import FiletransferWeb.Fixtures
     end
   end
 
   setup _tags do
-    {:ok, conn: Phoenix.ConnTest.build_conn()}
+    conn =
+      Phoenix.ConnTest.build_conn()
+      |> Plug.Test.init_test_session(%{})
+
+    {:ok, conn: conn}
   end
 end

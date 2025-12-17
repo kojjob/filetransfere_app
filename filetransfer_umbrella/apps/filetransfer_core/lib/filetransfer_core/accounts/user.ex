@@ -46,10 +46,19 @@ defmodule FiletransferCore.Accounts.User do
 
   def registration_changeset(user, attrs) do
     user
-    |> changeset(attrs)
-    |> cast(attrs, [:password])
-    |> validate_required([:password])
+    |> cast(attrs, [
+      :email,
+      :name,
+      :subscription_tier,
+      :monthly_transfer_limit,
+      :max_file_size,
+      :api_calls_limit,
+      :password
+    ])
+    |> validate_required([:email, :password])
+    |> validate_email()
     |> validate_password()
+    |> unique_constraint(:email)
     |> put_hashed_password()
   end
 
