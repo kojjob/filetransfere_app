@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad-core" x1="256" y1="128" x2="768" y2="896" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#6C5CE7" />
+      <stop offset="100%" stop-color="#00D1FF" />
+    </linearGradient>
+    <linearGradient id="grad-ring" x1="128" y1="128" x2="896" y2="896" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#00D1FF" />
+      <stop offset="100%" stop-color="#6C5CE7" />
+    </linearGradient>
+    <!-- rounded arrowheads -->
+    <marker id="arrow-dot" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+      <circle cx="4" cy="4" r="4" fill="#00D1FF" />
+    </marker>
+  </defs>
+
+  <!-- Subtle progress ring with gap (resumable uploads) -->
+  <circle cx="512" cy="512" r="360" stroke="url(#grad-ring)" stroke-width="36" fill="none"
+          stroke-linecap="round" stroke-dasharray="1700 620" stroke-dashoffset="140" opacity="0.5"/>
+
+  <!-- Stylized Z path (data moving fast) -->
+  <path d="M300 330 L724 330 L300 694 L724 694"
+        fill="none" stroke="url(#grad-core)" stroke-width="96" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Tiny data nodes on the vertices -->
+  <circle cx="724" cy="330" r="18" fill="#00D1FF" opacity="0.9"/>
+  <circle cx="300" cy="694" r="18" fill="#00D1FF" opacity="0.9"/>
+
+  <!-- Minimal rounded square boundary for app icons (invisible by default) -->
+  <!-- <rect x="64" y="64" width="896" height="896" rx="220" stroke="url(#grad-ring)" stroke-width="4" fill="none" opacity="0.12"/> -->
+</svg>

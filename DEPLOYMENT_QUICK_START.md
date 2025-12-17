@@ -21,7 +21,7 @@ Replace line 11:
 
 Set environment variable:
 ```bash
-export ALLOWED_ORIGINS=https://zishare.com,https://www.zishare.com
+export ALLOWED_ORIGINS=https://zipshare.com,https://www.zipshare.com
 ```
 
 ### 2. Update API URL (2 minutes)
@@ -35,7 +35,7 @@ const apiUrl = 'http://localhost:4000/api/waitlist';
 // NEW:
 const apiUrl = window.location.hostname === 'localhost' 
   ? 'http://localhost:4000/api/waitlist'
-  : 'https://api.zishare.com/api/waitlist';
+  : 'https://api.zipshare.com/api/waitlist';
 ```
 
 ### 3. Generate Secret Key (1 minute)
@@ -50,8 +50,8 @@ mix phx.gen.secret
 # Required
 export SECRET_KEY_BASE=<generated_secret>
 export DATABASE_URL=postgres://user:pass@host:5432/dbname
-export PHX_HOST=api.zishare.com
-export ALLOWED_ORIGINS=https://zishare.com
+export PHX_HOST=api.zipshare.com
+export ALLOWED_ORIGINS=https://zipshare.com
 
 # Optional but recommended
 export PORT=4000
@@ -86,8 +86,8 @@ MIX_ENV=prod mix ecto.migrate
    ```bash
    fly secrets set SECRET_KEY_BASE=<your_secret>
    fly secrets set DATABASE_URL=<your_db_url>
-   fly secrets set ALLOWED_ORIGINS=https://zishare.com
-   fly secrets set PHX_HOST=api.zishare.com
+   fly secrets set ALLOWED_ORIGINS=https://zipshare.com
+   fly secrets set PHX_HOST=api.zipshare.com
    ```
 
 4. **Deploy**
@@ -191,15 +191,15 @@ MIX_ENV=prod mix ecto.migrate
 
 ### 1. Test Landing Page
 ```bash
-curl https://zishare.com
+curl https://zipshare.com
 # Should return HTML
 ```
 
 ### 2. Test API Endpoint
 ```bash
-curl -X POST https://api.zishare.com/api/waitlist \
+curl -X POST https://api.zipshare.com/api/waitlist \
   -H "Content-Type: application/json" \
-  -H "Origin: https://zishare.com" \
+  -H "Origin: https://zipshare.com" \
   -d '{"waitlist_entry":{"email":"test@example.com"}}'
 ```
 
@@ -212,12 +212,12 @@ curl -X POST https://api.zishare.com/api/waitlist \
 ### 4. Test CORS
 ```bash
 # Should work
-curl -H "Origin: https://zishare.com" \
-     -X OPTIONS https://api.zishare.com/api/waitlist
+curl -H "Origin: https://zipshare.com" \
+     -X OPTIONS https://api.zipshare.com/api/waitlist
 
 # Should fail (if CORS properly configured)
 curl -H "Origin: https://evil.com" \
-     -X OPTIONS https://api.zishare.com/api/waitlist
+     -X OPTIONS https://api.zipshare.com/api/waitlist
 ```
 
 ---

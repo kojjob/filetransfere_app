@@ -39,7 +39,7 @@ defmodule FiletransferWeb.PageControllerTest do
 
       assert response =~ "waitlist-form"
       assert response =~ ~r/type="email"/
-      assert response =~ "Enter your email"
+      assert response =~ "Email Address"
     end
   end
 end

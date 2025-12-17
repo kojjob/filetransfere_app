@@ -124,8 +124,8 @@ This checklist ensures your landing page is functional, secure, and production-r
 
 ### 15. Domain Configuration
 - [ ] **Set up custom domain(s)**
-  - Landing page: `zishare.com` (or your domain)
-  - API: `api.zishare.com` (or subdomain)
+  - Landing page: `zipshare.com` (or your domain)
+  - API: `api.zipshare.com` (or subdomain)
   - Configure DNS records
   - **Priority**: 🔴 Critical
 

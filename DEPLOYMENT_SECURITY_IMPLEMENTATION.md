@@ -44,7 +44,7 @@ end
 **Environment Variable**:
 ```bash
 # Production
-ALLOWED_ORIGINS=https://zishare.com,https://www.zishare.com
+ALLOWED_ORIGINS=https://zipshare.com,https://www.zipshare.com
 ```
 
 ---
@@ -126,7 +126,7 @@ defmodule FiletransferWeb.Plugs.SecurityHeaders do
 
   defp get_csp do
     # Adjust based on your needs
-    "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://api.zishare.com;"
+    "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://api.zipshare.com;"
   end
 end
 ```
@@ -202,8 +202,8 @@ const getApiUrl = () => {
   // Check if we're in production
   if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
     // Production: use same origin or configured API domain
-    return window.location.origin.includes('zishare.com') 
-      ? 'https://api.zishare.com/api/waitlist'
+    return window.location.origin.includes('zipshare.com') 
+      ? 'https://api.zipshare.com/api/waitlist'
       : `${window.location.origin}/api/waitlist`;
   }
   // Development
@@ -269,11 +269,11 @@ DATABASE_URL=postgres://user:password@host:5432/filetransfer_prod
 
 # Phoenix
 SECRET_KEY_BASE=your_secret_key_here
-PHX_HOST=api.zishare.com
+PHX_HOST=api.zipshare.com
 PORT=4000
 
 # CORS
-ALLOWED_ORIGINS=https://zishare.com,https://www.zishare.com
+ALLOWED_ORIGINS=https://zipshare.com,https://www.zipshare.com
 
 # reCAPTCHA (if using)
 RECAPTCHA_SECRET_KEY=your_secret_key_here
@@ -291,21 +291,21 @@ SMTP_PASSWORD=your_password
 **Test CORS**:
 ```bash
 # Should work
-curl -H "Origin: https://zishare.com" \
+curl -H "Origin: https://zipshare.com" \
      -H "Access-Control-Request-Method: POST" \
-     -X OPTIONS https://api.zishare.com/api/waitlist
+     -X OPTIONS https://api.zipshare.com/api/waitlist
 
 # Should fail
 curl -H "Origin: https://evil.com" \
      -H "Access-Control-Request-Method: POST" \
-     -X OPTIONS https://api.zishare.com/api/waitlist
+     -X OPTIONS https://api.zipshare.com/api/waitlist
 ```
 
 **Test Rate Limiting**:
 ```bash
 # Make 6 requests quickly - 6th should fail
 for i in {1..6}; do
-  curl -X POST https://api.zishare.com/api/waitlist \
+  curl -X POST https://api.zipshare.com/api/waitlist \
     -H "Content-Type: application/json" \
     -d '{"waitlist_entry":{"email":"test'$i'@example.com"}}'
   echo ""

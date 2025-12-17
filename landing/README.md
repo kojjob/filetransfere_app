@@ -1,4 +1,4 @@
-# ZiShare Landing Page
+# ZipShare Landing Page
 
 Simple landing page with waitlist form for market validation.
 

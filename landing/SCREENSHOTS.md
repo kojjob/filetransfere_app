@@ -48,7 +48,7 @@ Replace the placeholder in `index.html` (around line 850):
 
 **Replace With**:
 ```html
-<img src="screenshots/dashboard.png" alt="ZiShare Dashboard - Real-time file transfer interface" class="demo-screenshot-img">
+<img src="screenshots/dashboard.png" alt="ZipShare Dashboard - Real-time file transfer interface" class="demo-screenshot-img">
 ```
 
 ### Step 4: Add Multiple Screenshots (Optional)
