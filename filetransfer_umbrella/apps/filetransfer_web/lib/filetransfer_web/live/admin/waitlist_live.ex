@@ -15,8 +15,10 @@ defmodule FiletransferWeb.Admin.WaitlistLive do
     socket =
       socket
       |> assign(:page_title, "Waitlist")
+      |> assign(:search_query, "")
+      |> assign(:status_filter, "all")
       |> assign_stats()
-      |> stream(:entries, Waitlist.list_waitlist_entries())
+      |> assign_filtered_entries()
 
     {:ok, socket}
   end
@@ -26,12 +28,99 @@ defmodule FiletransferWeb.Admin.WaitlistLive do
     {:noreply,
      socket
      |> assign_stats()
-     |> stream(:entries, Waitlist.list_waitlist_entries(), reset: true)}
+     |> assign_filtered_entries()}
   end
 
   @impl true
   def handle_event("export", _params, socket) do
     {:noreply, redirect(socket, to: "/admin/waitlist/export")}
+  end
+
+  @impl true
+  def handle_event("search", %{"query" => query}, socket) do
+    socket =
+      socket
+      |> assign(:search_query, query)
+      |> assign_filtered_entries()
+
+    {:noreply, socket}
+  end
+
+  @impl true
+  def handle_event("filter_status", %{"status" => status}, socket) do
+    socket =
+      socket
+      |> assign(:status_filter, status)
+      |> assign_filtered_entries()
+
+    {:noreply, socket}
+  end
+
+  @impl true
+  def handle_event("notify", %{"id" => id}, socket) do
+    entry = Waitlist.get_waitlist_entry!(id)
+    {:ok, _updated} = Waitlist.mark_as_notified(entry)
+
+    socket =
+      socket
+      |> assign_stats()
+      |> assign_filtered_entries()
+
+    {:noreply, socket}
+  end
+
+  @impl true
+  def handle_event("convert", %{"id" => id}, socket) do
+    entry = Waitlist.get_waitlist_entry!(id)
+    {:ok, _updated} = Waitlist.mark_as_converted(entry)
+
+    socket =
+      socket
+      |> assign_stats()
+      |> assign_filtered_entries()
+
+    {:noreply, socket}
+  end
+
+  @impl true
+  def handle_event("delete", %{"id" => id}, socket) do
+    entry = Waitlist.get_waitlist_entry!(id)
+    {:ok, _deleted} = Waitlist.delete_waitlist_entry(entry)
+
+    socket =
+      socket
+      |> assign_stats()
+      |> assign_filtered_entries()
+
+    {:noreply, socket}
+  end
+
+  defp assign_filtered_entries(socket) do
+    entries =
+      case {socket.assigns.search_query, socket.assigns.status_filter} do
+        {"", "all"} ->
+          Waitlist.list_waitlist_entries()
+
+        {query, "all"} when query != "" ->
+          Waitlist.search_entries(query)
+
+        {"", status} ->
+          Waitlist.filter_by_status(status)
+
+        {query, status} ->
+          # Combine search and filter
+          Waitlist.search_entries(query)
+          |> Enum.filter(fn entry ->
+            case status do
+              "pending" -> is_nil(entry.notified_at) and is_nil(entry.converted_at)
+              "notified" -> not is_nil(entry.notified_at) and is_nil(entry.converted_at)
+              "converted" -> not is_nil(entry.converted_at)
+              _ -> true
+            end
+          end)
+      end
+
+    stream(socket, :entries, entries, reset: true)
   end
 
   defp assign_stats(socket) do
@@ -66,11 +155,19 @@ defmodule FiletransferWeb.Admin.WaitlistLive do
         )
       )
 
+    # New analytics data
+    growth_rate = Waitlist.growth_rate()
+    status_breakdown = Waitlist.status_breakdown()
+    daily_signups = Waitlist.daily_signups(14)
+
     socket
     |> assign(:total_count, total)
     |> assign(:week_count, recent)
     |> assign(:today_count, today)
     |> assign(:use_cases, use_cases)
+    |> assign(:growth_rate, growth_rate)
+    |> assign(:status_breakdown, status_breakdown)
+    |> assign(:daily_signups, daily_signups)
   end
 
   @impl true
@@ -86,7 +183,7 @@ defmodule FiletransferWeb.Admin.WaitlistLive do
           </div>
           <div class="hidden lg:block">
             <h1 class="text-lg font-bold text-zinc-900 dark:text-white tracking-tight">
-              FlowTransfer
+              ZipShare
             </h1>
             <p class="text-xs text-zinc-500 dark:text-zinc-400 font-medium">Command Center</p>
           </div>
@@ -189,9 +286,9 @@ defmodule FiletransferWeb.Admin.WaitlistLive do
             </button>
           </div>
 
-          <%!-- Stats Grid - Responsive --%>
+          <%!-- Stats Grid - Enhanced with growth indicators --%>
           <div class="grid grid-cols-2 lg:grid-cols-6 gap-3 lg:gap-4 mb-6 lg:mb-8">
-            <%!-- Total - Large on desktop, normal on mobile --%>
+            <%!-- Total - Large card with growth indicator --%>
             <div class="col-span-2 lg:row-span-2 p-4 lg:p-6 rounded-2xl lg:rounded-3xl bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 relative overflow-hidden group">
               <div class="absolute -right-6 -bottom-6 lg:-right-8 lg:-bottom-8 opacity-10 group-hover:opacity-20 transition-opacity">
                 <.icon name="hero-envelope" class="w-24 h-24 lg:w-32 lg:h-32" />
@@ -200,10 +297,13 @@ defmodule FiletransferWeb.Admin.WaitlistLive do
                 Total Signups
               </p>
               <p class="text-4xl lg:text-6xl font-bold tracking-tight">{@total_count}</p>
-              <p class="text-xs lg:text-sm text-zinc-500 dark:text-zinc-400 mt-2 lg:mt-4">All time</p>
+              <div class="flex items-center gap-2 mt-2 lg:mt-4">
+                <.growth_indicator rate={@growth_rate} inverted />
+                <span class="text-xs text-zinc-500 dark:text-zinc-400">vs last week</span>
+              </div>
             </div>
 
-            <%!-- This Week --%>
+            <%!-- This Week with sparkline --%>
             <div class="col-span-1 lg:col-span-2 p-4 lg:p-5 rounded-2xl lg:rounded-3xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800">
               <div class="flex items-center justify-between">
                 <div>
@@ -218,6 +318,10 @@ defmodule FiletransferWeb.Admin.WaitlistLive do
                     class="w-5 h-5 lg:w-6 lg:h-6 text-blue-600 dark:text-blue-400"
                   />
                 </div>
+              </div>
+              <%!-- Mini sparkline --%>
+              <div class="mt-3 hidden lg:block">
+                <.sparkline data={@daily_signups} />
               </div>
             </div>
 
@@ -236,6 +340,24 @@ defmodule FiletransferWeb.Admin.WaitlistLive do
                     class="w-5 h-5 lg:w-6 lg:h-6 text-amber-600 dark:text-amber-400"
                   />
                 </div>
+              </div>
+              <%!-- Status breakdown mini --%>
+              <div class="mt-3 hidden lg:flex items-center gap-2">
+                <.status_mini_badge
+                  count={@status_breakdown.pending}
+                  label="Pending"
+                  color="zinc"
+                />
+                <.status_mini_badge
+                  count={@status_breakdown.notified}
+                  label="Notified"
+                  color="blue"
+                />
+                <.status_mini_badge
+                  count={@status_breakdown.converted}
+                  label="Converted"
+                  color="emerald"
+                />
               </div>
             </div>
 
@@ -319,18 +441,62 @@ defmodule FiletransferWeb.Admin.WaitlistLive do
             </div>
           </div>
 
-          <%!-- Entries Table --%>
+          <%!-- Entries Table with Search/Filter --%>
           <div class="rounded-2xl lg:rounded-3xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 overflow-hidden">
-            <div class="px-4 lg:px-6 py-4 lg:py-5 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between">
-              <div class="flex items-center gap-2 lg:gap-3">
-                <.icon name="hero-clipboard-document-list" class="w-5 h-5 text-zinc-400" />
-                <h2 class="font-bold text-zinc-900 dark:text-white text-sm lg:text-base">
-                  All Signups
-                </h2>
+            <div class="px-4 lg:px-6 py-4 lg:py-5 border-b border-zinc-200 dark:border-zinc-800">
+              <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                <div class="flex items-center gap-2 lg:gap-3">
+                  <.icon name="hero-clipboard-document-list" class="w-5 h-5 text-zinc-400" />
+                  <h2 class="font-bold text-zinc-900 dark:text-white text-sm lg:text-base">
+                    All Signups
+                  </h2>
+                  <span class="text-xs lg:text-sm text-zinc-500 dark:text-zinc-400">
+                    {@total_count} total
+                  </span>
+                </div>
+
+                <%!-- Search and Filter Controls --%>
+                <div class="flex flex-col sm:flex-row gap-3">
+                  <%!-- Search Input --%>
+                  <div class="relative">
+                    <.icon
+                      name="hero-magnifying-glass"
+                      class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400"
+                    />
+                    <input
+                      type="text"
+                      placeholder="Search by email, name..."
+                      value={@search_query}
+                      phx-keyup="search"
+                      phx-debounce="300"
+                      name="query"
+                      class="pl-10 pr-4 py-2 w-full sm:w-64 text-sm rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-zinc-900 dark:focus:ring-white focus:border-transparent"
+                    />
+                  </div>
+
+                  <%!-- Status Filter --%>
+                  <div class="relative">
+                    <select
+                      phx-change="filter_status"
+                      name="status"
+                      class="appearance-none pl-4 pr-10 py-2 text-sm rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-zinc-900 dark:focus:ring-white focus:border-transparent cursor-pointer"
+                    >
+                      <option value="all" selected={@status_filter == "all"}>All Status</option>
+                      <option value="pending" selected={@status_filter == "pending"}>Pending</option>
+                      <option value="notified" selected={@status_filter == "notified"}>
+                        Notified
+                      </option>
+                      <option value="converted" selected={@status_filter == "converted"}>
+                        Converted
+                      </option>
+                    </select>
+                    <.icon
+                      name="hero-chevron-down"
+                      class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400 pointer-events-none"
+                    />
+                  </div>
+                </div>
               </div>
-              <span class="text-xs lg:text-sm text-zinc-500 dark:text-zinc-400">
-                {@total_count} total
-              </span>
             </div>
 
             <%= if @total_count == 0 do %>
@@ -377,6 +543,33 @@ defmodule FiletransferWeb.Admin.WaitlistLive do
                           {format_relative_date(entry.inserted_at)}
                         </span>
                       </div>
+                      <%!-- Quick Actions Mobile --%>
+                      <div class="flex items-center gap-2 mt-3">
+                        <.quick_action_button
+                          :if={is_nil(entry.notified_at)}
+                          action="notify"
+                          id={entry.id}
+                          icon="hero-paper-airplane"
+                          label="Notify"
+                          color="blue"
+                        />
+                        <.quick_action_button
+                          :if={is_nil(entry.converted_at)}
+                          action="convert"
+                          id={entry.id}
+                          icon="hero-check-circle"
+                          label="Convert"
+                          color="emerald"
+                        />
+                        <.quick_action_button
+                          action="delete"
+                          id={entry.id}
+                          icon="hero-trash"
+                          label="Delete"
+                          color="red"
+                          confirm="Are you sure you want to delete this entry?"
+                        />
+                      </div>
                     </div>
                     <.status_pill notified={entry.notified_at} converted={entry.converted_at} compact />
                   </div>
@@ -403,6 +596,9 @@ defmodule FiletransferWeb.Admin.WaitlistLive do
                       <th class="px-6 py-4 text-left text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
                         Status
                       </th>
+                      <th class="px-6 py-4 text-right text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
+                        Actions
+                      </th>
                     </tr>
                   </thead>
                   <tbody
@@ -413,7 +609,7 @@ defmodule FiletransferWeb.Admin.WaitlistLive do
                     <tr
                       :for={{dom_id, entry} <- @streams.entries}
                       id={dom_id}
-                      class="hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors"
+                      class="hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors group"
                     >
                       <td class="px-6 py-4">
                         <div class="flex items-center gap-3">
@@ -449,6 +645,34 @@ defmodule FiletransferWeb.Admin.WaitlistLive do
                       </td>
                       <td class="px-6 py-4">
                         <.status_pill notified={entry.notified_at} converted={entry.converted_at} />
+                      </td>
+                      <td class="px-6 py-4">
+                        <div class="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <.quick_action_button
+                            :if={is_nil(entry.notified_at)}
+                            action="notify"
+                            id={entry.id}
+                            icon="hero-paper-airplane"
+                            label="Notify"
+                            color="blue"
+                          />
+                          <.quick_action_button
+                            :if={is_nil(entry.converted_at)}
+                            action="convert"
+                            id={entry.id}
+                            icon="hero-check-circle"
+                            label="Convert"
+                            color="emerald"
+                          />
+                          <.quick_action_button
+                            action="delete"
+                            id={entry.id}
+                            icon="hero-trash"
+                            label="Delete"
+                            color="red"
+                            confirm="Are you sure you want to delete this entry?"
+                          />
+                        </div>
                       </td>
                     </tr>
                   </tbody>
@@ -555,6 +779,159 @@ defmodule FiletransferWeb.Admin.WaitlistLive do
         <% end %>
       </span>
     </span>
+    """
+  end
+
+  attr :rate, :float, required: true
+  attr :inverted, :boolean, default: false
+
+  defp growth_indicator(assigns) do
+    ~H"""
+    <div class={[
+      "flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-bold",
+      cond do
+        @rate > 0 ->
+          if @inverted,
+            do: "bg-emerald-900/50 text-emerald-300",
+            else: "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400"
+
+        @rate < 0 ->
+          if @inverted,
+            do: "bg-red-900/50 text-red-300",
+            else: "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400"
+
+        true ->
+          if @inverted,
+            do: "bg-zinc-700/50 text-zinc-300",
+            else: "bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400"
+      end
+    ]}>
+      <.icon
+        :if={@rate > 0}
+        name="hero-arrow-trending-up-mini"
+        class="w-3.5 h-3.5"
+      />
+      <.icon
+        :if={@rate < 0}
+        name="hero-arrow-trending-down-mini"
+        class="w-3.5 h-3.5"
+      />
+      <.icon
+        :if={@rate == 0}
+        name="hero-minus-mini"
+        class="w-3.5 h-3.5"
+      />
+      <span>{abs(@rate)}%</span>
+    </div>
+    """
+  end
+
+  attr :data, :list, required: true
+
+  defp sparkline(assigns) do
+    max_value = assigns.data |> Enum.map(&elem(&1, 1)) |> Enum.max(fn -> 1 end) |> max(1)
+
+    points =
+      assigns.data
+      |> Enum.with_index()
+      |> Enum.map(fn {{_date, count}, index} ->
+        x = index / max(length(assigns.data) - 1, 1) * 100
+        y = 100 - count / max_value * 100
+        {x, y}
+      end)
+
+    path =
+      points
+      |> Enum.map(fn {x, y} -> "#{x},#{y}" end)
+      |> Enum.join(" L ")
+
+    assigns = assign(assigns, :path, "M " <> path)
+    assigns = assign(assigns, :points, points)
+
+    ~H"""
+    <div class="h-10 w-full">
+      <svg viewBox="0 0 100 100" preserveAspectRatio="none" class="w-full h-full">
+        <%!-- Grid lines --%>
+        <line
+          x1="0"
+          y1="50"
+          x2="100"
+          y2="50"
+          stroke="currentColor"
+          stroke-opacity="0.1"
+          stroke-width="0.5"
+        />
+        <%!-- Sparkline path --%>
+        <path
+          d={@path}
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="text-blue-500 dark:text-blue-400"
+        />
+        <%!-- Dots at each point --%>
+        <%= for {x, y} <- @points do %>
+          <circle
+            cx={x}
+            cy={y}
+            r="2"
+            class="fill-blue-500 dark:fill-blue-400"
+          />
+        <% end %>
+      </svg>
+    </div>
+    """
+  end
+
+  attr :count, :integer, required: true
+  attr :label, :string, required: true
+  attr :color, :string, required: true
+
+  defp status_mini_badge(assigns) do
+    ~H"""
+    <div class={[
+      "flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-medium",
+      case @color do
+        "zinc" -> "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400"
+        "blue" -> "bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
+        "emerald" -> "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400"
+        _ -> "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400"
+      end
+    ]}>
+      <span class="font-bold">{@count}</span>
+      <span>{@label}</span>
+    </div>
+    """
+  end
+
+  attr :action, :string, required: true
+  attr :id, :string, required: true
+  attr :icon, :string, required: true
+  attr :label, :string, required: true
+  attr :color, :string, required: true
+  attr :confirm, :string, default: nil
+
+  defp quick_action_button(assigns) do
+    ~H"""
+    <button
+      phx-click={@action}
+      phx-value-id={@id}
+      data-confirm={@confirm}
+      title={@label}
+      class={[
+        "p-2 rounded-lg transition-all hover:scale-110",
+        case @color do
+          "blue" -> "text-blue-500 hover:bg-blue-100 dark:hover:bg-blue-900/30"
+          "emerald" -> "text-emerald-500 hover:bg-emerald-100 dark:hover:bg-emerald-900/30"
+          "red" -> "text-red-500 hover:bg-red-100 dark:hover:bg-red-900/30"
+          _ -> "text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+        end
+      ]}
+    >
+      <.icon name={@icon} class="w-4 h-4" />
+    </button>
     """
   end
 

@@ -32,7 +32,6 @@ defmodule FiletransferWeb.Fixtures do
   def transfer_fixture(user, attrs \\ %{}) do
     default_attrs = %{
       file_name: "test_file.pdf",
-      # 10MB
       file_size: 10_485_760,
       file_type: "application/pdf",
       user_id: user.id
