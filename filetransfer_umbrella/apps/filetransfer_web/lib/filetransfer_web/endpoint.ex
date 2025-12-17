@@ -11,6 +11,11 @@ defmodule FiletransferWeb.Endpoint do
     same_site: "Lax"
   ]
 
+  # User socket for real-time transfer progress
+  socket "/socket", FiletransferWeb.UserSocket,
+    websocket: [connect_info: [session: @session_options]],
+    longpoll: [connect_info: [session: @session_options]]
+
   socket "/live", Phoenix.LiveView.Socket,
     websocket: [connect_info: [session: @session_options]],
     longpoll: [connect_info: [session: @session_options]]
