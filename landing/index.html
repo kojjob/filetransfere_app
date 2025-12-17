@@ -3,26 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZipShare - Modern File Transfer with Live Progress</title>
-    <meta name="description" content="Transfer large files instantly with live progress tracking. Built for creative professionals who need speed and reliability.">
+    <title>ZipShare - The File Transfer API for AI Agents & Developers</title>
+    <meta name="description" content="The first file transfer service built for AI agents. S3 reliability meets real-time progress. Send files with a single API call.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #6366f1;
-            --primary-dark: #4f46e5;
-            --primary-light: #818cf8;
-            --accent: #ec4899;
-            --bg: #ffffff;
-            --bg-secondary: #f8fafc;
-            --bg-tertiary: #f1f5f9;
-            --text: #0f172a;
-            --text-secondary: #475569;
-            --text-muted: #94a3b8;
-            --border: #e2e8f0;
-            --shadow: rgba(0, 0, 0, 0.08);
-            --shadow-lg: rgba(0, 0, 0, 0.12);
+            --bg-primary: #09090b;
+            --bg-secondary: #18181b;
+            --bg-tertiary: #27272a;
+            --bg-elevated: rgba(39, 39, 42, 0.6);
+            --surface: rgba(255, 255, 255, 0.03);
+            --surface-hover: rgba(255, 255, 255, 0.06);
+            --border: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(255, 255, 255, 0.15);
+            --text-primary: #fafafa;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --accent: #22d3ee;
+            --accent-dim: rgba(34, 211, 238, 0.15);
+            --accent-glow: rgba(34, 211, 238, 0.3);
+            --success: #4ade80;
+            --warning: #fbbf24;
+            --purple: #a78bfa;
+            --pink: #f472b6;
+            --gradient-start: #22d3ee;
+            --gradient-end: #a78bfa;
         }
 
         * {
@@ -36,13 +43,67 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: var(--bg);
-            color: var(--text);
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
             line-height: 1.6;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Ambient Background */
+        .ambient-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .ambient-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.4;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .orb-1 {
+            width: 600px;
+            height: 600px;
+            background: var(--accent);
+            top: -200px;
+            right: -100px;
+            animation-delay: 0s;
+        }
+
+        .orb-2 {
+            width: 500px;
+            height: 500px;
+            background: var(--purple);
+            bottom: -100px;
+            left: -100px;
+            animation-delay: -10s;
+        }
+
+        .orb-3 {
+            width: 400px;
+            height: 400px;
+            background: var(--pink);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: -5s;
+            opacity: 0.2;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -30px) scale(1.05); }
+            66% { transform: translate(-20px, 20px) scale(0.95); }
         }
 
         /* Navigation */
@@ -51,20 +112,14 @@
             top: 0;
             width: 100%;
             z-index: 1000;
-            padding: 1.5rem 0;
-            background: rgba(255, 255, 255, 0.8);
+            padding: 1rem 0;
+            background: rgba(9, 9, 11, 0.8);
             backdrop-filter: blur(20px) saturate(180%);
             border-bottom: 1px solid var(--border);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        nav.scrolled {
-            padding: 1rem 0;
-            box-shadow: 0 1px 3px var(--shadow);
         }
 
         .nav-container {
-            max-width: 1280px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 0 2rem;
             display: flex;
@@ -73,1269 +128,1007 @@
         }
 
         .logo {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--text);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: var(--text-primary);
             text-decoration: none;
-            letter-spacing: -0.5px;
-            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .logo:hover {
-            transform: scale(1.05);
+        .logo-icon {
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, var(--accent), var(--purple));
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .nav-links {
             display: flex;
-            gap: 2.5rem;
+            gap: 2rem;
             align-items: center;
         }
 
         .nav-link {
             color: var(--text-secondary);
             text-decoration: none;
-            font-weight: 500;
-            font-size: 0.95rem;
-            transition: color 0.3s ease;
-            position: relative;
-        }
-
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--primary);
-            transition: width 0.3s ease;
+            font-size: 0.9rem;
+            font-weight: 400;
+            transition: color 0.2s ease;
         }
 
         .nav-link:hover {
-            color: var(--text);
+            color: var(--text-primary);
         }
 
-        .nav-link:hover::after {
-            width: 100%;
-        }
-
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.5rem;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.95rem;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: none;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .btn-primary {
-            background: var(--text);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: var(--primary);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
-        }
-
-        .btn-secondary {
-            background: var(--bg-secondary);
-            color: var(--text);
+        .nav-cta {
+            padding: 0.5rem 1rem;
+            background: var(--surface);
             border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-weight: 500;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
         }
 
-        .btn-secondary:hover {
-            background: var(--bg-tertiary);
-            border-color: var(--text-secondary);
+        .nav-cta:hover {
+            background: var(--surface-hover);
+            border-color: var(--border-hover);
         }
 
-        /* Hero Section */
+        /* Hero */
         .hero {
             min-height: 100vh;
             display: flex;
-            align-items: center;
+            flex-direction: column;
             justify-content: center;
+            align-items: center;
+            text-align: center;
             padding: 8rem 2rem 4rem;
             position: relative;
-            overflow: hidden;
-        }
-
-        .hero-content {
-            max-width: 1200px;
-            width: 100%;
-            text-align: center;
             z-index: 1;
         }
 
-        .hero-badge {
+        .badge {
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
             padding: 0.5rem 1rem;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 2rem;
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-            margin-bottom: 2rem;
+            background: var(--accent-dim);
+            border: 1px solid var(--accent);
+            border-radius: 100px;
+            font-size: 0.8rem;
             font-weight: 500;
-            animation: fadeInUp 0.8s ease;
+            color: var(--accent);
+            margin-bottom: 2rem;
+            animation: pulse-border 3s ease-in-out infinite;
         }
 
-        .hero h1 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(3rem, 8vw, 6.5rem);
-            font-weight: 700;
+        @keyframes pulse-border {
+            0%, 100% { box-shadow: 0 0 0 0 var(--accent-glow); }
+            50% { box-shadow: 0 0 20px 5px var(--accent-glow); }
+        }
+
+        .badge svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 600;
             line-height: 1.1;
+            letter-spacing: -0.03em;
+            max-width: 900px;
             margin-bottom: 1.5rem;
-            color: var(--text);
-            letter-spacing: -2px;
-            animation: fadeInUp 0.8s ease 0.2s both;
         }
 
-        .hero .gradient-text {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+        .gradient-text {
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
-        .hero p {
-            font-size: clamp(1.125rem, 2.5vw, 1.5rem);
-            color: var(--text-secondary);
-            margin-bottom: 3rem;
-            line-height: 1.8;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-            animation: fadeInUp 0.8s ease 0.4s both;
-        }
-
-        .hero-cta {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-            animation: fadeInUp 0.8s ease 0.6s both;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Background Elements */
-        .hero-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            overflow: hidden;
-        }
-
-        .gradient-blob {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.6;
-            animation: float 20s ease-in-out infinite;
-        }
-
-        .blob-1 {
-            width: 500px;
-            height: 500px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-            top: -200px;
-            right: -200px;
-            animation-delay: 0s;
-        }
-
-        .blob-2 {
-            width: 400px;
-            height: 400px;
-            background: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%);
-            bottom: -150px;
-            left: -150px;
-            animation-delay: 5s;
-        }
-
-        @keyframes float {
-            0%, 100% {
-                transform: translate(0, 0) scale(1);
-            }
-            50% {
-                transform: translate(50px, -50px) scale(1.1);
-            }
-        }
-
-        /* Features Section */
-        .features-section {
-            padding: 8rem 2rem;
-            max-width: 1280px;
-            margin: 0 auto;
-            background: var(--bg-secondary);
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 5rem;
-        }
-
-        .section-badge {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 0.5rem;
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-            margin-bottom: 1rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-
-        .section-header h2 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(2.5rem, 6vw, 4rem);
-            font-weight: 700;
-            margin-bottom: 1rem;
-            letter-spacing: -1.5px;
-            color: var(--text);
-        }
-
-        .section-header p {
+        .hero-subtitle {
             font-size: 1.25rem;
             color: var(--text-secondary);
             max-width: 600px;
-            margin: 0 auto;
+            margin-bottom: 3rem;
+            font-weight: 300;
         }
 
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2rem;
+        .hero-cta-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
-        .feature-card {
-            background: var(--bg);
+        .btn-primary {
+            padding: 0.875rem 1.75rem;
+            background: linear-gradient(135deg, var(--accent), var(--purple));
+            border: none;
+            border-radius: 10px;
+            color: var(--bg-primary);
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px var(--accent-glow);
+        }
+
+        .btn-secondary {
+            padding: 0.875rem 1.75rem;
+            background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 1.5rem;
-            padding: 2.5rem;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-weight: 500;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
+        .btn-secondary:hover {
+            background: var(--surface-hover);
+            border-color: var(--border-hover);
+        }
+
+        /* Code Preview */
+        .code-preview {
+            margin-top: 4rem;
+            max-width: 700px;
             width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-            opacity: 0;
-            transition: opacity 0.4s ease;
-            z-index: 0;
         }
 
-        .feature-card:hover {
-            transform: translateY(-8px);
-            border-color: var(--primary);
-            box-shadow: 0 20px 60px var(--shadow-lg);
+        .code-window {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
 
-        .feature-card:hover::before {
-            opacity: 0.03;
+        .code-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            background: var(--bg-tertiary);
+            border-bottom: 1px solid var(--border);
         }
 
-        .feature-card > * {
+        .code-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--text-muted);
+        }
+
+        .code-dot:nth-child(1) { background: #ef4444; }
+        .code-dot:nth-child(2) { background: #fbbf24; }
+        .code-dot:nth-child(3) { background: #22c55e; }
+
+        .code-title {
+            flex: 1;
+            text-align: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .code-body {
+            padding: 1.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            line-height: 1.7;
+            overflow-x: auto;
+        }
+
+        .code-line {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .line-number {
+            color: var(--text-muted);
+            user-select: none;
+            min-width: 1.5rem;
+            text-align: right;
+        }
+
+        .code-content {
+            color: var(--text-secondary);
+        }
+
+        .code-comment { color: var(--text-muted); }
+        .code-keyword { color: var(--purple); }
+        .code-string { color: var(--success); }
+        .code-function { color: var(--accent); }
+        .code-variable { color: var(--pink); }
+
+        /* Features Section */
+        .section {
+            padding: 6rem 2rem;
             position: relative;
             z-index: 1;
         }
 
-        .feature-icon {
-            width: 56px;
-            height: 56px;
-            background: var(--bg-secondary);
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-badge {
+            display: inline-flex;
+            padding: 0.375rem 0.75rem;
+            background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 1rem;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Feature Cards */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: var(--bg-elevated);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.5);
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--accent-dim);
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             margin-bottom: 1.5rem;
-            transition: all 0.3s ease;
         }
 
         .feature-icon svg {
             width: 24px;
             height: 24px;
-            stroke: var(--primary);
-            stroke-width: 2;
-        }
-
-        .feature-card:hover .feature-icon {
-            background: var(--primary);
-            border-color: var(--primary);
-            transform: scale(1.1);
-        }
-
-        .feature-card:hover .feature-icon svg {
-            stroke: white;
+            stroke: var(--accent);
         }
 
         .feature-card h3 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            color: var(--text);
-            letter-spacing: -0.5px;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
         }
 
         .feature-card p {
             color: var(--text-secondary);
-            line-height: 1.8;
-            font-size: 1rem;
+            font-size: 0.95rem;
+            line-height: 1.6;
         }
 
-        /* Demo/Screenshot Section */
-        .demo-section {
-            padding: 8rem 2rem;
-            background: var(--bg);
-            max-width: 1400px;
+        /* Unique: AI Native Section */
+        .ai-section {
+            background: linear-gradient(180deg, var(--bg-primary), var(--bg-secondary));
+        }
+
+        .ai-demo {
+            max-width: 1000px;
             margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: center;
         }
 
-        .demo-container {
-            position: relative;
-            border-radius: 1.5rem;
-            overflow: hidden;
-            box-shadow: 0 20px 60px var(--shadow-lg);
-            border: 1px solid var(--border);
+        .ai-chat {
             background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
         }
 
-        .demo-browser-bar {
-            background: var(--bg-tertiary);
+        .ai-chat-header {
             padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border);
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            border-bottom: 1px solid var(--border);
+            gap: 0.75rem;
         }
 
-        .browser-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
+        .ai-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--accent), var(--purple));
         }
 
-        .browser-dot:nth-child(1) {
-            background: #ff5f57;
-        }
-
-        .browser-dot:nth-child(2) {
-            background: #ffbd2e;
-        }
-
-        .browser-dot:nth-child(3) {
-            background: #28ca42;
-        }
-
-        .demo-screenshot {
-            width: 100%;
-            height: auto;
-            display: block;
-            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
-            min-height: 600px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .demo-screenshot-img {
-            width: 100%;
-            height: auto;
-            display: block;
-            object-fit: contain;
-        }
-
-        .demo-placeholder {
+        .ai-chat-body {
+            padding: 1.5rem;
             display: flex;
             flex-direction: column;
+            gap: 1rem;
+        }
+
+        .chat-message {
+            padding: 1rem;
+            border-radius: 12px;
+            max-width: 85%;
+        }
+
+        .chat-user {
+            background: var(--surface);
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+
+        .chat-ai {
+            background: var(--accent-dim);
+            border: 1px solid var(--accent);
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+
+        .chat-message p {
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .ai-features {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .ai-feature {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .ai-feature-icon {
+            width: 40px;
+            height: 40px;
+            min-width: 40px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            display: flex;
             align-items: center;
             justify-content: center;
-            padding: 4rem 2rem;
-            text-align: center;
-            color: var(--text-secondary);
         }
 
-        .demo-placeholder svg {
-            width: 120px;
-            height: 120px;
-            margin-bottom: 2rem;
-            opacity: 0.3;
+        .ai-feature-icon svg {
+            width: 20px;
+            height: 20px;
+            stroke: var(--accent);
         }
 
-        .demo-placeholder h3 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-            color: var(--text);
-        }
-
-        .demo-placeholder p {
+        .ai-feature h4 {
             font-size: 1rem;
-            max-width: 400px;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
         }
 
-        .demo-features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        .ai-feature p {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        /* Architecture Section */
+        .arch-visual {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             gap: 2rem;
-            margin-top: 4rem;
-            padding: 0 2rem;
+            flex-wrap: wrap;
         }
 
-        .demo-feature {
-            text-align: center;
-            padding: 1.5rem;
-        }
-
-        .demo-feature-icon {
-            width: 48px;
-            height: 48px;
+        .arch-node {
             background: var(--bg-secondary);
             border: 1px solid var(--border);
-            border-radius: 0.75rem;
+            border-radius: 16px;
+            padding: 1.5rem 2rem;
+            text-align: center;
+            min-width: 180px;
+        }
+
+        .arch-node-icon {
+            width: 56px;
+            height: 56px;
+            background: var(--surface);
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0 auto 1rem;
         }
 
-        .demo-feature-icon svg {
-            width: 24px;
-            height: 24px;
-            stroke: var(--primary);
+        .arch-node-icon svg {
+            width: 28px;
+            height: 28px;
+            stroke: var(--accent);
         }
 
-        .demo-feature h4 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.125rem;
-            margin-bottom: 0.5rem;
-            color: var(--text);
+        .arch-node h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
         }
 
-        .demo-feature p {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
+        .arch-node p {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        .arch-connector {
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent), var(--purple));
+            position: relative;
+        }
+
+        .arch-connector::after {
+            content: '';
+            position: absolute;
+            right: -6px;
+            top: -4px;
+            border: 5px solid transparent;
+            border-left-color: var(--purple);
         }
 
         /* Waitlist Section */
         .waitlist-section {
-            padding: 8rem 2rem;
-            max-width: 700px;
-            margin: 0 auto;
             background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
         }
 
         .waitlist-card {
-            background: var(--bg);
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--bg-elevated);
+            backdrop-filter: blur(20px);
             border: 1px solid var(--border);
-            border-radius: 2rem;
-            padding: 4rem;
-            box-shadow: 0 20px 60px var(--shadow);
-        }
-
-        .waitlist-card h2 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(2rem, 5vw, 3rem);
-            font-weight: 700;
-            margin-bottom: 1rem;
+            border-radius: 20px;
+            padding: 3rem;
             text-align: center;
-            letter-spacing: -1px;
         }
 
-        .waitlist-card .subtitle {
-            text-align: center;
-            color: var(--text-secondary);
-            margin-bottom: 3rem;
-            font-size: 1.125rem;
+        .waitlist-form {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 2rem;
         }
 
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: var(--text);
-            font-weight: 600;
-            font-size: 0.95rem;
-        }
-
-        .form-group input {
-            width: 100%;
+        .waitlist-input {
+            flex: 1;
             padding: 1rem 1.25rem;
-            background: var(--bg-secondary);
+            background: var(--bg-primary);
             border: 1px solid var(--border);
-            border-radius: 0.75rem;
-            color: var(--text);
-            font-size: 1rem;
-            transition: all 0.3s ease;
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
             font-family: inherit;
+            transition: border-color 0.2s ease;
         }
 
-        .form-group input:focus {
+        .waitlist-input:focus {
             outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-            background: var(--bg);
+            border-color: var(--accent);
         }
 
-        .form-group input::placeholder {
+        .waitlist-input::placeholder {
             color: var(--text-muted);
         }
 
-        .success-message {
-            display: none;
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: white;
-            padding: 1.25rem;
-            border-radius: 0.75rem;
-            text-align: center;
-            margin-top: 1.5rem;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        .success-message svg {
-            stroke: white;
-            display: inline-block;
-            vertical-align: middle;
-            margin-right: 0.5rem;
-        }
-
-        /* FAQ Section */
-        .faq-section {
-            padding: 6rem 2rem;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .faq-container {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .faq-item {
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 1rem;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .faq-item:hover {
-            border-color: var(--primary-light);
-        }
-
-        .faq-item summary {
-            padding: 1.5rem;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .waitlist-submit {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--accent), var(--purple));
+            border: none;
+            border-radius: 10px;
+            color: var(--bg-primary);
             font-weight: 600;
-            font-size: 1.1rem;
-            color: var(--text);
-            list-style: none;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
         }
 
-        .faq-item summary::-webkit-details-marker {
-            display: none;
-        }
-
-        .faq-item summary::after {
-            content: '+';
-            font-size: 1.5rem;
-            color: var(--primary);
-            transition: transform 0.3s ease;
-        }
-
-        .faq-item[open] summary::after {
-            transform: rotate(45deg);
-        }
-
-        .faq-item[open] {
-            border-color: var(--primary);
-            box-shadow: 0 4px 20px var(--shadow);
-        }
-
-        .faq-content {
-            padding: 0 1.5rem 1.5rem;
-            color: var(--text-secondary);
-            line-height: 1.8;
+        .waitlist-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px var(--accent-glow);
         }
 
         /* Footer */
         footer {
-            background: linear-gradient(135deg, var(--text) 0%, #1e293b 100%);
-            color: white;
-            padding: 4rem 2rem 2rem;
-        }
-
-        .footer-content {
-            max-width: 1280px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr;
-            gap: 3rem;
-            margin-bottom: 3rem;
-        }
-
-        .footer-brand h3 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .footer-brand p {
-            color: rgba(255, 255, 255, 0.7);
-            line-height: 1.8;
-        }
-
-        .footer-links h4 {
+            padding: 4rem 2rem;
+            text-align: center;
+            color: var(--text-muted);
             font-size: 0.875rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 1rem;
-            color: rgba(255, 255, 255, 0.5);
         }
 
-        .footer-links ul {
-            list-style: none;
-        }
-
-        .footer-links li {
-            margin-bottom: 0.75rem;
-        }
-
-        .footer-links a {
-            color: rgba(255, 255, 255, 0.7);
+        footer a {
+            color: var(--text-secondary);
             text-decoration: none;
-            transition: color 0.3s ease;
+            transition: color 0.2s ease;
         }
 
-        .footer-links a:hover {
-            color: white;
-        }
-
-        .footer-bottom {
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding-top: 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1280px;
-            margin: 0 auto;
-        }
-
-        .footer-bottom p {
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 0.875rem;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .social-links a {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            transition: all 0.3s ease;
-        }
-
-        .social-links a:hover {
-            background: var(--primary);
-            transform: translateY(-3px);
-        }
-
-        @media (max-width: 768px) {
-            .footer-content {
-                grid-template-columns: 1fr;
-                text-align: center;
-            }
-
-            .footer-bottom {
-                flex-direction: column;
-                gap: 1rem;
-                text-align: center;
-            }
-        }
-
-        /* Scroll Animations */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
+        footer a:hover {
+            color: var(--accent);
         }
 
         /* Responsive */
         @media (max-width: 768px) {
             .nav-links {
-                gap: 1.5rem;
+                display: none;
             }
 
-            .nav-link {
-                font-size: 0.875rem;
+            .ai-demo {
+                grid-template-columns: 1fr;
             }
 
-            .hero-cta {
+            .arch-visual {
                 flex-direction: column;
             }
 
-            .btn {
-                width: 100%;
-                justify-content: center;
+            .arch-connector {
+                width: 2px;
+                height: 40px;
             }
 
-            .waitlist-card {
-                padding: 2.5rem 1.5rem;
+            .arch-connector::after {
+                right: -4px;
+                top: auto;
+                bottom: -6px;
+                border: 5px solid transparent;
+                border-top-color: var(--purple);
+                border-left-color: transparent;
             }
 
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .hero {
-                padding: 6rem 1rem 3rem;
-            }
-
-            .demo-section {
-                padding: 4rem 1rem;
-            }
-
-            .demo-features {
-                grid-template-columns: 1fr;
-                padding: 0 1rem;
-            }
-
-            .demo-screenshot {
-                min-height: 400px;
+            .waitlist-form {
+                flex-direction: column;
             }
         }
     </style>
 </head>
 <body>
-    <nav id="navbar">
+    <!-- Ambient Background -->
+    <div class="ambient-bg">
+        <div class="ambient-orb orb-1"></div>
+        <div class="ambient-orb orb-2"></div>
+        <div class="ambient-orb orb-3"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav>
         <div class="nav-container">
-            <a href="#" class="logo">ZipShare</a>
+            <a href="#" class="logo">
+                <div class="logo-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="17 8 12 3 7 8"/>
+                        <line x1="12" y1="3" x2="12" y2="15"/>
+                    </svg>
+                </div>
+                ZipShare
+            </a>
             <div class="nav-links">
                 <a href="#features" class="nav-link">Features</a>
-                <a href="#demo" class="nav-link">See It In Action</a>
-                <a href="#faq" class="nav-link">FAQ</a>
-                <a href="#waitlist" class="btn btn-primary">Join Waitlist</a>
+                <a href="#ai" class="nav-link">AI Native</a>
+                <a href="#architecture" class="nav-link">How It Works</a>
+                <a href="https://docs.zipshare.io" class="nav-link">Docs</a>
+                <a href="#waitlist" class="nav-cta">Get Early Access</a>
             </div>
         </div>
     </nav>
 
+    <!-- Hero Section -->
     <section class="hero">
-        <div class="hero-bg">
-            <div class="gradient-blob blob-1"></div>
-            <div class="gradient-blob blob-2"></div>
+        <div class="badge">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M8 12l2 2 4-4"/>
+            </svg>
+            First File Transfer API for AI Agents
         </div>
-        <div class="hero-content">
-            <div class="hero-badge">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+        
+        <h1>
+            Send Files with<br>
+            <span class="gradient-text">a Single API Call</span>
+        </h1>
+        
+        <p class="hero-subtitle">
+            The reliability of S3 storage meets live progress tracking. 
+            Built for developers, automations, and AI agents.
+        </p>
+        
+        <div class="hero-cta-group">
+            <a href="#waitlist" class="btn-primary">Join Waitlist</a>
+            <a href="https://docs.zipshare.io" class="btn-secondary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14 2 14 8 20 8"/>
                 </svg>
-                Coming Soon
-            </div>
-            <h1>
-                Transfer Files with<br>
-                <span class="gradient-text">Speed & Reliability</span>
-            </h1>
-            <p>
-                Built for creative professionals who demand speed, reliability, and transparency. 
-                Large file transfers with live progress tracking, resumable uploads, and secure sharing.
-            </p>
-            <div class="hero-cta">
-                <a href="#waitlist" class="btn btn-primary">Get Early Access</a>
-                <a href="#features" class="btn btn-secondary">Explore Features</a>
+                View Docs
+            </a>
+        </div>
+
+        <!-- Code Preview -->
+        <div class="code-preview">
+            <div class="code-window">
+                <div class="code-header">
+                    <div class="code-dot"></div>
+                    <div class="code-dot"></div>
+                    <div class="code-dot"></div>
+                    <span class="code-title">send-file.js</span>
+                </div>
+                <div class="code-body">
+                    <div class="code-line">
+                        <span class="line-number">1</span>
+                        <span class="code-content"><span class="code-comment">// Send a file in one line</span></span>
+                    </div>
+                    <div class="code-line">
+                        <span class="line-number">2</span>
+                        <span class="code-content"><span class="code-keyword">const</span> <span class="code-variable">link</span> = <span class="code-keyword">await</span> <span class="code-function">zipshare</span>.<span class="code-function">send</span>(<span class="code-string">'./report.pdf'</span>)</span>
+                    </div>
+                    <div class="code-line">
+                        <span class="line-number">3</span>
+                        <span class="code-content"></span>
+                    </div>
+                    <div class="code-line">
+                        <span class="line-number">4</span>
+                        <span class="code-content"><span class="code-comment">// → https://zips.hr/a7x9k</span></span>
+                    </div>
+                    <div class="code-line">
+                        <span class="line-number">5</span>
+                        <span class="code-content"><span class="code-comment">// Recipient downloads instantly. No account needed.</span></span>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <section class="features-section" id="features">
-        <div class="section-header fade-in">
+    <!-- Features Section -->
+    <section class="section" id="features">
+        <div class="section-header">
             <div class="section-badge">Features</div>
-            <h2>Everything You Need</h2>
-            <p>Experience the future of file sharing with cutting-edge technology</p>
+            <h2 class="section-title">Everything developers need</h2>
+            <p class="section-subtitle">
+                Clean API, reliable infrastructure, zero ads. File transfer that just works.
+            </p>
         </div>
+        
         <div class="features-grid">
-            <div class="feature-card fade-in">
+            <div class="feature-card">
                 <div class="feature-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
                     </svg>
                 </div>
-                <h3>Real-Time Progress</h3>
-                <p>
-                    Watch your transfers happen in real-time with live progress updates. 
-                    See transfer speed, ETA, and progress percentage - no more guessing games.
-                </p>
+                <h3>Resumable Uploads</h3>
+                <p>Lost connection? Pick up exactly where you left off. Chunked uploads mean GB+ files transfer reliably, every time.</p>
             </div>
-            <div class="feature-card fade-in">
+            
+            <div class="feature-card">
                 <div class="feature-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
-                        <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
-                        <line x1="12" y1="22.08" x2="12" y2="12"/>
-                    </svg>
-                </div>
-                <h3>Unlimited File Sizes</h3>
-                <p>
-                    Transfer files of any size with intelligent chunked uploads. 
-                    Resume interrupted transfers seamlessly - never lose progress again.
-                </p>
-            </div>
-            <div class="feature-card fade-in">
-                <div class="feature-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
                         <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
                     </svg>
                 </div>
-                <h3>Enterprise Security</h3>
-                <p>
-                    End-to-end encryption, password protection, and automatic expiration. 
-                    Your files are protected with military-grade security.
-                </p>
+                <h3>Password & Expiration</h3>
+                <p>Set passwords, download limits, and automatic expiration. Your files, your rules. Enterprise-grade security by default.</p>
             </div>
-            <div class="feature-card fade-in">
+            
+            <div class="feature-card">
                 <div class="feature-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <polyline points="16 18 22 12 16 6"/>
                         <polyline points="8 6 2 12 8 18"/>
                     </svg>
                 </div>
-                <h3>API & Automation</h3>
-                <p>
-                    Integrate with Zapier, Make.com, or build custom workflows. 
-                    Full REST API for complete automation.
-                </p>
+                <h3>Developer-First API</h3>
+                <p>REST API with comprehensive docs. SDKs for JavaScript, Python, Go. Webhooks for automation. Build anything.</p>
             </div>
-            <div class="feature-card fade-in">
+            
+            <div class="feature-card">
                 <div class="feature-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="2" y1="12" x2="22" y2="12"/>
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                    </svg>
+                </div>
+                <h3>Global CDN</h3>
+                <p>Files served from edge locations worldwide. Fast downloads everywhere, whether you're in Tokyo or Toronto.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
                     </svg>
                 </div>
-                <h3>Lightning Fast</h3>
-                <p>
-                    Built on Elixir & Phoenix for maximum performance. 
-                    Handle thousands of concurrent transfers with ease.
-                </p>
+                <h3>Transparent Pricing</h3>
+                <p>No hidden fees, no surprises. Pay for what you use. Generous free tier for indie developers and startups.</p>
             </div>
-            <div class="feature-card fade-in">
+            
+            <div class="feature-card">
                 <div class="feature-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                        <circle cx="9" cy="7" r="4"/>
-                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-                        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                        <polyline points="22,6 12,13 2,6"/>
                     </svg>
                 </div>
-                <h3>Team Collaboration</h3>
-                <p>
-                    Workspaces, shared folders, and team management. 
-                    Perfect for agencies and creative teams.
-                </p>
+                <h3>Email Notifications</h3>
+                <p>Notify recipients automatically. Custom messages, branded emails, delivery confirmations. Keep everyone in the loop.</p>
             </div>
         </div>
     </section>
 
-    <section class="demo-section" id="demo">
-        <div class="section-header fade-in">
-            <div class="section-badge">See It In Action</div>
-            <h2>Experience Real-Time Transfers</h2>
-            <p>Watch your files transfer with live progress updates - no more guessing</p>
+    <!-- AI Native Section -->
+    <section class="section ai-section" id="ai">
+        <div class="section-header">
+            <div class="section-badge">AI Native</div>
+            <h2 class="section-title">Built for the AI era</h2>
+            <p class="section-subtitle">
+                The first file transfer service that AI agents can use natively. No browser, no clicks.
+            </p>
         </div>
-        <div class="demo-container fade-in">
-            <div class="demo-browser-bar">
-                <div class="browser-dot"></div>
-                <div class="browser-dot"></div>
-                <div class="browser-dot"></div>
+        
+        <div class="ai-demo">
+            <div class="ai-chat">
+                <div class="ai-chat-header">
+                    <div class="ai-avatar"></div>
+                    <span style="font-weight: 500;">Claude</span>
+                    <span style="color: var(--text-muted); font-size: 0.8rem; margin-left: auto;">Using ZipShare</span>
+                </div>
+                <div class="ai-chat-body">
+                    <div class="chat-message chat-user">
+                        <p>Send the Q4 report to sarah@company.com with password "team2024"</p>
+                    </div>
+                    <div class="chat-message chat-ai">
+                        <p>✅ Done! I've uploaded Q4-Report.pdf (4.2 MB) and sent the link to Sarah.</p>
+                        <p style="margin-top: 0.5rem; color: var(--text-muted); font-size: 0.8rem;">Share link: zips.hr/q4rep • Password protected • Expires in 7 days</p>
+                    </div>
+                </div>
             </div>
-            <div class="demo-screenshot">
-                <iframe src="screenshots/app-mockup.html" style="width: 100%; height: 800px; border: none; display: block;"></iframe>
+            
+            <div class="ai-features">
+                <div class="ai-feature">
+                    <div class="ai-feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h4>MCP Server</h4>
+                        <p>Native integration with Claude, ChatGPT, and other AI assistants via Model Context Protocol.</p>
+                    </div>
+                </div>
+                
+                <div class="ai-feature">
+                    <div class="ai-feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                            <line x1="8" y1="21" x2="16" y2="21"/>
+                            <line x1="12" y1="17" x2="12" y2="21"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h4>No Browser Needed</h4>
+                        <p>AI agents can upload and share files directly via API. Perfect for automations and workflows.</p>
+                    </div>
+                </div>
+                
+                <div class="ai-feature">
+                    <div class="ai-feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h4>Secure by Design</h4>
+                        <p>API keys with scoped permissions. Audit logs. Enterprise SSO. Built for compliance.</p>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="demo-features">
-            <div class="demo-feature fade-in">
-                <div class="demo-feature-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
-                    </svg>
-                </div>
-                <h4>Live Progress</h4>
-                <p>See every byte transfer in real-time with speed and ETA</p>
-            </div>
-            <div class="demo-feature fade-in">
-                <div class="demo-feature-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
-                    </svg>
-                </div>
-                <h4>Resume Anytime</h4>
-                <p>Interrupted transfers? Pick up exactly where you left off</p>
-            </div>
-            <div class="demo-feature fade-in">
-                <div class="demo-feature-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-                    </svg>
-                </div>
-                <h4>Secure Sharing</h4>
-                <p>Password protection and expiration dates for every transfer</p>
-            </div>
-            <div class="demo-feature fade-in">
-                <div class="demo-feature-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    </section>
+
+    <!-- Architecture Section -->
+    <section class="section" id="architecture">
+        <div class="section-header">
+            <div class="section-badge">Architecture</div>
+            <h2 class="section-title">S3 reliability + live updates</h2>
+            <p class="section-subtitle">
+                The best of both worlds. Industrial-grade storage with modern developer experience.
+            </p>
+        </div>
+        
+        <div class="arch-visual">
+            <div class="arch-node">
+                <div class="arch-node-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2">
                         <polyline points="16 18 22 12 16 6"/>
                         <polyline points="8 6 2 12 8 18"/>
                     </svg>
                 </div>
-                <h4>API Ready</h4>
-                <p>Automate workflows with REST API</p>
+                <h4>Your App</h4>
+                <p>API / SDK / MCP</p>
+            </div>
+            
+            <div class="arch-connector"></div>
+            
+            <div class="arch-node" style="border-color: var(--accent);">
+                <div class="arch-node-icon" style="background: var(--accent-dim);">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2">
+                        <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>
+                    </svg>
+                </div>
+                <h4>ZipShare</h4>
+                <p>Elixir/Phoenix</p>
+            </div>
+            
+            <div class="arch-connector"></div>
+            
+            <div class="arch-node">
+                <div class="arch-node-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2">
+                        <ellipse cx="12" cy="5" rx="9" ry="3"/>
+                        <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
+                        <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+                    </svg>
+                </div>
+                <h4>S3 Storage</h4>
+                <p>Durable & Scalable</p>
             </div>
         </div>
-    </section>
-
-    <!-- FAQ Section -->
-    <section class="faq-section" id="faq">
-        <div class="section-header fade-in">
-            <div class="section-badge">FAQ</div>
-            <h2>Frequently Asked Questions</h2>
-            <p>Everything you need to know about ZipShare</p>
-        </div>
-
-        <div class="faq-container fade-in">
-            <details class="faq-item">
-                <summary>
-                    <span>What is ZipShare?</span>
-                    <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                </summary>
-                <div class="faq-content">
-                    <p>ZipShare is a next-generation file transfer platform built with Elixir and Phoenix for maximum performance. It offers live progress tracking, resumable uploads, end-to-end encryption, and seamless team collaboration - all designed for creative professionals who need speed and reliability.</p>
-                </div>
-            </details>
-
-            <details class="faq-item">
-                <summary>
-                    <span>What's the maximum file size I can transfer?</span>
-                    <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                </summary>
-                <div class="faq-content">
-                    <p>ZipShare supports files up to 10GB+ with our intelligent chunked upload system. Large files are automatically split into smaller pieces, uploaded in parallel, and reassembled on the server - ensuring fast, reliable transfers even for massive files.</p>
-                </div>
-            </details>
-
-            <details class="faq-item">
-                <summary>
-                    <span>How does the resumable upload feature work?</span>
-                    <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                </summary>
-                <div class="faq-content">
-                    <p>Our chunked upload system tracks exactly which pieces of your file have been uploaded. If your connection drops or you close your browser, you can resume right where you left off - no need to start over. This is especially valuable for large files over slow or unreliable connections.</p>
-                </div>
-            </details>
-
-            <details class="faq-item">
-                <summary>
-                    <span>Is my data secure?</span>
-                    <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                </summary>
-                <div class="faq-content">
-                    <p>Absolutely. ZipShare uses 256-bit AES encryption for all files at rest and TLS 1.3 for data in transit. You can also add password protection and set automatic expiration dates for shared links. We never access your files, and you maintain full control over who can download them.</p>
-                </div>
-            </details>
-
-            <details class="faq-item">
-                <summary>
-                    <span>What makes the live progress tracking special?</span>
-                    <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                </summary>
-                <div class="faq-content">
-                    <p>ZipShare provides live progress updates so you'll see your exact transfer speed, bytes transferred, and accurate time remaining. Our chunked upload system also means you can resume interrupted transfers exactly where you left off.</p>
-                </div>
-            </details>
-
-            <details class="faq-item">
-                <summary>
-                    <span>Can I integrate ZipShare with my existing tools?</span>
-                    <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                </summary>
-                <div class="faq-content">
-                    <p>Yes! ZipShare offers comprehensive REST API for custom integrations. We also support popular automation platforms like Zapier, Make.com, and n8n. Whether you need to automate client deliverables or build custom workflows, our APIs make it possible.</p>
-                </div>
-            </details>
-
-            <details class="faq-item">
-                <summary>
-                    <span>When will ZipShare be available?</span>
-                    <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                </summary>
-                <div class="faq-content">
-                    <p>We're currently in private beta and will be launching publicly soon. Join our waitlist to be among the first to get access. Early supporters will receive exclusive benefits including extended trial periods and priority support.</p>
-                </div>
-            </details>
-
-            <details class="faq-item">
-                <summary>
-                    <span>What platforms does ZipShare support?</span>
-                    <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                </summary>
-                <div class="faq-content">
-                    <p>ZipShare is a web-based application that works on any modern browser - Chrome, Firefox, Safari, and Edge. Native desktop and mobile apps are on our roadmap. Our responsive design ensures a great experience whether you're on desktop, tablet, or mobile.</p>
-                </div>
-            </details>
+        
+        <div style="text-align: center; margin-top: 3rem; color: var(--text-secondary);">
+            <p>Files stored in S3 for 99.999999999% durability. Live progress via Phoenix Channels.</p>
+            <p style="color: var(--text-muted); font-size: 0.875rem; margin-top: 0.5rem;">
+                Built on Elixir for 2M+ concurrent connections per server.
+            </p>
         </div>
     </section>
 
-    <section class="waitlist-section" id="waitlist">
-        <div class="waitlist-card fade-in">
-            <h2>Join the Waitlist</h2>
-            <p class="subtitle">Be among the first to experience the future of file transfer</p>
-            <form id="waitlistForm">
-                <div class="form-group">
-                    <label for="email">Email Address *</label>
-                    <input type="email" id="email" name="email" required placeholder="your@email.com">
-                </div>
-                <div class="form-group">
-                    <label for="name">Full Name</label>
-                    <input type="text" id="name" name="name" placeholder="John Doe">
-                </div>
-                <div class="form-group">
-                    <label for="useCase">How will you use ZipShare?</label>
-                    <input type="text" id="useCase" name="useCase" placeholder="e.g., Video editing, Design files, Client deliverables">
-                </div>
-                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
-                    Reserve Your Spot
-                </button>
-                <div class="success-message" id="successMessage">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="20 6 9 17 4 12"/>
-                    </svg>
-                    Success! We'll notify you when we launch. Check your email for confirmation.
-                </div>
+    <!-- Waitlist Section -->
+    <section class="section waitlist-section" id="waitlist">
+        <div class="waitlist-card">
+            <div class="section-badge">Early Access</div>
+            <h2 class="section-title" style="font-size: 2rem;">Get early access</h2>
+            <p class="section-subtitle">
+                Be among the first to try ZipShare. Early adopters get extended free tier and priority support.
+            </p>
+            
+            <form class="waitlist-form" action="/api/waitlist" method="POST" id="waitlist-form">
+                <input 
+                    type="email" 
+                    name="email" 
+                    class="waitlist-input" 
+                    placeholder="you@company.com" 
+                    required
+                    autocomplete="email"
+                >
+                <button type="submit" class="waitlist-submit">Join Waitlist</button>
             </form>
+            
+            <p style="color: var(--text-muted); font-size: 0.8rem; margin-top: 1rem;">
+                No spam. Unsubscribe anytime.
+            </p>
         </div>
     </section>
 
+    <!-- Footer -->
     <footer>
-        <div class="footer-content">
-            <div class="footer-brand">
-                <div class="footer-logo">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 32px; height: 32px;">
-                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
-                    </svg>
-                    <span>ZipShare</span>
-                </div>
-                <p class="footer-tagline">Lightning-fast file transfers for creative professionals. Built with Elixir & Phoenix for maximum performance.</p>
-                <div class="social-links">
-                    <a href="#" class="social-link" aria-label="Twitter">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/>
-                        </svg>
-                    </a>
-                    <a href="#" class="social-link" aria-label="GitHub">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
-                        </svg>
-                    </a>
-                    <a href="#" class="social-link" aria-label="LinkedIn">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
-                            <rect x="2" y="9" width="4" height="12"/>
-                            <circle cx="4" cy="4" r="2"/>
-                        </svg>
-                    </a>
-                </div>
-            </div>
-            <div class="footer-links">
-                <div class="footer-links-column">
-                    <h4>Product</h4>
-                    <a href="#features">Features</a>
-                    <a href="#demo">Demo</a>
-                    <a href="#faq">FAQ</a>
-                    <a href="#">Pricing</a>
-                </div>
-                <div class="footer-links-column">
-                    <h4>Company</h4>
-                    <a href="#">About</a>
-                    <a href="#">Blog</a>
-                    <a href="#">Careers</a>
-                    <a href="#">Contact</a>
-                </div>
-                <div class="footer-links-column">
-                    <h4>Legal</h4>
-                    <a href="#">Privacy Policy</a>
-                    <a href="#">Terms of Service</a>
-                    <a href="#">Security</a>
-                </div>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2025 ZipShare. All rights reserved.</p>
-        </div>
+        <p>© 2024 ZipShare. Built with Elixir & Phoenix.</p>
+        <p style="margin-top: 0.5rem;">
+            <a href="/privacy">Privacy</a> · 
+            <a href="/terms">Terms</a> · 
+            <a href="https://github.com/kojjob/zipshare">GitHub</a>
+        </p>
     </footer>
 
     <script>
-        // Navbar scroll effect
-        window.addEventListener('scroll', () => {
-            const navbar = document.getElementById('navbar');
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
+        // Waitlist form handling
+        document.getElementById('waitlist-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const form = e.target;
+            const email = form.email.value;
+            const button = form.querySelector('button');
+            const originalText = button.textContent;
+            
+            button.textContent = 'Joining...';
+            button.disabled = true;
+            
+            try {
+                const response = await fetch('/api/waitlist', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
+                
+                if (response.ok) {
+                    button.textContent = '✓ You\'re in!';
+                    button.style.background = 'var(--success)';
+                    form.email.value = '';
+                } else {
+                    throw new Error('Failed to join');
+                }
+            } catch (error) {
+                button.textContent = 'Try again';
+                button.style.background = '#ef4444';
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.style.background = '';
+                    button.disabled = false;
+                }, 2000);
             }
         });
 
-        // Scroll animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -100px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.fade-in').forEach(el => {
-            observer.observe(el);
-        });
-
-        // Smooth scroll for anchor links
+        // Smooth scroll for nav links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
                 if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
             });
-        });
-
-        // Form submission
-        document.getElementById('waitlistForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const submitButton = e.target.querySelector('button[type="submit"]');
-            const originalText = submitButton.textContent;
-            submitButton.disabled = true;
-            submitButton.textContent = 'Submitting...';
-            
-            const formData = {
-                waitlist_entry: {
-                    email: document.getElementById('email').value,
-                    name: document.getElementById('name').value || null,
-                    use_case: document.getElementById('useCase').value || null
-                }
-            };
-            
-            try {
-                // Update this URL to match your backend API endpoint
-                const apiUrl = 'http://localhost:4000/api/waitlist';
-                
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData)
-                });
-                
-                const data = await response.json();
-                
-                if (response.ok && data.status === 'success') {
-                    // Show success message
-                    const successMsg = document.getElementById('successMessage');
-                    successMsg.style.display = 'flex';
-                    document.getElementById('waitlistForm').reset();
-                    
-                    // Scroll to success message
-                    setTimeout(() => {
-                        successMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }, 100);
-                } else {
-                    // Show error message
-                    alert(data.message || 'Failed to join waitlist. Please try again.');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Network error. Please check your connection and try again.');
-            } finally {
-                submitButton.disabled = false;
-                submitButton.textContent = originalText;
-            }
         });
     </script>
 </body>

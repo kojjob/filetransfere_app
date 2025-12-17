@@ -8,7 +8,21 @@ defmodule Filetransfer.Umbrella.MixProject do
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       aliases: aliases(),
-      listeners: [Phoenix.CodeReloader]
+      listeners: [Phoenix.CodeReloader],
+      releases: releases()
+    ]
+  end
+
+  defp releases do
+    [
+      filetransfer_web: [
+        version: "0.1.0",
+        applications: [
+          filetransfer_core: :permanent,
+          filetransfer_web: :permanent
+        ],
+        include_executables_for: [:unix]
+      ]
     ]
   end
 

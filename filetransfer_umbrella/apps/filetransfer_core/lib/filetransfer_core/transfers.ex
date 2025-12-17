@@ -24,7 +24,7 @@ defmodule FiletransferCore.Transfers do
   end
 
   @doc """
-  Gets a single transfer.
+  Gets a single transfer (raises if not found).
   """
   def get_transfer!(id), do: Repo.get!(Transfer, id) |> Repo.preload(:chunks)
 
@@ -39,7 +39,6 @@ defmodule FiletransferCore.Transfers do
       transfer -> {:ok, Repo.preload(transfer, :chunks)}
     end
   end
-
 
   @doc """
   Gets a transfer by ID and user ID (for authorization).
@@ -94,6 +93,8 @@ defmodule FiletransferCore.Transfers do
 
   @doc """
   Updates transfer progress when a chunk is uploaded.
+
+  Returns `{:ok, updated_transfer}` with refreshed chunks on success.
   """
   def update_chunk_progress(transfer_id, chunk_index, bytes_uploaded) do
     transfer = get_transfer!(transfer_id)
@@ -102,29 +103,33 @@ defmodule FiletransferCore.Transfers do
     chunk = Enum.find(transfer.chunks, &(&1.chunk_index == chunk_index))
 
     if chunk do
+      chunk_status = if bytes_uploaded >= chunk.chunk_size, do: "completed", else: "uploading"
+
       Chunk.changeset(chunk, %{
         bytes_uploaded: bytes_uploaded,
-        status: if(bytes_uploaded >= chunk.chunk_size, do: "completed", else: "uploading")
+        status: chunk_status
       })
       |> Repo.update()
     end
 
-    # Re-fetch transfer with updated chunks
+    # Refresh transfer with updated chunks
     updated_transfer = get_transfer!(transfer_id)
 
-    # Calculate overall progress from fresh data
+    # Calculate overall progress from refreshed data
     completed_chunks = Enum.count(updated_transfer.chunks, &(&1.status == "completed"))
     total_bytes = Enum.sum(Enum.map(updated_transfer.chunks, & &1.bytes_uploaded))
 
-    update_transfer(updated_transfer, %{
+    case update_transfer(updated_transfer, %{
       uploaded_chunks: completed_chunks,
       bytes_uploaded: total_bytes,
-      status:
-        if(completed_chunks == updated_transfer.total_chunks, do: "completed", else: "uploading")
-    })
-    |> case do
-      {:ok, final_transfer} -> {:ok, Repo.preload(final_transfer, :chunks, force: true)}
-      error -> error
+      status: if(completed_chunks == updated_transfer.total_chunks, do: "completed", else: "uploading")
+    }) do
+      {:ok, final_transfer} ->
+        # Return with refreshed chunks
+        {:ok, Repo.preload(final_transfer, :chunks, force: true)}
+
+      error ->
+        error
     end
   end
 
@@ -168,20 +173,13 @@ defmodule FiletransferCore.Transfers do
 
   defp create_chunks_for_transfer(%Transfer{} = transfer) do
     Enum.each(0..(transfer.total_chunks - 1), fn index ->
-      # For the last chunk, use remainder or full chunk_size if evenly divisible
-      last_chunk_size =
-        case rem(transfer.file_size, transfer.chunk_size) do
-          0 -> transfer.chunk_size
-          remainder -> remainder
-        end
-
       %Chunk{}
       |> Chunk.changeset(%{
         transfer_id: transfer.id,
         chunk_index: index,
         chunk_size:
           if(index == transfer.total_chunks - 1,
-            do: last_chunk_size,
+            do: rem(transfer.file_size, transfer.chunk_size),
             else: transfer.chunk_size
           ),
         status: "pending"
