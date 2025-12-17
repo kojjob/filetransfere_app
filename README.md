@@ -1,6 +1,6 @@
 # ZipShare
 
-> **Real-time file transfer SaaS built with Elixir/Phoenix**
+> **Modern file transfer SaaS built with Elixir/Phoenix**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Elixir](https://img.shields.io/badge/Elixir-1.15+-purple.svg)](https://elixir-lang.org/)
@@ -13,16 +13,16 @@ ZipShare is a modern, high-performance file transfer service that provides real-
 ## 🚀 Features
 
 ### Core Features
-- **Real-Time Progress Tracking** - WebSocket-powered live updates with speed and ETA
+- **Real-Time Progress Tracking** - Live updates with speed and ETA
 - **Resumable Uploads** - Never lose progress with intelligent chunked uploads
 - **Large File Support** - Handle GB+ files seamlessly with 5MB chunked transfers
-- **Developer-First API** - REST and WebSocket APIs for automation
+- **Developer-First API** - REST API for automation
 - **Secure Sharing** - Password protection, expiration dates, and download limits
 - **Team Collaboration** - Workspaces, shared folders, and team management
 
 ### Technical Highlights
 - **Elixir/Phoenix** - Built for concurrency and fault tolerance
-- **WebSocket Channels** - Real-time bidirectional communication
+- **Chunked Uploads** - Reliable transfer with resume capability
 - **PostgreSQL** - Reliable data persistence
 - **S3-Compatible Storage** - Scalable file storage
 - **CORS Support** - Cross-origin API access
@@ -58,7 +58,7 @@ ZipShare is a modern, high-performance file transfer service that provides real-
 ### Frontend
 - **HTML/CSS/JavaScript** - Landing page
 - **Tailwind CSS** - Utility-first CSS framework
-- **WebSocket** - Real-time communication
+- **JavaScript** - Frontend interactions
 
 ### Infrastructure
 - **PostgreSQL** - Database
