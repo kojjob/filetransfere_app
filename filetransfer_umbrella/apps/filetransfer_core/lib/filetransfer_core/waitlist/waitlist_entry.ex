@@ -25,4 +25,12 @@ defmodule FiletransferCore.Waitlist.WaitlistEntry do
     |> validate_format(:email, ~r/^[^\s]+@[^\s]+$/, message: "must be a valid email address")
     |> unique_constraint(:email)
   end
+
+  @doc """
+  Changeset for updating status fields (notified_at, converted_at).
+  """
+  def status_changeset(waitlist_entry, attrs) do
+    waitlist_entry
+    |> cast(attrs, [:notified_at, :converted_at])
+  end
 end

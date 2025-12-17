@@ -7,6 +7,7 @@ defmodule FiletransferCore.Accounts.User do
   schema "users" do
     field(:email, :string)
     field(:name, :string)
+    field(:password, :string, virtual: true)
     field(:hashed_password, :string)
     field(:subscription_tier, :string, default: "free")
     field(:stripe_customer_id, :string)
@@ -38,7 +39,7 @@ defmodule FiletransferCore.Accounts.User do
       :max_file_size,
       :api_calls_limit
     ])
-    |> validate_required([:email, :hashed_password])
+    |> validate_required([:email])
     |> validate_email()
     |> unique_constraint(:email)
   end
