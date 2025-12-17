@@ -86,7 +86,7 @@ defmodule FiletransferWeb.Admin.WaitlistLive do
           </div>
           <div class="hidden lg:block">
             <h1 class="text-lg font-bold text-zinc-900 dark:text-white tracking-tight">
-              FlowTransfer
+              ZipShare
             </h1>
             <p class="text-xs text-zinc-500 dark:text-zinc-400 font-medium">Command Center</p>
           </div>
@@ -239,76 +239,109 @@ defmodule FiletransferWeb.Admin.WaitlistLive do
               </div>
             </div>
 
-            <%!-- Use Cases Section --%>
-            <div class="col-span-2 lg:col-span-4 p-4 lg:p-6 rounded-2xl lg:rounded-3xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800">
-              <div class="flex items-center justify-between mb-4 lg:mb-5">
+            <%!-- Use Cases Section - Redesigned with visual impact --%>
+            <div class="col-span-2 lg:col-span-4 p-4 lg:p-6 rounded-2xl lg:rounded-3xl bg-gradient-to-br from-slate-50 via-white to-slate-50 dark:from-zinc-900 dark:via-zinc-900 dark:to-zinc-800 border border-zinc-200 dark:border-zinc-800 shadow-sm">
+              <div class="flex items-center justify-between mb-5 lg:mb-6">
                 <div>
-                  <h3 class="font-bold text-zinc-900 dark:text-white text-sm lg:text-base">
+                  <h3 class="font-bold text-zinc-900 dark:text-white text-base lg:text-lg tracking-tight">
                     What people want to use it for
                   </h3>
-                  <p class="text-xs lg:text-sm text-zinc-500 dark:text-zinc-400">
-                    Self-reported use cases
+                  <p class="text-xs lg:text-sm text-zinc-500 dark:text-zinc-400 mt-0.5">
+                    Top use cases from signups
                   </p>
                 </div>
-                <div class="w-8 h-8 lg:w-10 lg:h-10 rounded-xl bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
-                  <.icon
-                    name="hero-sparkles"
-                    class="w-4 h-4 lg:w-5 lg:h-5 text-purple-600 dark:text-purple-400"
-                  />
+                <div class="w-10 h-10 lg:w-12 lg:h-12 rounded-2xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-lg shadow-purple-500/25">
+                  <svg
+                    class="w-5 h-5 lg:w-6 lg:h-6 text-white"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456z"
+                    />
+                  </svg>
                 </div>
               </div>
 
               <%= if @use_cases == [] do %>
-                <div class="flex flex-col items-center justify-center py-6 lg:py-8 text-center">
-                  <.icon
-                    name="hero-question-mark-circle"
-                    class="w-10 h-10 lg:w-12 lg:h-12 text-zinc-300 dark:text-zinc-600 mb-3"
-                  />
-                  <p class="text-zinc-500 dark:text-zinc-400 text-xs lg:text-sm">
-                    No one has shared their use case yet
+                <div class="flex flex-col items-center justify-center py-10 lg:py-12 text-center">
+                  <div class="w-16 h-16 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center mb-4">
+                    <svg
+                      class="w-8 h-8 text-zinc-400 dark:text-zinc-500"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z"
+                      />
+                    </svg>
+                  </div>
+                  <p class="text-zinc-500 dark:text-zinc-400 text-sm font-medium">
+                    No use cases shared yet
+                  </p>
+                  <p class="text-zinc-400 dark:text-zinc-500 text-xs mt-1">
+                    Data will appear as users sign up
                   </p>
                 </div>
               <% else %>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 lg:gap-3">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4">
                   <%= for {{use_case, count}, index} <- Enum.with_index(@use_cases) do %>
-                    <div class={[
-                      "relative p-3 lg:p-4 rounded-xl lg:rounded-2xl border-2 transition-all duration-200 hover:scale-[1.02]",
-                      case index do
-                        0 ->
-                          "border-amber-300 dark:border-amber-600 bg-amber-50 dark:bg-amber-900/20"
+                    <% {icon_svg, gradient_from, gradient_to, badge_bg, badge_text, shadow_color} =
+                      get_use_case_style(use_case, index) %>
+                    <div class="group relative p-4 lg:p-5 rounded-2xl bg-white dark:bg-zinc-800/80 border border-zinc-200/80 dark:border-zinc-700/50 transition-all duration-300 hover:scale-[1.03] hover:shadow-xl hover:shadow-zinc-200/50 dark:hover:shadow-zinc-900/50 hover:border-zinc-300 dark:hover:border-zinc-600 overflow-hidden">
+                      <%!-- Background gradient accent --%>
+                      <div class={"absolute inset-0 opacity-[0.03] dark:opacity-[0.08] bg-gradient-to-br #{gradient_from} #{gradient_to}"} />
 
-                        1 ->
-                          "border-zinc-300 dark:border-zinc-600 bg-zinc-50 dark:bg-zinc-800/50"
-
-                        2 ->
-                          "border-orange-300 dark:border-orange-700 bg-orange-50 dark:bg-orange-900/20"
-
-                        _ ->
-                          "border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800/30"
-                      end
-                    ]}>
-                      <div class="flex items-start justify-between gap-2">
-                        <div class="flex-1 min-w-0">
-                          <p class="font-semibold text-zinc-900 dark:text-white text-sm truncate">
-                            {use_case}
-                          </p>
-                          <p class="text-xs text-zinc-500 dark:text-zinc-400">
-                            {count} {if count == 1, do: "person", else: "people"}
-                          </p>
-                        </div>
-                        <.rank_badge index={index} />
+                      <%!-- Rank badge --%>
+                      <div class={"absolute top-3 right-3 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold #{badge_bg} #{badge_text}"}>
+                        {index + 1}
                       </div>
-                      <div class="mt-2 lg:mt-3 h-1 lg:h-1.5 bg-zinc-200 dark:bg-zinc-700 rounded-full overflow-hidden">
+
+                      <%!-- Icon with gradient background --%>
+                      <div class={"w-11 h-11 lg:w-12 lg:h-12 rounded-xl bg-gradient-to-br #{gradient_from} #{gradient_to} flex items-center justify-center mb-3 shadow-lg #{shadow_color} group-hover:scale-110 transition-transform duration-300"}>
+                        {raw(icon_svg)}
+                      </div>
+
+                      <%!-- Use case name --%>
+                      <h4 class="font-semibold text-zinc-900 dark:text-white text-sm lg:text-base mb-1 truncate pr-8">
+                        {use_case}
+                      </h4>
+
+                      <%!-- Count with visual indicator --%>
+                      <div class="flex items-center gap-2">
+                        <div class="flex -space-x-1">
+                          <%= for i <- 0..min(count - 1, 2) do %>
+                            <div class={"w-5 h-5 rounded-full border-2 border-white dark:border-zinc-800 bg-gradient-to-br #{gradient_from} #{gradient_to} flex items-center justify-center"}>
+                              <span class="text-[8px] font-bold text-white">
+                                {String.at(use_case, i) |> String.upcase()}
+                              </span>
+                            </div>
+                          <% end %>
+                          <%= if count > 3 do %>
+                            <div class="w-5 h-5 rounded-full border-2 border-white dark:border-zinc-800 bg-zinc-200 dark:bg-zinc-700 flex items-center justify-center">
+                              <span class="text-[8px] font-bold text-zinc-600 dark:text-zinc-300">
+                                +{count - 3}
+                              </span>
+                            </div>
+                          <% end %>
+                        </div>
+                        <span class="text-xs text-zinc-500 dark:text-zinc-400 font-medium">
+                          {count} {if count == 1, do: "person", else: "people"}
+                        </span>
+                      </div>
+
+                      <%!-- Progress bar --%>
+                      <div class="mt-3 h-1.5 bg-zinc-100 dark:bg-zinc-700 rounded-full overflow-hidden">
                         <div
-                          class={[
-                            "h-full rounded-full transition-all duration-500",
-                            case index do
-                              0 -> "bg-amber-400"
-                              1 -> "bg-zinc-400"
-                              2 -> "bg-orange-400"
-                              _ -> "bg-zinc-300 dark:bg-zinc-500"
-                            end
-                          ]}
+                          class={"h-full rounded-full bg-gradient-to-r #{gradient_from} #{gradient_to} transition-all duration-700 ease-out"}
                           style={"width: #{count / max(Enum.at(@use_cases, 0) |> elem(1), 1) * 100}%"}
                         />
                       </div>
@@ -559,6 +592,145 @@ defmodule FiletransferWeb.Admin.WaitlistLive do
   end
 
   # Helpers
+
+  # Maps use cases to icons and color schemes
+  defp get_use_case_style(use_case, index) do
+    use_case_lower = String.downcase(use_case)
+
+    # Define color palettes for variety
+    palettes = [
+      # Blue - Tech/Software
+      {"from-blue-500", "to-indigo-600", "bg-blue-100 dark:bg-blue-900/50",
+       "text-blue-700 dark:text-blue-300", "shadow-blue-500/30"},
+      # Emerald - Creative/Design
+      {"from-emerald-500", "to-teal-600", "bg-emerald-100 dark:bg-emerald-900/50",
+       "text-emerald-700 dark:text-emerald-300", "shadow-emerald-500/30"},
+      # Violet - Media/Video
+      {"from-violet-500", "to-purple-600", "bg-violet-100 dark:bg-violet-900/50",
+       "text-violet-700 dark:text-violet-300", "shadow-violet-500/30"},
+      # Rose - Marketing/Business
+      {"from-rose-500", "to-pink-600", "bg-rose-100 dark:bg-rose-900/50",
+       "text-rose-700 dark:text-rose-300", "shadow-rose-500/30"},
+      # Amber - Freelance/Personal
+      {"from-amber-500", "to-orange-600", "bg-amber-100 dark:bg-amber-900/50",
+       "text-amber-700 dark:text-amber-300", "shadow-amber-500/30"},
+      # Cyan - Remote/Cloud
+      {"from-cyan-500", "to-sky-600", "bg-cyan-100 dark:bg-cyan-900/50",
+       "text-cyan-700 dark:text-cyan-300", "shadow-cyan-500/30"}
+    ]
+
+    # Match use case to icon and palette
+    {icon, palette_index} =
+      cond do
+        String.contains?(use_case_lower, ["video", "film", "movie", "youtube", "stream"]) ->
+          # Violet
+          {video_icon(), 2}
+
+        String.contains?(use_case_lower, [
+          "photo",
+          "image",
+          "design",
+          "creative",
+          "art",
+          "graphic"
+        ]) ->
+          # Emerald
+          {design_icon(), 1}
+
+        String.contains?(use_case_lower, ["marketing", "agency", "business", "advertis"]) ->
+          # Rose
+          {marketing_icon(), 3}
+
+        String.contains?(use_case_lower, [
+          "software",
+          "developer",
+          "code",
+          "tech",
+          "engineer",
+          "dev"
+        ]) ->
+          # Blue
+          {code_icon(), 0}
+
+        String.contains?(use_case_lower, ["remote", "team", "collaborat", "work"]) ->
+          # Cyan
+          {team_icon(), 5}
+
+        String.contains?(use_case_lower, ["freelance", "personal", "individual"]) ->
+          # Amber
+          {freelance_icon(), 4}
+
+        String.contains?(use_case_lower, ["backup", "archive", "storage"]) ->
+          # Cyan
+          {backup_icon(), 5}
+
+        String.contains?(use_case_lower, ["music", "audio", "podcast", "sound"]) ->
+          # Violet
+          {music_icon(), 2}
+
+        String.contains?(use_case_lower, ["education", "school", "teach", "learn"]) ->
+          # Blue
+          {education_icon(), 0}
+
+        String.contains?(use_case_lower, ["document", "file", "share"]) ->
+          # Emerald
+          {document_icon(), 1}
+
+        true ->
+          # Fallback - rotate through palettes based on index
+          {default_icon(), rem(index, length(palettes))}
+      end
+
+    {gradient_from, gradient_to, badge_bg, badge_text, shadow_color} =
+      Enum.at(palettes, palette_index)
+
+    {icon, gradient_from, gradient_to, badge_bg, badge_text, shadow_color}
+  end
+
+  # SVG Icons - high quality, consistent style
+  defp video_icon do
+    ~s(<svg class="w-5 h-5 lg:w-6 lg:h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z" /></svg>)
+  end
+
+  defp design_icon do
+    ~s(<svg class="w-5 h-5 lg:w-6 lg:h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.53 16.122a3 3 0 0 0-5.78 1.128 2.25 2.25 0 0 1-2.4 2.245 4.5 4.5 0 0 0 8.4-2.245c0-.399-.078-.78-.22-1.128Zm0 0a15.998 15.998 0 0 0 3.388-1.62m-5.043-.025a15.994 15.994 0 0 1 1.622-3.395m3.42 3.42a15.995 15.995 0 0 0 4.764-4.648l3.876-5.814a1.151 1.151 0 0 0-1.597-1.597L14.146 6.32a15.996 15.996 0 0 0-4.649 4.763m3.42 3.42a6.776 6.776 0 0 0-3.42-3.42" /></svg>)
+  end
+
+  defp marketing_icon do
+    ~s(<svg class="w-5 h-5 lg:w-6 lg:h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" /></svg>)
+  end
+
+  defp code_icon do
+    ~s(<svg class="w-5 h-5 lg:w-6 lg:h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5" /></svg>)
+  end
+
+  defp team_icon do
+    ~s(<svg class="w-5 h-5 lg:w-6 lg:h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" /></svg>)
+  end
+
+  defp freelance_icon do
+    ~s(<svg class="w-5 h-5 lg:w-6 lg:h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" /></svg>)
+  end
+
+  defp backup_icon do
+    ~s(<svg class="w-5 h-5 lg:w-6 lg:h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15a4.5 4.5 0 0 0 4.5 4.5H18a3.75 3.75 0 0 0 1.332-7.257 3 3 0 0 0-3.758-3.848 5.25 5.25 0 0 0-10.233 2.33A4.502 4.502 0 0 0 2.25 15Z" /></svg>)
+  end
+
+  defp music_icon do
+    ~s(<svg class="w-5 h-5 lg:w-6 lg:h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m9 9 10.5-3m0 6.553v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66a2.25 2.25 0 0 0 1.632-2.163Zm0 0V2.25L9 5.25v10.303m0 0v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 0 1-.99-3.467l2.31-.66A2.25 2.25 0 0 0 9 15.553Z" /></svg>)
+  end
+
+  defp education_icon do
+    ~s(<svg class="w-5 h-5 lg:w-6 lg:h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5" /></svg>)
+  end
+
+  defp document_icon do
+    ~s(<svg class="w-5 h-5 lg:w-6 lg:h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" /></svg>)
+  end
+
+  defp default_icon do
+    ~s(<svg class="w-5 h-5 lg:w-6 lg:h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456Z" /></svg>)
+  end
 
   defp get_initials(nil, email) do
     email

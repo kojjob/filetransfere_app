@@ -23,8 +23,9 @@
     <link rel="canonical" href="https://zipshare.io" />
 
     <%!-- Open Graph / Facebook --%>
+    <% base_url = "https://#{System.get_env("PHX_HOST") || "zipshare-api.fly.dev"}" %>
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://zipshare.io" />
+    <meta property="og:url" content={base_url} />
     <meta property="og:site_name" content="ZipShare" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:title" content={assigns[:page_title] || "ZipShare - Fast File Transfers"} />
@@ -32,10 +33,11 @@
       property="og:description"
       content="Lightning-fast file transfers with real-time progress tracking, resumable uploads, and end-to-end encryption."
     />
-    <meta property="og:image" content={~p"/images/logo.svg"} />
+    <meta property="og:image" content={"#{base_url}/images/social-card.png"} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="ZipShare - Fast and secure file transfers" />
+    <meta property="og:image:alt" content="ZipShare - Lightning-fast file transfers" />
+    <meta property="og:image:type" content="image/png" />
 
     <%!-- Twitter Card --%>
     <meta name="twitter:card" content="summary_large_image" />
@@ -44,8 +46,8 @@
       name="twitter:description"
       content="Lightning-fast file transfers with real-time progress tracking, resumable uploads, and end-to-end encryption."
     />
-    <meta name="twitter:image" content={~p"/images/logo.svg"} />
-    <meta name="twitter:image:alt" content="ZipShare - Fast and secure file transfers" />
+    <meta name="twitter:image" content={"#{base_url}/images/social-card.png"} />
+    <meta name="twitter:image:alt" content="ZipShare - Lightning-fast file transfers" />
 
     <%!-- Favicon --%>
     <link rel="icon" type="image/svg+xml" href={~p"/images/logo.svg"} />
