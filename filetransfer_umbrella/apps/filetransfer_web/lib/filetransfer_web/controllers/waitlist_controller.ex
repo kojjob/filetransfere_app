@@ -1,6 +1,9 @@
 defmodule FiletransferWeb.WaitlistController do
   use FiletransferWeb, :controller
   alias FiletransferCore.Waitlist
+  alias FiletransferWeb.Notifiers.WaitlistNotifier
+
+  require Logger
 
   def options(conn, _params) do
     conn
@@ -19,6 +22,19 @@ defmodule FiletransferWeb.WaitlistController do
 
     case Waitlist.create_waitlist_entry(attrs) do
       {:ok, waitlist_entry} ->
+        # Send welcome email asynchronously
+        Task.start(fn ->
+          case WaitlistNotifier.deliver_welcome_email(waitlist_entry) do
+            {:ok, _metadata} ->
+              Logger.info("Welcome email sent to #{waitlist_entry.email}")
+
+            {:error, reason} ->
+              Logger.error(
+                "Failed to send welcome email to #{waitlist_entry.email}: #{inspect(reason)}"
+              )
+          end
+        end)
+
         conn
         |> put_status(:created)
         |> json(%{

@@ -9,8 +9,8 @@ defmodule FiletransferWeb.Application do
   def start(_type, _args) do
     children = [
       FiletransferWeb.Telemetry,
-      # Start a worker by calling: FiletransferWeb.Worker.start_link(arg)
-      # {FiletransferWeb.Worker, arg},
+      # Finch HTTP client for Swoosh email adapter
+      {Finch, name: Swoosh.Finch},
       # Start to serve requests, typically the last entry
       FiletransferWeb.Endpoint
     ]

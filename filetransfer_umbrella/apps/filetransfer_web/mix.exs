@@ -56,7 +56,10 @@ defmodule FiletransferWeb.MixProject do
       {:telemetry_poller, "~> 1.0"},
       {:filetransfer_core, in_umbrella: true},
       {:jason, "~> 1.2"},
-      {:bandit, "~> 1.5"}
+      {:bandit, "~> 1.5"},
+      {:swoosh, "~> 1.17"},
+      {:finch, "~> 0.19"},
+      {:req, "~> 0.5"}
     ]
   end
 
