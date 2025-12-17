@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="csrf-token" content={get_csrf_token()} />
+    <.live_title default="ZipShare" suffix=" · Fast File Transfers">
+      {assigns[:page_title]}
+    </.live_title>
+
+    <%!-- SEO Meta Tags --%>
+    <meta
+      name="description"
+      content="ZipShare - Lightning-fast file transfers with real-time progress tracking, resumable uploads, and end-to-end encryption. Transfer files up to 10GB+ securely."
+    />
+    <meta
+      name="keywords"
+      content="file transfer, file sharing, large file upload, secure file transfer, resumable upload, encrypted file sharing, send large files, cloud file transfer"
+    />
+    <meta name="author" content="ZipShare" />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#6366f1" />
+    <link rel="canonical" href="https://zipshare.io" />
+
+    <%!-- Open Graph / Facebook --%>
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://zipshare.io" />
+    <meta property="og:site_name" content="ZipShare" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content={assigns[:page_title] || "ZipShare - Fast File Transfers"} />
+    <meta
+      property="og:description"
+      content="Lightning-fast file transfers with real-time progress tracking, resumable uploads, and end-to-end encryption."
+    />
+    <meta property="og:image" content={~p"/images/logo.svg"} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="ZipShare - Fast and secure file transfers" />
+
+    <%!-- Twitter Card --%>
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={assigns[:page_title] || "ZipShare - Fast File Transfers"} />
+    <meta
+      name="twitter:description"
+      content="Lightning-fast file transfers with real-time progress tracking, resumable uploads, and end-to-end encryption."
+    />
+    <meta name="twitter:image" content={~p"/images/logo.svg"} />
+    <meta name="twitter:image:alt" content="ZipShare - Fast and secure file transfers" />
+
+    <%!-- Favicon --%>
+    <link rel="icon" type="image/svg+xml" href={~p"/images/logo.svg"} />
+    <link rel="apple-touch-icon" href={~p"/images/logo.svg"} />
+
+    <%!-- Structured Data (JSON-LD) for SEO --%>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "ZipShare",
+        "url": "https://zipshare.io",
+        "description": "Lightning-fast file transfers with real-time progress tracking, resumable uploads, and end-to-end encryption.",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://zipshare.io/search?q={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "ZipShare",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "description": "File transfer application with real-time progress tracking, resumable uploads, and end-to-end encryption.",
+        "featureList": [
+          "Large file support up to 10GB+",
+          "Real-time progress tracking",
+          "Resumable uploads",
+          "End-to-end 256-bit AES encryption",
+          "Secure file sharing"
+        ]
+      }
+    </script>
+
+    <%!-- Analytics (configure via environment variables) --%>
+    <%= if System.get_env("GOOGLE_ANALYTICS_ID") do %>
+      <!-- Google Analytics 4 -->
+      <script
+        async
+        src={"https://www.googletagmanager.com/gtag/js?id=#{System.get_env("GOOGLE_ANALYTICS_ID")}"}
+      >
+      </script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', '<%= System.get_env("GOOGLE_ANALYTICS_ID") %>');
+      </script>
+    <% end %>
+    <%= if System.get_env("PLAUSIBLE_DOMAIN") do %>
+      <!-- Plausible Analytics (privacy-friendly) -->
+      <script
+        defer
+        data-domain={System.get_env("PLAUSIBLE_DOMAIN")}
+        src="https://plausible.io/js/script.js"
+      >
+      </script>
+    <% end %>
+
+    <link phx-track-static rel="stylesheet" href={~p"/assets/css/app.css"} />
+    <script defer phx-track-static type="text/javascript" src={~p"/assets/js/app.js"}>
+    </script>
+    <script>
+      (() => {
+        const setTheme = (theme) => {
+          if (theme === "system") {
+            localStorage.removeItem("phx:theme");
+            document.documentElement.removeAttribute("data-theme");
+          } else {
+            localStorage.setItem("phx:theme", theme);
+            document.documentElement.setAttribute("data-theme", theme);
+          }
+        };
+        if (!document.documentElement.hasAttribute("data-theme")) {
+          setTheme(localStorage.getItem("phx:theme") || "system");
+        }
+        window.addEventListener("storage", (e) => e.key === "phx:theme" && setTheme(e.newValue || "system"));
+        
+        window.addEventListener("phx:set-theme", (e) => setTheme(e.target.dataset.phxTheme));
+      })();
+    </script>
+  </head>
+  <body>
+    {@inner_content}
+  </body>
+</html>

@@ -1,0 +1,1954 @@
+<div class="min-h-screen">
+  <%!-- Skip to Main Content - Accessibility --%>
+  <a
+    href="#main-content"
+    class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-content focus:rounded-lg focus:shadow-lg"
+  >
+    Skip to main content
+  </a>
+
+  <%!-- Navigation --%>
+  <nav
+    class="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-base-100/80 border-b border-base-300/50"
+    aria-label="Main navigation"
+  >
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16">
+        <%!-- Logo --%>
+        <a href="/" class="flex items-center gap-3">
+          <img src={~p"/images/logo.svg"} alt="ZipShare" class="w-10 h-10" />
+          <span class="text-xl font-bold bg-gradient-to-r from-indigo-500 to-pink-500 bg-clip-text text-transparent">
+            ZipShare
+          </span>
+        </a>
+
+        <%!-- Nav Links & Theme Toggle --%>
+        <div class="flex items-center gap-4">
+          <a
+            href="#features"
+            class="hidden sm:block text-sm text-base-content/70 hover:text-base-content link-underline"
+          >
+            Features
+          </a>
+          <a
+            href="#demo"
+            class="hidden sm:block text-sm text-base-content/70 hover:text-base-content link-underline"
+          >
+            Demo
+          </a>
+          <a
+            href="#faq"
+            class="hidden sm:block text-sm text-base-content/70 hover:text-base-content link-underline"
+          >
+            FAQ
+          </a>
+          <a
+            href="#waitlist"
+            class="hidden sm:block text-sm text-base-content/70 hover:text-base-content link-underline"
+          >
+            Join Waitlist
+          </a>
+          <Layouts.theme_toggle />
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <%!-- Hero Section --%>
+  <section
+    id="main-content"
+    class="relative pt-28 pb-24 px-4 overflow-hidden min-h-[90vh] flex items-center"
+  >
+    <%!-- Animated Background (decorative) --%>
+    <div class="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+      <%!-- Gradient mesh background --%>
+      <div class="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(99,102,241,0.15),rgba(255,255,255,0))]">
+      </div>
+
+      <%!-- Animated gradient blobs --%>
+      <div class="absolute -top-40 -right-40 w-[500px] h-[500px] bg-gradient-to-br from-indigo-500/30 to-purple-500/20 rounded-full blur-3xl animate-float">
+      </div>
+      <div class="absolute top-1/3 -left-40 w-[400px] h-[400px] bg-gradient-to-br from-pink-500/25 to-rose-500/15 rounded-full blur-3xl animate-float-delayed">
+      </div>
+      <div class="absolute bottom-20 right-1/4 w-[300px] h-[300px] bg-gradient-to-br from-purple-500/20 to-indigo-500/10 rounded-full blur-3xl animate-float">
+      </div>
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-br from-cyan-500/10 to-blue-500/5 rounded-full blur-3xl">
+      </div>
+
+      <%!-- Subtle grid pattern --%>
+      <div class="absolute inset-0 bg-[linear-gradient(to_right,rgba(99,102,241,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(99,102,241,0.03)_1px,transparent_1px)] bg-[size:4rem_4rem]">
+      </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto relative z-10 w-full">
+      <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <%!-- Left Column: Content --%>
+        <div class="text-center lg:text-left">
+          <%!-- Badge --%>
+          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-indigo-500/10 to-purple-500/10 backdrop-blur-sm border border-indigo-500/20 mb-8 animate-fade-in-up">
+            <span class="relative flex h-2 w-2">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-success opacity-75">
+              </span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-success"></span>
+            </span>
+            <span class="text-sm font-medium bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">
+              Early Access Available
+            </span>
+            <.icon name="hero-arrow-right-mini" class="w-4 h-4 text-indigo-500" />
+          </div>
+
+          <%!-- Headline --%>
+          <h1 class="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-[1.1] mb-6 animate-fade-in-up">
+            Transfer Files at
+            <span class="relative">
+              <span class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+                Lightning Speed
+              </span>
+              <svg
+                class="absolute -bottom-2 left-0 w-full h-3 text-indigo-500/30"
+                viewBox="0 0 200 12"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M2 10C50 4 150 4 198 10"
+                  stroke="currentColor"
+                  stroke-width="4"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </span>
+          </h1>
+
+          <%!-- Subheadline --%>
+          <p class="text-lg sm:text-xl text-base-content/70 max-w-xl mx-auto lg:mx-0 mb-10 animate-fade-in-up animation-delay-200 leading-relaxed">
+            Upload and share large files instantly with real-time progress tracking,
+            resumable transfers, and enterprise-grade security.
+            <span class="text-base-content font-medium">No file size limits.</span>
+          </p>
+
+          <%!-- CTA Buttons --%>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start animate-fade-in-up animation-delay-300">
+            <a
+              href="#waitlist"
+              class="group btn btn-primary btn-lg gap-2 px-8 shadow-xl shadow-primary/25 hover:shadow-2xl hover:shadow-primary/30 hover:-translate-y-1 transition-all duration-300"
+            >
+              <.icon
+                name="hero-rocket-launch"
+                class="w-5 h-5 group-hover:rotate-12 transition-transform"
+              /> Get Early Access
+            </a>
+            <a href="#demo" class="btn btn-ghost btn-lg gap-2 hover:bg-base-200/50 group">
+              <.icon
+                name="hero-play-circle"
+                class="w-5 h-5 group-hover:scale-110 transition-transform"
+              /> Watch Demo
+            </a>
+          </div>
+
+          <%!-- Trust Signals --%>
+          <div class="flex flex-wrap items-center gap-6 mt-10 justify-center lg:justify-start animate-fade-in-up animation-delay-400">
+            <div class="flex items-center gap-2 text-sm text-base-content/60">
+              <.icon name="hero-shield-check" class="w-5 h-5 text-success" />
+              <span>256-bit Encryption</span>
+            </div>
+            <div class="flex items-center gap-2 text-sm text-base-content/60">
+              <.icon name="hero-server-stack" class="w-5 h-5 text-info" />
+              <span>99.9% Uptime</span>
+            </div>
+            <div class="flex items-center gap-2 text-sm text-base-content/60">
+              <.icon name="hero-globe-alt" class="w-5 h-5 text-warning" />
+              <span>Global CDN</span>
+            </div>
+          </div>
+        </div>
+
+        <%!-- Right Column: Interactive Upload Preview --%>
+        <div class="relative animate-fade-in-up animation-delay-300 hidden lg:block">
+          <%!-- Floating elements --%>
+          <div class="absolute -top-8 -left-8 p-4 rounded-2xl bg-base-100/90 backdrop-blur-sm border border-base-300/50 shadow-xl animate-float">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center">
+                <.icon name="hero-check" class="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <p class="text-sm font-semibold">Upload Complete</p>
+                <p class="text-xs text-base-content/60">project_files.zip</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="absolute -bottom-4 -right-4 p-4 rounded-2xl bg-base-100/90 backdrop-blur-sm border border-base-300/50 shadow-xl animate-float-delayed">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center">
+                <.icon name="hero-link" class="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <p class="text-sm font-semibold">Link Copied!</p>
+                <p class="text-xs text-base-content/60">Ready to share</p>
+              </div>
+            </div>
+          </div>
+
+          <%!-- Main Upload Card --%>
+          <div class="relative p-8 rounded-3xl bg-gradient-to-br from-base-100 to-base-200/50 border border-base-300/50 shadow-2xl">
+            <%!-- Card Header --%>
+            <div class="flex items-center justify-between mb-6">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/30">
+                  <.icon name="hero-cloud-arrow-up" class="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h3 class="font-bold text-lg">Quick Upload</h3>
+                  <p class="text-sm text-base-content/60">Drag & drop your files</p>
+                </div>
+              </div>
+              <div class="flex gap-1.5">
+                <div class="w-3 h-3 rounded-full bg-error/80"></div>
+                <div class="w-3 h-3 rounded-full bg-warning/80"></div>
+                <div class="w-3 h-3 rounded-full bg-success/80"></div>
+              </div>
+            </div>
+
+            <%!-- Upload Zone --%>
+            <div class="border-2 border-dashed border-indigo-500/30 rounded-2xl p-8 mb-6 bg-indigo-500/5 hover:bg-indigo-500/10 transition-colors cursor-pointer group">
+              <div class="text-center">
+                <div class="w-16 h-16 rounded-full bg-gradient-to-br from-indigo-500/20 to-purple-500/20 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                  <.icon name="hero-arrow-up-tray" class="w-8 h-8 text-indigo-500" />
+                </div>
+                <p class="font-medium mb-1">Drop files here or click to browse</p>
+                <p class="text-sm text-base-content/60">Support for files up to 10GB</p>
+              </div>
+            </div>
+
+            <%!-- Sample File Upload Progress --%>
+            <div class="space-y-4">
+              <div class="flex items-center gap-4 p-4 rounded-xl bg-base-100 border border-base-300/50">
+                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500/20 to-cyan-500/20 flex items-center justify-center">
+                  <.icon name="hero-document" class="w-5 h-5 text-blue-500" />
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between mb-1">
+                    <p class="font-medium text-sm truncate">presentation.pdf</p>
+                    <span class="text-xs text-success font-medium">Complete</span>
+                  </div>
+                  <div class="w-full h-1.5 rounded-full bg-base-300 overflow-hidden">
+                    <div class="h-full w-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full">
+                    </div>
+                  </div>
+                </div>
+                <.icon name="hero-check-circle" class="w-5 h-5 text-success flex-shrink-0" />
+              </div>
+
+              <div class="flex items-center gap-4 p-4 rounded-xl bg-base-100 border border-base-300/50">
+                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center">
+                  <.icon name="hero-film" class="w-5 h-5 text-purple-500" />
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between mb-1">
+                    <p class="font-medium text-sm truncate">demo_video.mp4</p>
+                    <span class="text-xs text-base-content/60">2.4 GB / 4.8 GB</span>
+                  </div>
+                  <div class="w-full h-1.5 rounded-full bg-base-300 overflow-hidden">
+                    <div class="h-full w-1/2 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full animate-pulse">
+                    </div>
+                  </div>
+                </div>
+                <span class="text-xs font-medium text-indigo-500">50%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <%!-- Stats Row --%>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-20 pt-12 border-t border-base-300/50">
+        <div class="text-center group">
+          <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500/10 to-purple-500/10 mb-4 group-hover:scale-110 transition-transform">
+            <.icon name="hero-cloud-arrow-up" class="w-7 h-7 text-indigo-500" />
+          </div>
+          <div class="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">
+            10GB+
+          </div>
+          <div class="text-sm text-base-content/60 mt-1">Max File Size</div>
+        </div>
+        <div class="text-center group">
+          <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500/10 to-green-500/10 mb-4 group-hover:scale-110 transition-transform">
+            <.icon name="hero-shield-check" class="w-7 h-7 text-emerald-500" />
+          </div>
+          <div class="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-emerald-500 to-green-500 bg-clip-text text-transparent">
+            256-bit
+          </div>
+          <div class="text-sm text-base-content/60 mt-1">AES Encryption</div>
+        </div>
+        <div class="text-center group">
+          <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500/10 to-cyan-500/10 mb-4 group-hover:scale-110 transition-transform">
+            <.icon name="hero-server-stack" class="w-7 h-7 text-blue-500" />
+          </div>
+          <div class="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent">
+            99.9%
+          </div>
+          <div class="text-sm text-base-content/60 mt-1">Uptime SLA</div>
+        </div>
+        <div class="text-center group">
+          <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-500/10 to-orange-500/10 mb-4 group-hover:scale-110 transition-transform">
+            <.icon name="hero-bolt" class="w-7 h-7 text-amber-500" />
+          </div>
+          <div class="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-amber-500 to-orange-500 bg-clip-text text-transparent">
+            5GB/s
+          </div>
+          <div class="text-sm text-base-content/60 mt-1">Transfer Speed</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <%!-- Features Section --%>
+  <section
+    id="features"
+    class="py-24 px-4 relative overflow-hidden"
+    aria-labelledby="features-heading"
+  >
+    <%!-- Animated Background (decorative) --%>
+    <div
+      class="absolute inset-0 bg-gradient-to-b from-base-200/80 via-base-100 to-base-200/80"
+      aria-hidden="true"
+    >
+    </div>
+    <div
+      class="absolute top-0 left-1/4 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl animate-float"
+      aria-hidden="true"
+    >
+    </div>
+    <div
+      class="absolute bottom-0 right-1/4 w-96 h-96 bg-pink-500/10 rounded-full blur-3xl animate-float-delayed"
+      aria-hidden="true"
+    >
+    </div>
+
+    <div class="max-w-7xl mx-auto relative z-10">
+      <%!-- Section Header --%>
+      <div class="text-center mb-20">
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
+          <.icon name="hero-sparkles" class="w-4 h-4 text-primary" />
+          <span class="text-sm font-medium text-primary">Powerful Features</span>
+        </div>
+        <h2 id="features-heading" class="text-4xl sm:text-5xl font-bold mb-6">
+          Everything You Need for
+          <span class="block mt-2 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+            Seamless Transfers
+          </span>
+        </h2>
+        <p class="text-lg text-base-content/70 max-w-2xl mx-auto">
+          Built with cutting-edge technology to handle your largest files with ease.
+          No more failed uploads or corrupted downloads.
+        </p>
+      </div>
+
+      <%!-- Bento Grid Layout --%>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+        <%!-- Feature 1: Large File Support (Featured - Large Card) --%>
+        <div class="md:col-span-2 lg:col-span-1 lg:row-span-2 group">
+          <div class="h-full p-8 rounded-3xl bg-gradient-to-br from-indigo-500/10 via-base-100 to-purple-500/10 border border-indigo-500/20 shadow-xl hover:shadow-2xl hover:shadow-indigo-500/10 transition-all duration-500 hover:-translate-y-2">
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center mb-6 shadow-lg shadow-indigo-500/30 group-hover:scale-110 transition-transform duration-300">
+              <.icon name="hero-cloud-arrow-up" class="w-8 h-8 text-white" />
+            </div>
+            <h3 class="text-2xl font-bold mb-4">Large File Support</h3>
+            <p class="text-base-content/70 mb-6 leading-relaxed">
+              Transfer files up to 10GB with our intelligent chunked upload technology.
+              Perfect for video files, archives, datasets, and everything in between.
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-500 text-xs font-medium">
+                10GB Max
+              </span>
+              <span class="px-3 py-1 rounded-full bg-purple-500/10 text-purple-500 text-xs font-medium">
+                Chunked Upload
+              </span>
+              <span class="px-3 py-1 rounded-full bg-pink-500/10 text-pink-500 text-xs font-medium">
+                Any Format
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <%!-- Feature 2: Real-time Progress --%>
+        <div class="group">
+          <div class="h-full p-6 rounded-3xl bg-base-100 border border-base-300/50 shadow-lg hover:shadow-xl hover:border-purple-500/30 transition-all duration-500 hover:-translate-y-2">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center mb-5 shadow-lg shadow-purple-500/20 group-hover:scale-110 transition-transform duration-300">
+              <.icon name="hero-signal" class="w-7 h-7 text-white" />
+            </div>
+            <h3 class="text-xl font-bold mb-3">Real-time Progress</h3>
+            <p class="text-base-content/70 text-sm leading-relaxed">
+              Watch your uploads in real-time with accurate progress bars,
+              speed indicators, and time estimates.
+            </p>
+          </div>
+        </div>
+
+        <%!-- Feature 3: Resumable Transfers --%>
+        <div class="group">
+          <div class="h-full p-6 rounded-3xl bg-base-100 border border-base-300/50 shadow-lg hover:shadow-xl hover:border-pink-500/30 transition-all duration-500 hover:-translate-y-2">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center mb-5 shadow-lg shadow-pink-500/20 group-hover:scale-110 transition-transform duration-300">
+              <.icon name="hero-arrow-path" class="w-7 h-7 text-white" />
+            </div>
+            <h3 class="text-xl font-bold mb-3">Resumable Transfers</h3>
+            <p class="text-base-content/70 text-sm leading-relaxed">
+              Connection dropped? No problem. Resume interrupted uploads
+              from exactly where they left off.
+            </p>
+          </div>
+        </div>
+
+        <%!-- Feature 4: End-to-End Encryption (Wide Card) --%>
+        <div class="md:col-span-2 group">
+          <div class="h-full p-8 rounded-3xl bg-gradient-to-r from-emerald-500/10 via-base-100 to-teal-500/10 border border-emerald-500/20 shadow-xl hover:shadow-2xl hover:shadow-emerald-500/10 transition-all duration-500 hover:-translate-y-2">
+            <div class="flex flex-col sm:flex-row sm:items-start gap-6">
+              <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-500/30 group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
+                <.icon name="hero-shield-check" class="w-8 h-8 text-white" />
+              </div>
+              <div class="flex-1">
+                <h3 class="text-2xl font-bold mb-3">End-to-End Encryption</h3>
+                <p class="text-base-content/70 leading-relaxed mb-4">
+                  Your files are encrypted with military-grade AES-256 encryption before leaving your device.
+                  Only you and your recipients can access them. Zero-knowledge architecture means even we can't see your files.
+                </p>
+                <div class="flex items-center gap-4 text-sm">
+                  <div class="flex items-center gap-2 text-emerald-500">
+                    <.icon name="hero-lock-closed" class="w-4 h-4" />
+                    <span class="font-medium">AES-256</span>
+                  </div>
+                  <div class="flex items-center gap-2 text-teal-500">
+                    <.icon name="hero-eye-slash" class="w-4 h-4" />
+                    <span class="font-medium">Zero Knowledge</span>
+                  </div>
+                  <div class="flex items-center gap-2 text-cyan-500">
+                    <.icon name="hero-check-badge" class="w-4 h-4" />
+                    <span class="font-medium">SOC2 Compliant</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <%!-- Feature 5: Instant Sharing --%>
+        <div class="group">
+          <div class="h-full p-6 rounded-3xl bg-base-100 border border-base-300/50 shadow-lg hover:shadow-xl hover:border-orange-500/30 transition-all duration-500 hover:-translate-y-2">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center mb-5 shadow-lg shadow-orange-500/20 group-hover:scale-110 transition-transform duration-300">
+              <.icon name="hero-link" class="w-7 h-7 text-white" />
+            </div>
+            <h3 class="text-xl font-bold mb-3">Instant Sharing</h3>
+            <p class="text-base-content/70 text-sm leading-relaxed">
+              Generate secure download links with password protection,
+              expiration dates, and download limits.
+            </p>
+          </div>
+        </div>
+
+        <%!-- Feature 6: Cross-Platform --%>
+        <div class="group">
+          <div class="h-full p-6 rounded-3xl bg-base-100 border border-base-300/50 shadow-lg hover:shadow-xl hover:border-blue-500/30 transition-all duration-500 hover:-translate-y-2">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center mb-5 shadow-lg shadow-blue-500/20 group-hover:scale-110 transition-transform duration-300">
+              <.icon name="hero-device-phone-mobile" class="w-7 h-7 text-white" />
+            </div>
+            <h3 class="text-xl font-bold mb-3">Cross-Platform</h3>
+            <p class="text-base-content/70 text-sm leading-relaxed">
+              Works seamlessly on desktop, tablet, and mobile.
+              No app installation required.
+            </p>
+          </div>
+        </div>
+
+        <%!-- Feature 7: API Access --%>
+        <div class="group">
+          <div class="h-full p-6 rounded-3xl bg-base-100 border border-base-300/50 shadow-lg hover:shadow-xl hover:border-violet-500/30 transition-all duration-500 hover:-translate-y-2">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center mb-5 shadow-lg shadow-violet-500/20 group-hover:scale-110 transition-transform duration-300">
+              <.icon name="hero-code-bracket" class="w-7 h-7 text-white" />
+            </div>
+            <h3 class="text-xl font-bold mb-3">Developer API</h3>
+            <p class="text-base-content/70 text-sm leading-relaxed">
+              Integrate file transfers into your apps with our RESTful API
+              and SDKs for popular languages.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <%!-- Demo/Preview Section --%>
+  <section id="demo" class="py-24 px-4 relative overflow-hidden">
+    <%!-- Background Visual Elements --%>
+    <div class="absolute inset-0 bg-gradient-to-b from-base-100 via-cyan-500/5 to-base-100"></div>
+    <div class="absolute top-0 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl">
+    </div>
+
+    <%!-- Decorative Grid Pattern --%>
+    <div
+      class="absolute inset-0 opacity-[0.02]"
+      style="background-image: radial-gradient(circle, currentColor 1px, transparent 1px); background-size: 32px 32px;"
+    >
+    </div>
+
+    <div class="max-w-7xl mx-auto relative z-10">
+      <%!-- Section Header with Visual Impact --%>
+      <div class="text-center mb-16 relative">
+        <%!-- Floating Badge --%>
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-cyan-500/10 to-emerald-500/10 border border-cyan-500/20 mb-6">
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75">
+            </span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+          </span>
+          <span class="text-sm font-medium bg-gradient-to-r from-cyan-600 to-emerald-600 bg-clip-text text-transparent">
+            Live Preview
+          </span>
+        </div>
+
+        <%!-- Main Heading with Strong Visual Impact --%>
+        <h2 class="text-4xl sm:text-5xl lg:text-6xl font-black mb-6 tracking-tight">
+          <span class="block text-base-content/90">Watch the</span>
+          <span class="relative inline-block">
+            <span class="bg-gradient-to-r from-cyan-500 via-teal-500 to-emerald-500 bg-clip-text text-transparent">
+              Magic Happen
+            </span>
+            <%!-- Underline Decoration --%>
+            <svg
+              class="absolute -bottom-2 left-0 w-full h-3 text-emerald-500/30"
+              viewBox="0 0 200 12"
+              preserveAspectRatio="none"
+            >
+              <path
+                d="M0,10 Q50,0 100,10 T200,10"
+                stroke="currentColor"
+                stroke-width="4"
+                fill="none"
+                stroke-linecap="round"
+              />
+            </svg>
+          </span>
+        </h2>
+
+        <%!-- Description with Better Typography --%>
+        <p class="text-lg sm:text-xl text-base-content/60 max-w-2xl mx-auto leading-relaxed">
+          A <span class="text-cyan-600 font-semibold">beautiful interface</span>
+          designed for <span class="text-emerald-600 font-semibold">lightning-fast</span>
+          transfers. <br class="hidden sm:block" /> Track every byte in real-time.
+        </p>
+
+        <%!-- Floating Elements Around Heading --%>
+        <div class="hidden lg:block absolute -left-8 top-1/2 -translate-y-1/2">
+          <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-500 to-cyan-600 shadow-lg shadow-cyan-500/25 flex items-center justify-center rotate-12 animate-float">
+            <.icon name="hero-arrow-up-tray" class="w-8 h-8 text-white" />
+          </div>
+        </div>
+        <div class="hidden lg:block absolute -right-8 top-1/2 -translate-y-1/2">
+          <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-600 shadow-lg shadow-emerald-500/25 flex items-center justify-center -rotate-12 animate-float-delayed">
+            <.icon name="hero-arrow-down-tray" class="w-8 h-8 text-white" />
+          </div>
+        </div>
+      </div>
+
+      <%!-- App Mockup with Glow Effect --%>
+      <div class="max-w-5xl mx-auto relative group">
+        <%!-- Glow Behind Mockup --%>
+        <div class="absolute -inset-1 bg-gradient-to-r from-cyan-500 via-teal-500 to-emerald-500 rounded-3xl blur-xl opacity-20 group-hover:opacity-30 transition-opacity">
+        </div>
+
+        <div class="relative rounded-2xl overflow-hidden shadow-2xl border border-cyan-500/20 bg-base-100">
+          <%!-- Browser Chrome --%>
+          <div class="bg-base-200 px-4 py-3 flex items-center gap-2 border-b border-base-300/50">
+            <div class="flex gap-1.5">
+              <div class="w-3 h-3 rounded-full bg-error/60"></div>
+              <div class="w-3 h-3 rounded-full bg-warning/60"></div>
+              <div class="w-3 h-3 rounded-full bg-success/60"></div>
+            </div>
+            <div class="flex-1 flex justify-center">
+              <div class="px-4 py-1 rounded-lg bg-base-300/50 text-sm text-base-content/60 flex items-center gap-2">
+                <.icon name="hero-lock-closed" class="w-3 h-3" /> zipshare.io
+              </div>
+            </div>
+          </div>
+
+          <%!-- App Content --%>
+          <div class="p-6 sm:p-8">
+            <%!-- App Header --%>
+            <div class="flex justify-between items-center mb-8">
+              <div class="flex items-center gap-3">
+                <img src={~p"/images/logo.svg"} alt="ZipShare" class="w-10 h-10" />
+                <span class="text-xl font-bold">ZipShare</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="text-sm text-base-content/60">Pro Plan</span>
+                <div class="w-9 h-9 rounded-full bg-gradient-to-br from-cyan-500 to-emerald-500 flex items-center justify-center text-white font-semibold text-sm">
+                  JD
+                </div>
+              </div>
+            </div>
+
+            <%!-- Upload Area --%>
+            <div class="border-2 border-dashed border-cyan-500/30 rounded-xl p-8 text-center mb-8 hover:border-cyan-500/50 hover:bg-cyan-500/5 transition-all cursor-pointer group">
+              <div class="w-16 h-16 mx-auto mb-4 rounded-xl bg-gradient-to-br from-cyan-500 to-emerald-500 flex items-center justify-center shadow-lg shadow-cyan-500/25 group-hover:scale-105 transition-transform">
+                <.icon name="hero-cloud-arrow-up" class="w-8 h-8 text-white" />
+              </div>
+              <p class="font-medium mb-1">Drag & drop files here, or click to browse</p>
+              <p class="text-sm text-base-content/60">
+                Supports files up to 10GB - Resume interrupted transfers
+              </p>
+            </div>
+
+            <%!-- Active Transfers --%>
+            <div>
+              <h3 class="font-semibold mb-4">Active Transfers</h3>
+              <div class="space-y-4">
+                <%!-- Transfer 1: Uploading --%>
+                <div class="p-4 rounded-xl border border-base-300/50 bg-base-100 hover:border-primary/30 transition-colors">
+                  <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center gap-3">
+                      <div class="w-10 h-10 rounded-lg bg-base-200 flex items-center justify-center">
+                        <.icon name="hero-document" class="w-5 h-5 text-primary" />
+                      </div>
+                      <div>
+                        <p class="font-medium text-sm">Project_Final_Edit.mp4</p>
+                        <p class="text-xs text-base-content/60">2.4 GB - Video file</p>
+                      </div>
+                    </div>
+                    <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-info/10 text-info text-xs font-medium">
+                      <.icon name="hero-bolt" class="w-3.5 h-3.5" /> Uploading
+                    </div>
+                  </div>
+                  <div>
+                    <div class="flex justify-between text-xs mb-1.5">
+                      <span class="font-medium">67.3%</span>
+                      <div class="flex gap-3 text-base-content/60">
+                        <span>45.2 MB/s</span>
+                        <span>ETA: 12s</span>
+                      </div>
+                    </div>
+                    <div class="w-full h-2 bg-base-200 rounded-full overflow-hidden shimmer-effect">
+                      <div
+                        class="h-full bg-gradient-to-r from-cyan-500 to-emerald-500 rounded-full transition-all"
+                        style="width: 67.3%"
+                      >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <%!-- Transfer 2: Completed --%>
+                <div class="p-4 rounded-xl border border-base-300/50 bg-base-100 hover:border-primary/30 transition-colors">
+                  <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center gap-3">
+                      <div class="w-10 h-10 rounded-lg bg-base-200 flex items-center justify-center">
+                        <.icon name="hero-document" class="w-5 h-5 text-primary" />
+                      </div>
+                      <div>
+                        <p class="font-medium text-sm">Client_Presentation.pdf</p>
+                        <p class="text-xs text-base-content/60">12.4 MB - Document</p>
+                      </div>
+                    </div>
+                    <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-success/10 text-success text-xs font-medium">
+                      <.icon name="hero-check" class="w-3.5 h-3.5" /> Completed
+                    </div>
+                  </div>
+                  <div>
+                    <div class="flex justify-between text-xs mb-1.5">
+                      <span class="font-medium">100%</span>
+                      <span class="text-base-content/60">Completed 2m ago</span>
+                    </div>
+                    <div class="w-full h-2 bg-base-200 rounded-full overflow-hidden">
+                      <div class="h-full bg-success rounded-full" style="width: 100%"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <%!-- Use Cases Section --%>
+  <section
+    id="use-cases"
+    class="py-24 px-4 relative overflow-hidden"
+    aria-labelledby="use-cases-heading"
+  >
+    <%!-- Background Visual Elements (decorative) --%>
+    <div
+      class="absolute inset-0 bg-gradient-to-b from-base-100 via-base-200/50 to-base-100"
+      aria-hidden="true"
+    >
+    </div>
+    <div
+      class="absolute top-1/4 -left-32 w-64 h-64 bg-cyan-500/8 rounded-full blur-3xl"
+      aria-hidden="true"
+    >
+    </div>
+    <div
+      class="absolute bottom-1/4 -right-32 w-64 h-64 bg-emerald-500/8 rounded-full blur-3xl"
+      aria-hidden="true"
+    >
+    </div>
+    <div
+      class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-teal-500/5 rounded-full blur-3xl"
+      aria-hidden="true"
+    >
+    </div>
+
+    <%!-- Decorative Pattern --%>
+    <div
+      class="absolute inset-0 opacity-[0.015]"
+      style="background-image: linear-gradient(90deg, currentColor 1px, transparent 1px), linear-gradient(currentColor 1px, transparent 1px); background-size: 64px 64px;"
+      aria-hidden="true"
+    >
+    </div>
+
+    <div class="max-w-7xl mx-auto relative z-10">
+      <%!-- Section Header --%>
+      <div class="text-center mb-16">
+        <%!-- Badge --%>
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-cyan-500/10 to-emerald-500/10 border border-cyan-500/20 mb-6">
+          <.icon name="hero-users" class="w-4 h-4 text-cyan-600" />
+          <span class="text-sm font-medium bg-gradient-to-r from-cyan-600 to-emerald-600 bg-clip-text text-transparent">
+            Built for Everyone
+          </span>
+        </div>
+
+        <%!-- Heading --%>
+        <h2
+          id="use-cases-heading"
+          class="text-4xl sm:text-5xl lg:text-6xl font-black mb-6 tracking-tight"
+        >
+          <span class="text-base-content/90">Who Uses</span>
+          <span class="bg-gradient-to-r from-cyan-500 via-teal-500 to-emerald-500 bg-clip-text text-transparent">
+            ZipShare?
+          </span>
+        </h2>
+
+        <p class="text-lg sm:text-xl text-base-content/60 max-w-2xl mx-auto leading-relaxed">
+          From solo creators to enterprise teams, see how different professionals
+          <span class="text-cyan-600 font-medium">supercharge their workflow</span>
+          with ZipShare.
+        </p>
+      </div>
+
+      <%!-- Use Cases Grid --%>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+        <%!-- Use Case 1: Video Creators --%>
+        <div class="group relative">
+          <div class="absolute -inset-0.5 bg-gradient-to-r from-rose-500 to-orange-500 rounded-2xl blur opacity-0 group-hover:opacity-20 transition-opacity duration-500">
+          </div>
+          <div class="relative p-6 lg:p-8 rounded-2xl bg-base-100 border border-base-300/50 hover:border-rose-500/30 transition-all duration-300 h-full">
+            <%!-- Icon --%>
+            <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-rose-500 to-orange-500 shadow-lg shadow-rose-500/25 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+              <.icon name="hero-video-camera" class="w-7 h-7 text-white" />
+            </div>
+
+            <%!-- Content --%>
+            <h3 class="text-xl font-bold mb-2 text-base-content group-hover:text-rose-600 transition-colors">
+              Video Creators
+            </h3>
+            <p class="text-base-content/60 mb-4 leading-relaxed">
+              Upload massive 4K footage and raw files without compression. Share previews with clients instantly.
+            </p>
+
+            <%!-- Tags --%>
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="px-3 py-1 rounded-full bg-rose-500/10 text-rose-600 text-xs font-medium">
+                4K Video
+              </span>
+              <span class="px-3 py-1 rounded-full bg-orange-500/10 text-orange-600 text-xs font-medium">
+                RAW Files
+              </span>
+            </div>
+
+            <%!-- Stats --%>
+            <div class="pt-4 border-t border-base-300/50">
+              <div class="flex items-center gap-2 text-sm text-base-content/50">
+                <.icon name="hero-arrow-trending-up" class="w-4 h-4 text-rose-500" />
+                <span><strong class="text-base-content">10GB+</strong> files supported</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <%!-- Use Case 2: Marketing Teams --%>
+        <div class="group relative">
+          <div class="absolute -inset-0.5 bg-gradient-to-r from-violet-500 to-purple-500 rounded-2xl blur opacity-0 group-hover:opacity-20 transition-opacity duration-500">
+          </div>
+          <div class="relative p-6 lg:p-8 rounded-2xl bg-base-100 border border-base-300/50 hover:border-violet-500/30 transition-all duration-300 h-full">
+            <%!-- Icon --%>
+            <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-violet-500 to-purple-500 shadow-lg shadow-violet-500/25 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+              <.icon name="hero-megaphone" class="w-7 h-7 text-white" />
+            </div>
+
+            <%!-- Content --%>
+            <h3 class="text-xl font-bold mb-2 text-base-content group-hover:text-violet-600 transition-colors">
+              Marketing Teams
+            </h3>
+            <p class="text-base-content/60 mb-4 leading-relaxed">
+              Distribute campaign assets across teams and agencies. Keep everyone synced with version control.
+            </p>
+
+            <%!-- Tags --%>
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="px-3 py-1 rounded-full bg-violet-500/10 text-violet-600 text-xs font-medium">
+                Brand Assets
+              </span>
+              <span class="px-3 py-1 rounded-full bg-purple-500/10 text-purple-600 text-xs font-medium">
+                Campaigns
+              </span>
+            </div>
+
+            <%!-- Stats --%>
+            <div class="pt-4 border-t border-base-300/50">
+              <div class="flex items-center gap-2 text-sm text-base-content/50">
+                <.icon name="hero-user-group" class="w-4 h-4 text-violet-500" />
+                <span><strong class="text-base-content">Team sharing</strong> built-in</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <%!-- Use Case 3: Software Development --%>
+        <div class="group relative">
+          <div class="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-2xl blur opacity-0 group-hover:opacity-20 transition-opacity duration-500">
+          </div>
+          <div class="relative p-6 lg:p-8 rounded-2xl bg-base-100 border border-base-300/50 hover:border-cyan-500/30 transition-all duration-300 h-full">
+            <%!-- Icon --%>
+            <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-500 shadow-lg shadow-cyan-500/25 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+              <.icon name="hero-code-bracket" class="w-7 h-7 text-white" />
+            </div>
+
+            <%!-- Content --%>
+            <h3 class="text-xl font-bold mb-2 text-base-content group-hover:text-cyan-600 transition-colors">
+              Developers
+            </h3>
+            <p class="text-base-content/60 mb-4 leading-relaxed">
+              Share build artifacts, binaries, and large repos. Integrate with CI/CD pipelines via our API.
+            </p>
+
+            <%!-- Tags --%>
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-600 text-xs font-medium">
+                REST API
+              </span>
+              <span class="px-3 py-1 rounded-full bg-blue-500/10 text-blue-600 text-xs font-medium">
+                CI/CD
+              </span>
+            </div>
+
+            <%!-- Stats --%>
+            <div class="pt-4 border-t border-base-300/50">
+              <div class="flex items-center gap-2 text-sm text-base-content/50">
+                <.icon name="hero-bolt" class="w-4 h-4 text-cyan-500" />
+                <span><strong class="text-base-content">Resumable</strong> uploads</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <%!-- Use Case 4: Creative Agencies --%>
+        <div class="group relative">
+          <div class="absolute -inset-0.5 bg-gradient-to-r from-pink-500 to-rose-500 rounded-2xl blur opacity-0 group-hover:opacity-20 transition-opacity duration-500">
+          </div>
+          <div class="relative p-6 lg:p-8 rounded-2xl bg-base-100 border border-base-300/50 hover:border-pink-500/30 transition-all duration-300 h-full">
+            <%!-- Icon --%>
+            <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-pink-500 to-rose-500 shadow-lg shadow-pink-500/25 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+              <.icon name="hero-paint-brush" class="w-7 h-7 text-white" />
+            </div>
+
+            <%!-- Content --%>
+            <h3 class="text-xl font-bold mb-2 text-base-content group-hover:text-pink-600 transition-colors">
+              Creative Agencies
+            </h3>
+            <p class="text-base-content/60 mb-4 leading-relaxed">
+              Deliver high-res designs, PSDs, and presentations. Professional sharing links for client reviews.
+            </p>
+
+            <%!-- Tags --%>
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="px-3 py-1 rounded-full bg-pink-500/10 text-pink-600 text-xs font-medium">
+                Design Files
+              </span>
+              <span class="px-3 py-1 rounded-full bg-rose-500/10 text-rose-600 text-xs font-medium">
+                Client Review
+              </span>
+            </div>
+
+            <%!-- Stats --%>
+            <div class="pt-4 border-t border-base-300/50">
+              <div class="flex items-center gap-2 text-sm text-base-content/50">
+                <.icon name="hero-link" class="w-4 h-4 text-pink-500" />
+                <span><strong class="text-base-content">Branded</strong> share links</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <%!-- Use Case 5: Remote Teams --%>
+        <div class="group relative">
+          <div class="absolute -inset-0.5 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-2xl blur opacity-0 group-hover:opacity-20 transition-opacity duration-500">
+          </div>
+          <div class="relative p-6 lg:p-8 rounded-2xl bg-base-100 border border-base-300/50 hover:border-emerald-500/30 transition-all duration-300 h-full">
+            <%!-- Icon --%>
+            <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 shadow-lg shadow-emerald-500/25 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+              <.icon name="hero-globe-alt" class="w-7 h-7 text-white" />
+            </div>
+
+            <%!-- Content --%>
+            <h3 class="text-xl font-bold mb-2 text-base-content group-hover:text-emerald-600 transition-colors">
+              Remote Teams
+            </h3>
+            <p class="text-base-content/60 mb-4 leading-relaxed">
+              Collaborate across time zones with async file sharing. Real-time progress keeps everyone informed.
+            </p>
+
+            <%!-- Tags --%>
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 text-xs font-medium">
+                Global CDN
+              </span>
+              <span class="px-3 py-1 rounded-full bg-teal-500/10 text-teal-600 text-xs font-medium">
+                Real-time
+              </span>
+            </div>
+
+            <%!-- Stats --%>
+            <div class="pt-4 border-t border-base-300/50">
+              <div class="flex items-center gap-2 text-sm text-base-content/50">
+                <.icon name="hero-clock" class="w-4 h-4 text-emerald-500" />
+                <span><strong class="text-base-content">Fast</strong> worldwide</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <%!-- Use Case 6: Freelancers --%>
+        <div class="group relative">
+          <div class="absolute -inset-0.5 bg-gradient-to-r from-amber-500 to-yellow-500 rounded-2xl blur opacity-0 group-hover:opacity-20 transition-opacity duration-500">
+          </div>
+          <div class="relative p-6 lg:p-8 rounded-2xl bg-base-100 border border-base-300/50 hover:border-amber-500/30 transition-all duration-300 h-full">
+            <%!-- Icon --%>
+            <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-amber-500 to-yellow-500 shadow-lg shadow-amber-500/25 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+              <.icon name="hero-briefcase" class="w-7 h-7 text-white" />
+            </div>
+
+            <%!-- Content --%>
+            <h3 class="text-xl font-bold mb-2 text-base-content group-hover:text-amber-600 transition-colors">
+              Freelancers
+            </h3>
+            <p class="text-base-content/60 mb-4 leading-relaxed">
+              Look professional with custom share pages. Password protect sensitive client deliverables.
+            </p>
+
+            <%!-- Tags --%>
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="px-3 py-1 rounded-full bg-amber-500/10 text-amber-600 text-xs font-medium">
+                Password Protected
+              </span>
+              <span class="px-3 py-1 rounded-full bg-yellow-500/10 text-yellow-600 text-xs font-medium">
+                Expiry Dates
+              </span>
+            </div>
+
+            <%!-- Stats --%>
+            <div class="pt-4 border-t border-base-300/50">
+              <div class="flex items-center gap-2 text-sm text-base-content/50">
+                <.icon name="hero-shield-check" class="w-4 h-4 text-amber-500" />
+                <span><strong class="text-base-content">Secure</strong> & professional</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <%!-- Bottom CTA --%>
+      <div class="text-center mt-16">
+        <p class="text-base-content/50 mb-4">Don't see your use case?</p>
+        <a
+          href="#waitlist"
+          class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-emerald-500 text-white font-semibold shadow-lg shadow-cyan-500/25 hover:shadow-xl hover:shadow-cyan-500/30 hover:scale-105 transition-all"
+        >
+          Tell us how you'll use ZipShare <.icon name="hero-arrow-right" class="w-5 h-5" />
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <%!-- Waitlist Section --%>
+  <section
+    id="waitlist"
+    class="py-24 px-4 relative overflow-hidden"
+    aria-labelledby="waitlist-heading"
+  >
+    <%!-- Background Elements (decorative) --%>
+    <div
+      class="absolute inset-0 bg-gradient-to-br from-indigo-500/5 via-purple-500/5 to-pink-500/5"
+      aria-hidden="true"
+    >
+    </div>
+    <div
+      class="absolute top-20 left-10 w-72 h-72 bg-indigo-500/10 rounded-full blur-3xl animate-float"
+      aria-hidden="true"
+    >
+    </div>
+    <div
+      class="absolute bottom-20 right-10 w-72 h-72 bg-pink-500/10 rounded-full blur-3xl animate-float-delayed"
+      aria-hidden="true"
+    >
+    </div>
+
+    <div class="max-w-6xl mx-auto relative z-10">
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <%!-- Left Side: Content --%>
+        <div class="text-center lg:text-left">
+          <%!-- Badge --%>
+          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
+            <.icon name="hero-sparkles" class="w-4 h-4 text-primary" />
+            <span class="text-sm font-medium text-primary">Limited Early Access</span>
+          </div>
+
+          <h2
+            id="waitlist-heading"
+            class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 leading-tight"
+          >
+            Be the First to
+            <span class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+              Experience ZipShare
+            </span>
+          </h2>
+
+          <p class="text-lg text-base-content/70 mb-8 max-w-xl">
+            Join our exclusive waitlist and unlock early access with special perks
+            reserved only for our founding members.
+          </p>
+
+          <%!-- Benefits List --%>
+          <div class="space-y-4 mb-8">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-lg bg-success/20 flex items-center justify-center flex-shrink-0">
+                <.icon name="hero-check" class="w-4 h-4 text-success" />
+              </div>
+              <span class="text-base-content/80">
+                <strong class="text-base-content">50% off</strong> lifetime on Pro plan
+              </span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-lg bg-success/20 flex items-center justify-center flex-shrink-0">
+                <.icon name="hero-check" class="w-4 h-4 text-success" />
+              </div>
+              <span class="text-base-content/80">
+                <strong class="text-base-content">Priority access</strong> before public launch
+              </span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-lg bg-success/20 flex items-center justify-center flex-shrink-0">
+                <.icon name="hero-check" class="w-4 h-4 text-success" />
+              </div>
+              <span class="text-base-content/80">
+                <strong class="text-base-content">Exclusive features</strong>
+                only for early adopters
+              </span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-lg bg-success/20 flex items-center justify-center flex-shrink-0">
+                <.icon name="hero-check" class="w-4 h-4 text-success" />
+              </div>
+              <span class="text-base-content/80">
+                <strong class="text-base-content">Direct input</strong> on product development
+              </span>
+            </div>
+          </div>
+
+          <%!-- Social Proof --%>
+          <div class="flex items-center gap-4 justify-center lg:justify-start">
+            <div class="flex -space-x-3">
+              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-400 to-indigo-600 border-2 border-base-100 flex items-center justify-center text-white text-xs font-bold">
+                JK
+              </div>
+              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 border-2 border-base-100 flex items-center justify-center text-white text-xs font-bold">
+                SA
+              </div>
+              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-pink-400 to-pink-600 border-2 border-base-100 flex items-center justify-center text-white text-xs font-bold">
+                MR
+              </div>
+              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 border-2 border-base-100 flex items-center justify-center text-white text-xs font-bold">
+                +
+              </div>
+            </div>
+            <div class="text-sm">
+              <span class="font-semibold text-base-content">500+</span>
+              <span class="text-base-content/60"> people already joined</span>
+            </div>
+          </div>
+        </div>
+
+        <%!-- Right Side: Form Card --%>
+        <div class="relative">
+          <%!-- Animated Glow Effect Behind Card --%>
+          <div class="absolute -inset-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-[2rem] blur-xl opacity-30 group-hover:opacity-40 animate-pulse">
+          </div>
+          <div class="absolute -inset-0.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-[1.75rem] opacity-20">
+          </div>
+
+          <%!-- Form Card --%>
+          <div class="relative bg-base-100 rounded-3xl p-8 lg:p-10 shadow-2xl border border-base-300/50 backdrop-blur-sm">
+            <%!-- Card Header with Gradient Bar --%>
+            <div class="absolute top-0 left-8 right-8 h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-b-full">
+            </div>
+
+            <div class="text-center mb-8 pt-2">
+              <%!-- Animated Icon --%>
+              <div class="relative w-20 h-20 mx-auto mb-5">
+                <div class="absolute inset-0 bg-gradient-to-br from-indigo-500/20 to-pink-500/20 rounded-2xl rotate-6 animate-pulse">
+                </div>
+                <div class="relative w-20 h-20 rounded-2xl bg-gradient-to-br from-indigo-500 to-pink-500 flex items-center justify-center shadow-xl shadow-indigo-500/25">
+                  <.icon name="hero-rocket-launch" class="w-10 h-10 text-white" />
+                </div>
+              </div>
+              <h3 class="text-2xl font-bold mb-2">Reserve Your Spot</h3>
+              <p class="text-base-content/60">Get early access in 30 seconds</p>
+            </div>
+
+            <%!-- Form --%>
+            <form id="waitlist-form" class="space-y-4" aria-describedby="form-error">
+              <%!-- Error Message Area --%>
+              <div
+                id="form-error"
+                class="hidden text-error text-sm text-center"
+                role="alert"
+                aria-live="assertive"
+              >
+              </div>
+
+              <%!-- Email Input - Floating Label Style --%>
+              <div class="form-control">
+                <label class="label pb-1" for="email">
+                  <span class="label-text font-medium flex items-center gap-2">
+                    <.icon
+                      name="hero-envelope"
+                      class="w-4 h-4 text-indigo-500"
+                      aria-hidden="true"
+                    /> Email Address <span class="text-error" aria-hidden="true">*</span>
+                  </span>
+                </label>
+                <div class="relative group">
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="you@example.com"
+                    required
+                    aria-required="true"
+                    autocomplete="email"
+                    class="input w-full h-14 text-base bg-base-200/50 border-2 border-base-300/50 rounded-xl focus:border-indigo-500 focus:bg-base-100 focus:shadow-lg focus:shadow-indigo-500/10 transition-all duration-300 placeholder:text-base-content/30"
+                  />
+                  <div class="absolute inset-0 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500 opacity-0 group-focus-within:opacity-100 -z-10 blur transition-opacity duration-300">
+                  </div>
+                </div>
+              </div>
+
+              <%!-- Two Column Row for Name and Use Case --%>
+              <div class="grid sm:grid-cols-2 gap-4">
+                <%!-- Name Input --%>
+                <div class="form-control">
+                  <label class="label pb-1" for="name">
+                    <span class="label-text font-medium flex items-center gap-2">
+                      <.icon name="hero-user" class="w-4 h-4 text-purple-500" aria-hidden="true" />
+                      Your Name
+                    </span>
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    placeholder="John Doe"
+                    autocomplete="name"
+                    class="input w-full h-14 text-base bg-base-200/50 border-2 border-base-300/50 rounded-xl focus:border-purple-500 focus:bg-base-100 focus:shadow-lg focus:shadow-purple-500/10 transition-all duration-300 placeholder:text-base-content/30"
+                  />
+                </div>
+
+                <%!-- Use Case Select --%>
+                <div class="form-control">
+                  <label class="label pb-1" for="useCase">
+                    <span class="label-text font-medium flex items-center gap-2">
+                      <.icon
+                        name="hero-briefcase"
+                        class="w-4 h-4 text-pink-500"
+                        aria-hidden="true"
+                      /> Use Case
+                    </span>
+                  </label>
+                  <select
+                    id="useCase"
+                    name="use_case"
+                    class="select w-full h-14 text-base bg-base-200/50 border-2 border-base-300/50 rounded-xl focus:border-pink-500 focus:bg-base-100 focus:shadow-lg focus:shadow-pink-500/10 transition-all duration-300"
+                  >
+                    <option value="" class="text-base-content/50">Select one...</option>
+                    <option value="personal">Personal</option>
+                    <option value="business">Business</option>
+                    <option value="creative">Creative</option>
+                    <option value="developer">Developer</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+              </div>
+
+              <%!-- Submit Button with Gradient --%>
+              <div class="pt-2">
+                <button
+                  type="submit"
+                  id="submit-btn"
+                  class="relative w-full h-14 rounded-xl font-semibold text-white text-lg overflow-hidden group transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+                >
+                  <%!-- Gradient Background --%>
+                  <span class="absolute inset-0 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
+                  </span>
+                  <%!-- Shimmer Effect --%>
+                  <span class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700">
+                  </span>
+                  <%!-- Shadow --%>
+                  <span class="absolute inset-0 shadow-lg shadow-indigo-500/30 group-hover:shadow-xl group-hover:shadow-indigo-500/40 transition-shadow">
+                  </span>
+                  <%!-- Content --%>
+                  <span class="relative flex items-center justify-center gap-2">
+                    <.icon
+                      name="hero-paper-airplane"
+                      class="w-5 h-5 -rotate-45 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"
+                    />
+                    <span id="submit-text">Get Early Access</span>
+                    <span id="submit-loading" class="loading loading-spinner loading-sm hidden">
+                    </span>
+                  </span>
+                </button>
+              </div>
+
+              <%!-- Inline Trust Signals --%>
+              <div class="flex items-center justify-center gap-4 pt-2 text-xs text-base-content/50">
+                <span class="flex items-center gap-1">
+                  <.icon name="hero-shield-check" class="w-3.5 h-3.5 text-success" /> No spam
+                </span>
+                <span class="w-1 h-1 rounded-full bg-base-content/20"></span>
+                <span class="flex items-center gap-1">
+                  <.icon name="hero-lock-closed" class="w-3.5 h-3.5 text-success" /> Secure
+                </span>
+                <span class="w-1 h-1 rounded-full bg-base-content/20"></span>
+                <span class="flex items-center gap-1">
+                  <.icon name="hero-clock" class="w-3.5 h-3.5 text-success" /> 30 sec
+                </span>
+              </div>
+            </form>
+
+            <%!-- Success State --%>
+            <div
+              id="waitlist-success"
+              class="hidden text-center py-8"
+              role="status"
+              aria-live="polite"
+            >
+              <div class="relative w-24 h-24 mx-auto mb-6">
+                <div class="absolute inset-0 bg-success/20 rounded-full animate-ping"></div>
+                <div class="absolute inset-2 bg-success/10 rounded-full animate-pulse"></div>
+                <div class="relative w-24 h-24 rounded-full bg-gradient-to-br from-success to-emerald-500 flex items-center justify-center shadow-xl shadow-success/30">
+                  <.icon name="hero-check" class="w-12 h-12 text-white" />
+                </div>
+              </div>
+              <h3 class="font-bold text-2xl mb-2">You're In! 🎉</h3>
+              <p class="text-base-content/70 mb-6">
+                Welcome to the ZipShare family.<br />
+                <span class="text-sm">Check your inbox for a confirmation email.</span>
+              </p>
+              <div class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-success/10 to-emerald-500/10 border border-success/20 text-success font-medium">
+                <.icon name="hero-gift" class="w-5 h-5" />
+                <span>Early adopter perks unlocked!</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <%!-- FAQ Section --%>
+  <section id="faq" class="py-24 px-4 relative overflow-hidden" aria-labelledby="faq-heading">
+    <%!-- Background Elements --%>
+    <div
+      class="absolute inset-0 bg-gradient-to-b from-base-100 via-base-200/30 to-base-100"
+      aria-hidden="true"
+    >
+    </div>
+    <div
+      class="absolute top-1/4 -right-32 w-64 h-64 bg-indigo-500/8 rounded-full blur-3xl"
+      aria-hidden="true"
+    >
+    </div>
+    <div
+      class="absolute bottom-1/4 -left-32 w-64 h-64 bg-purple-500/8 rounded-full blur-3xl"
+      aria-hidden="true"
+    >
+    </div>
+
+    <div class="max-w-4xl mx-auto relative z-10">
+      <%!-- Section Header --%>
+      <div class="text-center mb-16">
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-indigo-500/10 to-purple-500/10 border border-indigo-500/20 mb-6">
+          <.icon name="hero-question-mark-circle" class="w-4 h-4 text-indigo-500" />
+          <span class="text-sm font-medium bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">
+            Got Questions?
+          </span>
+        </div>
+
+        <h2 id="faq-heading" class="text-4xl sm:text-5xl font-bold mb-6">
+          Frequently Asked
+          <span class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+            Questions
+          </span>
+        </h2>
+
+        <p class="text-lg text-base-content/60 max-w-2xl mx-auto">
+          Everything you need to know about ZipShare. Can't find an answer?
+          <a href="#waitlist" class="text-indigo-500 hover:underline">Join our waitlist</a>
+          and we'll be in touch.
+        </p>
+      </div>
+
+      <%!-- FAQ Accordion --%>
+      <div class="space-y-4">
+        <%!-- FAQ Item 1 --%>
+        <div class="group rounded-2xl border border-base-300/50 bg-base-100 hover:border-indigo-500/30 transition-all duration-300 overflow-hidden">
+          <details class="peer">
+            <summary class="flex items-center justify-between p-6 cursor-pointer list-none select-none">
+              <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500/20 to-purple-500/20 flex items-center justify-center flex-shrink-0">
+                  <.icon name="hero-cloud-arrow-up" class="w-5 h-5 text-indigo-500" />
+                </div>
+                <span class="font-semibold text-left">
+                  What's the maximum file size I can upload?
+                </span>
+              </div>
+              <.icon
+                name="hero-chevron-down"
+                class="w-5 h-5 text-base-content/50 transition-transform duration-300 peer-open:group-[]:rotate-180"
+              />
+            </summary>
+            <div class="px-6 pb-6 pt-0 text-base-content/70 leading-relaxed">
+              <p>
+                ZipShare supports files up to <strong class="text-base-content">10GB</strong>
+                per upload. Our intelligent chunked upload technology breaks large files into smaller pieces, ensuring reliable transfers even on unstable connections. If your upload gets interrupted, you can resume exactly where you left off.
+              </p>
+            </div>
+          </details>
+        </div>
+
+        <%!-- FAQ Item 2 --%>
+        <div class="group rounded-2xl border border-base-300/50 bg-base-100 hover:border-purple-500/30 transition-all duration-300 overflow-hidden">
+          <details class="peer">
+            <summary class="flex items-center justify-between p-6 cursor-pointer list-none select-none">
+              <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500/20 to-teal-500/20 flex items-center justify-center flex-shrink-0">
+                  <.icon name="hero-shield-check" class="w-5 h-5 text-emerald-500" />
+                </div>
+                <span class="font-semibold text-left">How secure are my files?</span>
+              </div>
+              <.icon
+                name="hero-chevron-down"
+                class="w-5 h-5 text-base-content/50 transition-transform duration-300 peer-open:group-[]:rotate-180"
+              />
+            </summary>
+            <div class="px-6 pb-6 pt-0 text-base-content/70 leading-relaxed">
+              <p>
+                Security is our top priority. All files are encrypted with
+                <strong class="text-base-content">AES-256 encryption</strong>
+                before leaving your device. We use a zero-knowledge architecture, which means even we cannot access your files. Additionally, you can set password protection, expiration dates, and download limits on shared links.
+              </p>
+            </div>
+          </details>
+        </div>
+
+        <%!-- FAQ Item 3 --%>
+        <div class="group rounded-2xl border border-base-300/50 bg-base-100 hover:border-pink-500/30 transition-all duration-300 overflow-hidden">
+          <details class="peer">
+            <summary class="flex items-center justify-between p-6 cursor-pointer list-none select-none">
+              <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500/20 to-orange-500/20 flex items-center justify-center flex-shrink-0">
+                  <.icon name="hero-currency-dollar" class="w-5 h-5 text-amber-500" />
+                </div>
+                <span class="font-semibold text-left">Is ZipShare free to use?</span>
+              </div>
+              <.icon
+                name="hero-chevron-down"
+                class="w-5 h-5 text-base-content/50 transition-transform duration-300 peer-open:group-[]:rotate-180"
+              />
+            </summary>
+            <div class="px-6 pb-6 pt-0 text-base-content/70 leading-relaxed">
+              <p>
+                Yes! ZipShare offers a generous
+                <strong class="text-base-content">free tier</strong>
+                that includes 5GB of transfers per month with files up to 2GB each. For power users, our Pro plan offers unlimited transfers, larger file sizes, and advanced features. Early access members get
+                <strong class="text-indigo-500">50% off lifetime</strong>
+                on all paid plans.
+              </p>
+            </div>
+          </details>
+        </div>
+
+        <%!-- FAQ Item 4 --%>
+        <div class="group rounded-2xl border border-base-300/50 bg-base-100 hover:border-cyan-500/30 transition-all duration-300 overflow-hidden">
+          <details class="peer">
+            <summary class="flex items-center justify-between p-6 cursor-pointer list-none select-none">
+              <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 flex items-center justify-center flex-shrink-0">
+                  <.icon name="hero-clock" class="w-5 h-5 text-cyan-500" />
+                </div>
+                <span class="font-semibold text-left">How long are my files stored?</span>
+              </div>
+              <.icon
+                name="hero-chevron-down"
+                class="w-5 h-5 text-base-content/50 transition-transform duration-300 peer-open:group-[]:rotate-180"
+              />
+            </summary>
+            <div class="px-6 pb-6 pt-0 text-base-content/70 leading-relaxed">
+              <p>
+                Free tier files are stored for <strong class="text-base-content">7 days</strong>
+                by default. Pro users enjoy <strong class="text-base-content">30-day storage</strong>, and Business plans include <strong class="text-base-content">90-day storage</strong>. You can also set custom expiration dates for any shared link to meet your specific needs.
+              </p>
+            </div>
+          </details>
+        </div>
+
+        <%!-- FAQ Item 5 --%>
+        <div class="group rounded-2xl border border-base-300/50 bg-base-100 hover:border-violet-500/30 transition-all duration-300 overflow-hidden">
+          <details class="peer">
+            <summary class="flex items-center justify-between p-6 cursor-pointer list-none select-none">
+              <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500/20 to-purple-500/20 flex items-center justify-center flex-shrink-0">
+                  <.icon name="hero-code-bracket" class="w-5 h-5 text-violet-500" />
+                </div>
+                <span class="font-semibold text-left">Do you offer an API for developers?</span>
+              </div>
+              <.icon
+                name="hero-chevron-down"
+                class="w-5 h-5 text-base-content/50 transition-transform duration-300 peer-open:group-[]:rotate-180"
+              />
+            </summary>
+            <div class="px-6 pb-6 pt-0 text-base-content/70 leading-relaxed">
+              <p>
+                Absolutely! ZipShare provides a
+                <strong class="text-base-content">RESTful API</strong>
+                and <strong class="text-base-content">WebSocket support</strong>
+                for real-time progress tracking. Our developer-friendly documentation includes SDKs for JavaScript, Python, and Ruby. Perfect for integrating file transfers into your apps, CI/CD pipelines, or automation workflows.
+              </p>
+            </div>
+          </details>
+        </div>
+
+        <%!-- FAQ Item 6 --%>
+        <div class="group rounded-2xl border border-base-300/50 bg-base-100 hover:border-rose-500/30 transition-all duration-300 overflow-hidden">
+          <details class="peer">
+            <summary class="flex items-center justify-between p-6 cursor-pointer list-none select-none">
+              <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-rose-500/20 to-pink-500/20 flex items-center justify-center flex-shrink-0">
+                  <.icon name="hero-arrow-path" class="w-5 h-5 text-rose-500" />
+                </div>
+                <span class="font-semibold text-left">
+                  What happens if my upload is interrupted?
+                </span>
+              </div>
+              <.icon
+                name="hero-chevron-down"
+                class="w-5 h-5 text-base-content/50 transition-transform duration-300 peer-open:group-[]:rotate-180"
+              />
+            </summary>
+            <div class="px-6 pb-6 pt-0 text-base-content/70 leading-relaxed">
+              <p>
+                No worries! ZipShare's
+                <strong class="text-base-content">resumable upload technology</strong>
+                automatically saves your progress. If your connection drops, just refresh the page or reopen the app, and you can continue from exactly where you left off. No need to start over, even for multi-gigabyte files.
+              </p>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <%!-- Still have questions CTA --%>
+      <div class="text-center mt-12">
+        <p class="text-base-content/60 mb-4">Still have questions?</p>
+        <a
+          href="mailto:hello@zipshare.io"
+          class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-base-200/50 hover:bg-base-200 border border-base-300/50 text-base-content font-medium transition-all hover:scale-105"
+        >
+          <.icon name="hero-envelope" class="w-5 h-5" /> Contact Us
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <%!-- Footer --%>
+  <footer class="relative pt-20 pb-8 px-4 overflow-hidden" aria-label="Site footer">
+    <%!-- Background --%>
+    <div
+      class="absolute inset-0 bg-gradient-to-b from-base-100 via-base-200/50 to-base-200"
+      aria-hidden="true"
+    >
+    </div>
+    <div
+      class="absolute top-0 left-1/4 w-96 h-96 bg-indigo-500/5 rounded-full blur-3xl"
+      aria-hidden="true"
+    >
+    </div>
+    <div
+      class="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl"
+      aria-hidden="true"
+    >
+    </div>
+
+    <div class="max-w-7xl mx-auto relative z-10">
+      <%!-- Top Section with Gradient Border --%>
+      <div class="relative mb-16">
+        <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent">
+        </div>
+      </div>
+
+      <%!-- Main Footer Grid --%>
+      <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 lg:gap-12 mb-16">
+        <%!-- Brand Column --%>
+        <div class="col-span-2 md:col-span-4 lg:col-span-2">
+          <a href="/" class="flex items-center gap-3 mb-6 group">
+            <img
+              src={~p"/images/logo.svg"}
+              alt="ZipShare"
+              class="w-10 h-10 group-hover:scale-110 transition-transform"
+            />
+            <span class="text-xl font-bold bg-gradient-to-r from-indigo-500 to-pink-500 bg-clip-text text-transparent">
+              ZipShare
+            </span>
+          </a>
+          <p class="text-base-content/60 mb-6 max-w-sm leading-relaxed">
+            Lightning-fast file transfers with real-time progress, resumable uploads, and enterprise-grade security.
+          </p>
+          <%!-- Social Links --%>
+          <div class="flex items-center gap-3">
+            <a
+              href="https://twitter.com/zipshare"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="w-10 h-10 rounded-xl bg-base-200 hover:bg-base-300 flex items-center justify-center transition-all hover:scale-110 hover:-translate-y-1 group"
+              aria-label="Follow us on Twitter"
+            >
+              <svg
+                class="w-5 h-5 text-base-content/70 group-hover:text-indigo-500 transition-colors"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+              </svg>
+            </a>
+            <a
+              href="https://github.com/zipshare"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="w-10 h-10 rounded-xl bg-base-200 hover:bg-base-300 flex items-center justify-center transition-all hover:scale-110 hover:-translate-y-1 group"
+              aria-label="View our GitHub"
+            >
+              <svg
+                class="w-5 h-5 text-base-content/70 group-hover:text-indigo-500 transition-colors"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </a>
+            <a
+              href="https://linkedin.com/company/zipshare"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="w-10 h-10 rounded-xl bg-base-200 hover:bg-base-300 flex items-center justify-center transition-all hover:scale-110 hover:-translate-y-1 group"
+              aria-label="Connect on LinkedIn"
+            >
+              <svg
+                class="w-5 h-5 text-base-content/70 group-hover:text-indigo-500 transition-colors"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+              </svg>
+            </a>
+            <a
+              href="https://discord.gg/zipshare"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="w-10 h-10 rounded-xl bg-base-200 hover:bg-base-300 flex items-center justify-center transition-all hover:scale-110 hover:-translate-y-1 group"
+              aria-label="Join our Discord"
+            >
+              <svg
+                class="w-5 h-5 text-base-content/70 group-hover:text-indigo-500 transition-colors"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189z" />
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <%!-- Product Links --%>
+        <div>
+          <h3 class="font-semibold text-base-content mb-4">Product</h3>
+          <nav aria-label="Product links">
+            <ul class="space-y-3 text-sm">
+              <li>
+                <a
+                  href="#features"
+                  class="text-base-content/60 hover:text-indigo-500 transition-colors"
+                >
+                  Features
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#demo"
+                  class="text-base-content/60 hover:text-indigo-500 transition-colors"
+                >
+                  Demo
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#use-cases"
+                  class="text-base-content/60 hover:text-indigo-500 transition-colors"
+                >
+                  Use Cases
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-base-content/60 hover:text-indigo-500 transition-colors inline-flex items-center gap-1"
+                >
+                  Pricing
+                  <span class="px-1.5 py-0.5 text-[10px] font-medium bg-indigo-500/10 text-indigo-500 rounded">
+                    Soon
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-base-content/60 hover:text-indigo-500 transition-colors inline-flex items-center gap-1"
+                >
+                  API Docs
+                  <span class="px-1.5 py-0.5 text-[10px] font-medium bg-indigo-500/10 text-indigo-500 rounded">
+                    Soon
+                  </span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+
+        <%!-- Resources Links --%>
+        <div>
+          <h3 class="font-semibold text-base-content mb-4">Resources</h3>
+          <nav aria-label="Resource links">
+            <ul class="space-y-3 text-sm">
+              <li>
+                <a
+                  href="#faq"
+                  class="text-base-content/60 hover:text-indigo-500 transition-colors"
+                >
+                  FAQ
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-base-content/60 hover:text-indigo-500 transition-colors inline-flex items-center gap-1"
+                >
+                  Blog
+                  <span class="px-1.5 py-0.5 text-[10px] font-medium bg-indigo-500/10 text-indigo-500 rounded">
+                    Soon
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-base-content/60 hover:text-indigo-500 transition-colors inline-flex items-center gap-1"
+                >
+                  Help Center
+                  <span class="px-1.5 py-0.5 text-[10px] font-medium bg-indigo-500/10 text-indigo-500 rounded">
+                    Soon
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="mailto:hello@zipshare.io"
+                  class="text-base-content/60 hover:text-indigo-500 transition-colors"
+                >
+                  Contact
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+
+        <%!-- Legal Links --%>
+        <div>
+          <h3 class="font-semibold text-base-content mb-4">Legal</h3>
+          <nav aria-label="Legal links">
+            <ul class="space-y-3 text-sm">
+              <li>
+                <a
+                  href="#"
+                  class="text-base-content/60 hover:text-indigo-500 transition-colors inline-flex items-center gap-1"
+                >
+                  Privacy Policy
+                  <span class="px-1.5 py-0.5 text-[10px] font-medium bg-indigo-500/10 text-indigo-500 rounded">
+                    Soon
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-base-content/60 hover:text-indigo-500 transition-colors inline-flex items-center gap-1"
+                >
+                  Terms of Service
+                  <span class="px-1.5 py-0.5 text-[10px] font-medium bg-indigo-500/10 text-indigo-500 rounded">
+                    Soon
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-base-content/60 hover:text-indigo-500 transition-colors inline-flex items-center gap-1"
+                >
+                  Cookie Policy
+                  <span class="px-1.5 py-0.5 text-[10px] font-medium bg-indigo-500/10 text-indigo-500 rounded">
+                    Soon
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-base-content/60 hover:text-indigo-500 transition-colors inline-flex items-center gap-1"
+                >
+                  GDPR
+                  <span class="px-1.5 py-0.5 text-[10px] font-medium bg-indigo-500/10 text-indigo-500 rounded">
+                    Soon
+                  </span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+
+      <%!-- Newsletter Signup Mini --%>
+      <div class="mb-12 p-6 rounded-2xl bg-gradient-to-r from-indigo-500/5 via-purple-500/5 to-pink-500/5 border border-indigo-500/10">
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="text-center sm:text-left">
+            <h3 class="font-semibold text-base-content mb-1">Stay in the loop</h3>
+            <p class="text-sm text-base-content/60">Get product updates and early access news.</p>
+          </div>
+          <a
+            href="#waitlist"
+            class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-medium shadow-lg shadow-indigo-500/25 hover:shadow-xl hover:shadow-indigo-500/30 hover:scale-105 transition-all whitespace-nowrap"
+          >
+            <.icon name="hero-bell" class="w-4 h-4" /> Join Waitlist
+          </a>
+        </div>
+      </div>
+
+      <%!-- Bottom Bar --%>
+      <div class="relative">
+        <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-base-300 to-transparent">
+        </div>
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-8">
+          <p class="text-sm text-base-content/50">
+            &copy; {Date.utc_today().year} ZipShare. All rights reserved.
+          </p>
+          <div class="flex items-center gap-6 text-sm text-base-content/50">
+            <div class="flex items-center gap-2">
+              <span class="relative flex h-2 w-2">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-success opacity-75">
+                </span>
+                <span class="relative inline-flex rounded-full h-2 w-2 bg-success"></span>
+              </span>
+              <span>All systems operational</span>
+            </div>
+            <span class="hidden sm:inline">•</span>
+            <span class="hidden sm:inline">Made with ❤️ for fast transfers</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script>
+  // Analytics tracking helper (works with GA4 and Plausible)
+  function trackEvent(eventName, eventProps = {}) {
+    // Google Analytics 4
+    if (typeof gtag === 'function') {
+      gtag('event', eventName, eventProps);
+    }
+    // Plausible Analytics
+    if (typeof plausible === 'function') {
+      plausible(eventName, { props: eventProps });
+    }
+  }
+
+  // Waitlist form handling with safe DOM manipulation
+  (function() {
+    const form = document.getElementById('waitlist-form');
+    if (!form) return;
+
+    const formError = document.getElementById('form-error');
+
+    // Helper function to show error message accessibly
+    function showError(message) {
+      if (formError) {
+        formError.textContent = message;
+        formError.classList.remove('hidden');
+        // Focus the error for screen reader announcement
+        formError.focus();
+      }
+    }
+
+    // Helper function to hide error message
+    function hideError() {
+      if (formError) {
+        formError.textContent = '';
+        formError.classList.add('hidden');
+      }
+    }
+
+    // Helper function to reset button state
+    function resetButton(submitBtn, submitText, submitLoading) {
+      submitBtn.disabled = false;
+      submitText.textContent = 'Join the Waitlist';
+      submitLoading.classList.add('hidden');
+    }
+
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      hideError();
+
+      // Track form submission attempt
+      trackEvent('waitlist_form_submit', { action: 'attempt' });
+
+      const submitBtn = document.getElementById('submit-btn');
+      const submitText = document.getElementById('submit-text');
+      const submitLoading = document.getElementById('submit-loading');
+
+      // Show loading state using classList (safe)
+      submitBtn.disabled = true;
+      submitText.textContent = 'Submitting...';
+      submitLoading.classList.remove('hidden');
+
+      const formData = {
+        waitlist_entry: {
+          email: document.getElementById('email').value,
+          name: document.getElementById('name').value || null,
+          use_case: document.getElementById('useCase').value || null
+        }
+      };
+
+      try {
+        const response = await fetch('/api/waitlist', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData)
+        });
+
+        if (response.ok) {
+          // Track successful conversion
+          trackEvent('waitlist_signup', { action: 'success' });
+          // Show success message using classList (safe)
+          form.classList.add('hidden');
+          document.getElementById('waitlist-success').classList.remove('hidden');
+        } else {
+          const data = await response.json();
+          const errorMsg = (data.errors && data.errors.email && data.errors.email[0])
+            || 'Something went wrong. Please try again.';
+          showError(errorMsg);
+          resetButton(submitBtn, submitText, submitLoading);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        showError('Network error. Please check your connection and try again.');
+        resetButton(submitBtn, submitText, submitLoading);
+      }
+    });
+  })();
+
+  // Track CTA clicks and section engagement
+  (function() {
+    // Track hero CTA clicks
+    document.querySelectorAll('a[href="#waitlist"]').forEach(function(link) {
+      link.addEventListener('click', function() {
+        trackEvent('cta_click', { location: 'hero', target: 'waitlist' });
+      });
+    });
+
+    // Track demo section engagement
+    document.querySelectorAll('a[href="#demo"]').forEach(function(link) {
+      link.addEventListener('click', function() {
+        trackEvent('cta_click', { location: 'navigation', target: 'demo' });
+      });
+    });
+
+    // Track features section engagement
+    document.querySelectorAll('a[href="#features"]').forEach(function(link) {
+      link.addEventListener('click', function() {
+        trackEvent('cta_click', { location: 'navigation', target: 'features' });
+      });
+    });
+
+    // Track FAQ section engagement
+    document.querySelectorAll('a[href="#faq"]').forEach(function(link) {
+      link.addEventListener('click', function() {
+        trackEvent('cta_click', { location: 'navigation', target: 'faq' });
+      });
+    });
+
+    // Track scroll engagement with key sections (using Intersection Observer)
+    if ('IntersectionObserver' in window) {
+      const sectionsToTrack = ['features', 'demo', 'use-cases', 'faq', 'waitlist'];
+      const trackedSections = new Set();
+
+      const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting && !trackedSections.has(entry.target.id)) {
+            trackedSections.add(entry.target.id);
+            trackEvent('section_view', { section: entry.target.id });
+          }
+        });
+      }, { threshold: 0.3 });
+
+      sectionsToTrack.forEach(function(sectionId) {
+        const section = document.getElementById(sectionId);
+        if (section) observer.observe(section);
+      });
+    }
+  })();
+</script>
