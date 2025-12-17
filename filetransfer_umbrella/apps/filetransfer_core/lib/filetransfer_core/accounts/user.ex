@@ -39,7 +39,7 @@ defmodule FiletransferCore.Accounts.User do
       :max_file_size,
       :api_calls_limit
     ])
-    |> validate_required([:email, :hashed_password])
+    |> validate_required([:email])
     |> validate_email()
     |> unique_constraint(:email)
   end
