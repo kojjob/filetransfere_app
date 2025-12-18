@@ -237,4 +237,251 @@ defmodule FiletransferWeb.Layouts do
     </a>
     """
   end
+
+  @doc """
+  User dashboard layout with sidebar navigation.
+  For regular authenticated users to manage their file transfers.
+  """
+  attr :flash, :map, required: true
+  attr :current_scope, :map, default: nil
+  attr :current_user, :map, default: nil
+  attr :page_title, :string, default: "Dashboard"
+  attr :active_tab, :string, default: "dashboard"
+  slot :inner_block, required: true
+
+  def user_dashboard(assigns) do
+    ~H"""
+    <div class="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+      <%!-- Sidebar --%>
+      <aside class="fixed inset-y-0 left-0 w-64 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-r border-slate-200 dark:border-slate-700/50">
+        <%!-- Logo --%>
+        <div class="flex items-center gap-3 px-6 py-5 border-b border-slate-200 dark:border-slate-700/50">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center">
+            <.icon name="hero-paper-airplane" class="w-5 h-5 text-white" />
+          </div>
+          <div>
+            <h1 class="text-lg font-bold text-slate-900 dark:text-white">ZipShare</h1>
+            <p class="text-xs text-slate-500 dark:text-slate-400">File Transfer</p>
+          </div>
+        </div>
+
+        <%!-- Navigation --%>
+        <nav class="px-4 py-6 space-y-2">
+          <.dashboard_nav_link href="/dashboard" icon="hero-home" active={@active_tab == "dashboard"}>
+            Dashboard
+          </.dashboard_nav_link>
+          <.dashboard_nav_link
+            href="/dashboard/transfers"
+            icon="hero-arrow-up-tray"
+            active={@active_tab == "transfers"}
+          >
+            Transfers
+          </.dashboard_nav_link>
+          <.dashboard_nav_link
+            href="/dashboard/shares"
+            icon="hero-share"
+            active={@active_tab == "shares"}
+          >
+            Shared Links
+          </.dashboard_nav_link>
+          <.dashboard_nav_link
+            href="/dashboard/settings"
+            icon="hero-cog-6-tooth"
+            active={@active_tab == "settings"}
+          >
+            Settings
+          </.dashboard_nav_link>
+        </nav>
+
+        <%!-- User info & logout --%>
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-200 dark:border-slate-700/50">
+          <div class="flex items-center gap-3 px-2 py-2 mb-2">
+            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center">
+              <span class="text-xs font-bold text-white">
+                {if @current_user, do: String.first(@current_user.email) |> String.upcase(), else: "U"}
+              </span>
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-medium text-slate-900 dark:text-white truncate">
+                {if @current_user, do: @current_user.name || @current_user.email, else: "User"}
+              </p>
+              <p class="text-xs text-slate-500 dark:text-slate-400">
+                {if @current_user,
+                  do: String.capitalize(@current_user.subscription_tier || "free"),
+                  else: "Free"} Plan
+              </p>
+            </div>
+          </div>
+          <a
+            href="/api/auth/logout"
+            class="flex items-center gap-2 px-4 py-2 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors"
+          >
+            <.icon name="hero-arrow-right-on-rectangle" class="w-4 h-4" />
+            <span class="text-sm">Sign out</span>
+          </a>
+        </div>
+      </aside>
+
+      <%!-- Main content --%>
+      <main class="pl-64">
+        <div class="p-8">
+          {render_slot(@inner_block)}
+        </div>
+      </main>
+
+      <.flash_group flash={@flash} />
+    </div>
+    """
+  end
+
+  @doc """
+  Project Owner dashboard layout with sidebar navigation.
+  For project owners to manage the platform.
+  """
+  attr :flash, :map, required: true
+  attr :current_scope, :map, default: nil
+  attr :current_user, :map, default: nil
+  attr :page_title, :string, default: "Owner Dashboard"
+  attr :active_tab, :string, default: "overview"
+  slot :inner_block, required: true
+
+  def owner_dashboard(assigns) do
+    ~H"""
+    <div class="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900">
+      <%!-- Sidebar --%>
+      <aside class="fixed inset-y-0 left-0 w-64 bg-slate-900/80 backdrop-blur-xl border-r border-purple-500/20">
+        <%!-- Logo with Owner badge --%>
+        <div class="flex items-center gap-3 px-6 py-5 border-b border-purple-500/20">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center">
+            <.icon name="hero-shield-check" class="w-5 h-5 text-white" />
+          </div>
+          <div>
+            <h1 class="text-lg font-bold text-white">ZipShare</h1>
+            <p class="text-xs text-purple-300">Project Owner</p>
+          </div>
+        </div>
+
+        <%!-- Navigation --%>
+        <nav class="px-4 py-6 space-y-2">
+          <.owner_nav_link href="/owner" icon="hero-chart-pie" active={@active_tab == "overview"}>
+            Overview
+          </.owner_nav_link>
+          <.owner_nav_link href="/owner/users" icon="hero-users" active={@active_tab == "users"}>
+            Users
+          </.owner_nav_link>
+          <.owner_nav_link
+            href="/owner/analytics"
+            icon="hero-chart-bar-square"
+            active={@active_tab == "analytics"}
+          >
+            Analytics
+          </.owner_nav_link>
+          <.owner_nav_link
+            href="/owner/settings"
+            icon="hero-cog-8-tooth"
+            active={@active_tab == "settings"}
+          >
+            Settings
+          </.owner_nav_link>
+        </nav>
+
+        <%!-- Divider --%>
+        <div class="px-4 py-2">
+          <div class="border-t border-purple-500/20"></div>
+        </div>
+
+        <%!-- Quick Links --%>
+        <nav class="px-4 py-2 space-y-2">
+          <p class="px-4 text-xs font-semibold text-purple-400 uppercase tracking-wider">
+            Quick Links
+          </p>
+          <.owner_nav_link href="/dashboard" icon="hero-home" active={false}>
+            User Dashboard
+          </.owner_nav_link>
+          <.owner_nav_link href="/admin/waitlist" icon="hero-queue-list" active={false}>
+            Admin Panel
+          </.owner_nav_link>
+        </nav>
+
+        <%!-- User info & logout --%>
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-purple-500/20">
+          <div class="flex items-center gap-3 px-2 py-2 mb-2">
+            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center">
+              <.icon name="hero-shield-check-mini" class="w-4 h-4 text-white" />
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-medium text-white truncate">
+                {if @current_user, do: @current_user.name || @current_user.email, else: "Owner"}
+              </p>
+              <p class="text-xs text-purple-300">Project Owner</p>
+            </div>
+          </div>
+          <a
+            href="/api/auth/logout"
+            class="flex items-center gap-2 px-4 py-2 text-purple-300 hover:text-white transition-colors"
+          >
+            <.icon name="hero-arrow-right-on-rectangle" class="w-4 h-4" />
+            <span class="text-sm">Sign out</span>
+          </a>
+        </div>
+      </aside>
+
+      <%!-- Main content --%>
+      <main class="pl-64">
+        <div class="p-8">
+          {render_slot(@inner_block)}
+        </div>
+      </main>
+
+      <.flash_group flash={@flash} />
+    </div>
+    """
+  end
+
+  # Navigation link components
+
+  attr :href, :string, required: true
+  attr :icon, :string, required: true
+  attr :active, :boolean, default: false
+  slot :inner_block, required: true
+
+  defp dashboard_nav_link(assigns) do
+    ~H"""
+    <a
+      href={@href}
+      class={[
+        "flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200",
+        @active &&
+          "bg-gradient-to-r from-blue-500/20 to-cyan-500/20 text-blue-600 dark:text-blue-400 border border-blue-500/30",
+        !@active &&
+          "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/50"
+      ]}
+    >
+      <.icon name={@icon} class="w-5 h-5" />
+      {render_slot(@inner_block)}
+    </a>
+    """
+  end
+
+  attr :href, :string, required: true
+  attr :icon, :string, required: true
+  attr :active, :boolean, default: false
+  slot :inner_block, required: true
+
+  defp owner_nav_link(assigns) do
+    ~H"""
+    <a
+      href={@href}
+      class={[
+        "flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200",
+        @active &&
+          "bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-white border border-purple-500/30",
+        !@active && "text-purple-300 hover:text-white hover:bg-purple-500/10"
+      ]}
+    >
+      <.icon name={@icon} class="w-5 h-5" />
+      {render_slot(@inner_block)}
+    </a>
+    """
+  end
 end
