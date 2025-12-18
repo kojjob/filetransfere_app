@@ -4,11 +4,14 @@ defmodule FiletransferCore.Accounts.User do
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
 
+  @roles ~w(user project_owner)
+
   schema "users" do
     field(:email, :string)
     field(:name, :string)
     field(:password, :string, virtual: true)
     field(:hashed_password, :string)
+    field(:role, :string, default: "user")
     field(:subscription_tier, :string, default: "free")
     field(:stripe_customer_id, :string)
     field(:stripe_subscription_id, :string)
@@ -96,4 +99,25 @@ defmodule FiletransferCore.Accounts.User do
     Bcrypt.no_user_verify()
     false
   end
+
+  @doc """
+  Changeset for updating user role. Only project owners can promote/demote users.
+  """
+  def role_changeset(user, attrs) do
+    user
+    |> cast(attrs, [:role])
+    |> validate_required([:role])
+    |> validate_inclusion(:role, @roles)
+  end
+
+  @doc """
+  Checks if a user has the project_owner role.
+  """
+  def project_owner?(%__MODULE__{role: "project_owner"}), do: true
+  def project_owner?(_), do: false
+
+  @doc """
+  Returns the list of valid roles.
+  """
+  def roles, do: @roles
 end

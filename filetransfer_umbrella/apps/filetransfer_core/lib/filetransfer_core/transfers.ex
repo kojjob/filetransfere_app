@@ -120,10 +120,14 @@ defmodule FiletransferCore.Transfers do
     total_bytes = Enum.sum(Enum.map(updated_transfer.chunks, & &1.bytes_uploaded))
 
     case update_transfer(updated_transfer, %{
-      uploaded_chunks: completed_chunks,
-      bytes_uploaded: total_bytes,
-      status: if(completed_chunks == updated_transfer.total_chunks, do: "completed", else: "uploading")
-    }) do
+           uploaded_chunks: completed_chunks,
+           bytes_uploaded: total_bytes,
+           status:
+             if(completed_chunks == updated_transfer.total_chunks,
+               do: "completed",
+               else: "uploading"
+             )
+         }) do
       {:ok, final_transfer} ->
         # Return with refreshed chunks
         {:ok, Repo.preload(final_transfer, :chunks, force: true)}
