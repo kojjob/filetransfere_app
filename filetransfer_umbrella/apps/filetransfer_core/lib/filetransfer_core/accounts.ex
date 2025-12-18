@@ -127,4 +127,68 @@ defmodule FiletransferCore.Accounts do
       api_calls_limit: :unlimited
     }
   end
+
+  # Role Management Functions
+
+  @doc """
+  Checks if a user is a project owner.
+  """
+  def project_owner?(%User{} = user), do: User.project_owner?(user)
+  def project_owner?(_), do: false
+
+  @doc """
+  Promotes a user to project owner role.
+  """
+  def promote_to_project_owner(%User{} = user) do
+    user
+    |> User.role_changeset(%{role: "project_owner"})
+    |> Repo.update()
+  end
+
+  @doc """
+  Demotes a user to regular user role.
+  """
+  def demote_to_user(%User{} = user) do
+    user
+    |> User.role_changeset(%{role: "user"})
+    |> Repo.update()
+  end
+
+  @doc """
+  Updates a user's role.
+  """
+  def update_user_role(%User{} = user, role) when role in ["user", "project_owner"] do
+    user
+    |> User.role_changeset(%{role: role})
+    |> Repo.update()
+  end
+
+  @doc """
+  Lists all project owners.
+  """
+  def list_project_owners do
+    User
+    |> where([u], u.role == "project_owner")
+    |> Repo.all()
+  end
+
+  @doc """
+  Lists all regular users (non-project-owners).
+  """
+  def list_regular_users do
+    User
+    |> where([u], u.role == "user")
+    |> Repo.all()
+  end
+
+  @doc """
+  Counts users by role.
+  """
+  def count_users_by_role do
+    User
+    |> group_by([u], u.role)
+    |> select([u], {u.role, count(u.id)})
+    |> Repo.all()
+    |> Enum.into(%{})
+  end
 end

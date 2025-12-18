@@ -6,7 +6,11 @@ defmodule FiletransferWeb.ErrorJSON do
   def render("error.json", %{message: message}), do: %{status: "error", message: message}
 
   def render("changeset_error.json", %{changeset: changeset}) do
-    %{status: "error", message: "Validation failed", errors: Ecto.Changeset.traverse_errors(changeset, &translate_error/1)}
+    %{
+      status: "error",
+      message: "Validation failed",
+      errors: Ecto.Changeset.traverse_errors(changeset, &translate_error/1)
+    }
   end
 
   def render("404.json", _), do: %{status: "error", message: "Not found"}

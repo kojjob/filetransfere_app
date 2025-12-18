@@ -45,7 +45,9 @@ defmodule FiletransferCore.Storage do
     |> S3.initiate_multipart_upload(key, content_type: content_type)
     |> ExAws.request()
     |> case do
-      {:ok, %{body: %{upload_id: upload_id}}} -> {:ok, upload_id}
+      {:ok, %{body: %{upload_id: upload_id}}} ->
+        {:ok, upload_id}
+
       {:error, error} ->
         Logger.error("Failed to initiate multipart upload: #{inspect(error)}")
         {:error, :upload_init_failed}
@@ -63,6 +65,7 @@ defmodule FiletransferCore.Storage do
       {:ok, %{headers: headers}} ->
         etag = get_header(headers, "etag") |> String.trim("\"")
         {:ok, etag}
+
       {:error, error} ->
         Logger.error("Failed to upload chunk #{part_number}: #{inspect(error)}")
         {:error, :chunk_upload_failed}
@@ -77,7 +80,9 @@ defmodule FiletransferCore.Storage do
     |> S3.complete_multipart_upload(key, upload_id, parts)
     |> ExAws.request()
     |> case do
-      {:ok, _} -> {:ok, key}
+      {:ok, _} ->
+        {:ok, key}
+
       {:error, error} ->
         Logger.error("Failed to complete multipart upload: #{inspect(error)}")
         {:error, :upload_complete_failed}
@@ -121,8 +126,12 @@ defmodule FiletransferCore.Storage do
     |> S3.get_object(key)
     |> ExAws.request()
     |> case do
-      {:ok, %{body: body}} -> {:ok, body}
-      {:error, {:http_error, 404, _}} -> {:error, :not_found}
+      {:ok, %{body: body}} ->
+        {:ok, body}
+
+      {:error, {:http_error, 404, _}} ->
+        {:error, :not_found}
+
       {:error, error} ->
         Logger.error("Failed to download file: #{inspect(error)}")
         {:error, :download_failed}

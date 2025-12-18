@@ -10,11 +10,14 @@ defmodule FiletransferWeb.ShareController do
 
   def create(conn, %{"id" => transfer_id} = params) do
     user = conn.assigns.current_user
+
     with {:ok, transfer} <- get_user_transfer(user.id, transfer_id),
          :ok <- validate_transfer_for_sharing(transfer),
          opts <- build_share_opts(params),
          {:ok, share_link} <- Sharing.create_share_link(transfer, user, opts) do
-      conn |> put_status(:created) |> json(%{status: "success", data: serialize_share_link(share_link)})
+      conn
+      |> put_status(:created)
+      |> json(%{status: "success", data: serialize_share_link(share_link)})
     end
   end
 
@@ -26,6 +29,7 @@ defmodule FiletransferWeb.ShareController do
 
   def show(conn, %{"id" => id}) do
     user = conn.assigns.current_user
+
     with {:ok, share_link} <- get_user_share_link(user.id, id) do
       json(conn, %{status: "success", data: serialize_share_link(share_link)})
     end
@@ -33,6 +37,7 @@ defmodule FiletransferWeb.ShareController do
 
   def update(conn, %{"id" => id} = params) do
     user = conn.assigns.current_user
+
     with {:ok, share_link} <- get_user_share_link(user.id, id),
          {:ok, updated} <- Sharing.update_share_link(share_link, build_update_attrs(params)) do
       json(conn, %{status: "success", data: serialize_share_link(updated)})
@@ -41,6 +46,7 @@ defmodule FiletransferWeb.ShareController do
 
   def delete(conn, %{"id" => id}) do
     user = conn.assigns.current_user
+
     with {:ok, share_link} <- get_user_share_link(user.id, id),
          {:ok, _} <- Sharing.delete_share_link(share_link) do
       json(conn, %{status: "success", message: "Share link deleted"})
@@ -50,14 +56,28 @@ defmodule FiletransferWeb.ShareController do
   def access(conn, %{"token" => token}) do
     case Sharing.get_share_link_by_token(token) do
       nil ->
-        conn |> put_status(:not_found) |> json(%{status: "error", message: "Share link not found"})
+        conn
+        |> put_status(:not_found)
+        |> json(%{status: "error", message: "Share link not found"})
+
       share_link ->
         if Sharing.password_required?(share_link) do
-          json(conn, %{status: "password_required", data: %{file_name: share_link.transfer.file_name, file_size: share_link.transfer.file_size}})
+          json(conn, %{
+            status: "password_required",
+            data: %{
+              file_name: share_link.transfer.file_name,
+              file_size: share_link.transfer.file_size
+            }
+          })
         else
           case Sharing.validate_share_link(token) do
-            {:ok, _} -> json(conn, %{status: "success", data: serialize_public_share(share_link)})
-            {:error, reason} -> conn |> put_status(:forbidden) |> json(%{status: "error", message: share_error_message(reason)})
+            {:ok, _} ->
+              json(conn, %{status: "success", data: serialize_public_share(share_link)})
+
+            {:error, reason} ->
+              conn
+              |> put_status(:forbidden)
+              |> json(%{status: "error", message: share_error_message(reason)})
           end
         end
     end
@@ -68,10 +88,23 @@ defmodule FiletransferWeb.ShareController do
       {:ok, share_link} ->
         {:ok, _} = Sharing.record_download(share_link)
         {:ok, url} = Storage.presigned_download_url(share_link.transfer.storage_path, 300)
-        json(conn, %{status: "success", data: %{download_url: url, file_name: share_link.transfer.file_name, file_size: share_link.transfer.file_size, expires_in: 300}})
+
+        json(conn, %{
+          status: "success",
+          data: %{
+            download_url: url,
+            file_name: share_link.transfer.file_name,
+            file_size: share_link.transfer.file_size,
+            expires_in: 300
+          }
+        })
+
       {:error, reason} ->
         status = if reason == :invalid_password, do: :unauthorized, else: :forbidden
-        conn |> put_status(status) |> json(%{status: "error", message: share_error_message(reason)})
+
+        conn
+        |> put_status(status)
+        |> json(%{status: "error", message: share_error_message(reason)})
     end
   end
 
@@ -102,8 +135,17 @@ defmodule FiletransferWeb.ShareController do
   defp build_share_opts(params) do
     opts = []
     opts = if params["password"], do: Keyword.put(opts, :password, params["password"]), else: opts
-    opts = if params["expires_in"], do: Keyword.put(opts, :expires_in, parse_int(params["expires_in"])), else: opts
-    opts = if params["max_downloads"], do: Keyword.put(opts, :max_downloads, parse_int(params["max_downloads"])), else: opts
+
+    opts =
+      if params["expires_in"],
+        do: Keyword.put(opts, :expires_in, parse_int(params["expires_in"])),
+        else: opts
+
+    opts =
+      if params["max_downloads"],
+        do: Keyword.put(opts, :max_downloads, parse_int(params["max_downloads"])),
+        else: opts
+
     opts
   end
 

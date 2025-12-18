@@ -10,6 +10,7 @@ defmodule FiletransferWeb.DownloadController do
 
   def download(conn, %{"id" => transfer_id}) do
     user = conn.assigns.current_user
+
     with {:ok, transfer} <- get_user_transfer(user.id, transfer_id),
          :ok <- validate_download(transfer),
          {:ok, body} <- Storage.download_file(transfer.storage_path) do
@@ -23,6 +24,7 @@ defmodule FiletransferWeb.DownloadController do
   def presigned_url(conn, %{"id" => transfer_id} = params) do
     user = conn.assigns.current_user
     expires_in = parse_int(params["expires_in"], 3600)
+
     with {:ok, transfer} <- get_user_transfer(user.id, transfer_id),
          :ok <- validate_download(transfer),
          {:ok, url} <- Storage.presigned_download_url(transfer.storage_path, expires_in) do
@@ -56,6 +58,7 @@ defmodule FiletransferWeb.DownloadController do
 
   defp parse_int(nil, default), do: default
   defp parse_int(val, _default) when is_integer(val), do: val
+
   defp parse_int(val, default) when is_binary(val) do
     case Integer.parse(val) do
       {i, _} -> i
