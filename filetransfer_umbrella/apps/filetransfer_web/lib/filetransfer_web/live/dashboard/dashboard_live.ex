@@ -284,8 +284,8 @@ defmodule FiletransferWeb.Dashboard.DashboardLive do
     case function_exported?(Usage, :get_user_stats, 1) do
       true ->
         case Usage.get_user_stats(user.id) do
-          nil -> base_stats
-          stats -> Map.merge(base_stats, stats)
+          {:ok, stats} -> Map.merge(base_stats, stats)
+          {:error, _} -> base_stats
         end
 
       false ->

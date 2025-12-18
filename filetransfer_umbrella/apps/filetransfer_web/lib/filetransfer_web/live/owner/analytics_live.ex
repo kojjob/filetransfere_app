@@ -221,7 +221,7 @@ defmodule FiletransferWeb.Owner.AnalyticsLive do
       <div class="bg-white rounded-xl shadow-sm border border-gray-100">
         <div class="p-4 border-b border-gray-100 flex items-center justify-between">
           <h2 class="text-lg font-semibold text-gray-900">Recent Platform Activity</h2>
-          <.link navigate={~p"/owner/activity"} class="text-sm text-purple-600 hover:text-purple-700">
+          <.link navigate={~p"/owner/analytics"} class="text-sm text-purple-600 hover:text-purple-700">
             View all →
           </.link>
         </div>
@@ -407,10 +407,8 @@ defmodule FiletransferWeb.Owner.AnalyticsLive do
 
     case function_exported?(Usage, :get_platform_metrics, 1) do
       true ->
-        case Usage.get_platform_metrics(time_range) do
-          nil -> base_metrics
-          metrics -> Map.merge(base_metrics, metrics)
-        end
+        {:ok, metrics} = Usage.get_platform_metrics(time_range)
+        Map.merge(base_metrics, metrics)
 
       false ->
         base_metrics

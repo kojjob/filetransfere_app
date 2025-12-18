@@ -34,6 +34,19 @@ defmodule FiletransferWeb.Router do
     get "/", PageController, :home
   end
 
+  # Public auth routes (no authentication required)
+  scope "/", FiletransferWeb do
+    pipe_through :browser
+
+    live "/login", Auth.LoginLive, :index
+    live "/register", Auth.RegisterLive, :index
+
+    # Session management (POST for login, DELETE for logout)
+    post "/session", SessionController, :create
+    delete "/session", SessionController, :delete
+    post "/registration", SessionController, :register
+  end
+
   scope "/api/auth", FiletransferWeb do
     pipe_through :api
     post "/register", AuthController, :register

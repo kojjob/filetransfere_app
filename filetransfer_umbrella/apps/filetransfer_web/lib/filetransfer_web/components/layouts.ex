@@ -241,13 +241,15 @@ defmodule FiletransferWeb.Layouts do
   @doc """
   User dashboard layout with sidebar navigation.
   For regular authenticated users to manage their file transfers.
+
+  This layout is used via `layout: {FiletransferWeb.Layouts, :user_dashboard}` in LiveView mount,
+  which passes content as `@inner_content` (not a slot).
   """
   attr :flash, :map, required: true
   attr :current_scope, :map, default: nil
   attr :current_user, :map, default: nil
   attr :page_title, :string, default: "Dashboard"
   attr :active_tab, :string, default: "dashboard"
-  slot :inner_block, required: true
 
   def user_dashboard(assigns) do
     ~H"""
@@ -325,7 +327,7 @@ defmodule FiletransferWeb.Layouts do
       <%!-- Main content --%>
       <main class="pl-64">
         <div class="p-8">
-          {render_slot(@inner_block)}
+          {@inner_content}
         </div>
       </main>
 
@@ -337,13 +339,15 @@ defmodule FiletransferWeb.Layouts do
   @doc """
   Project Owner dashboard layout with sidebar navigation.
   For project owners to manage the platform.
+
+  This layout is used via `layout: {FiletransferWeb.Layouts, :owner_dashboard}` in LiveView mount,
+  which passes content as `@inner_content` (not a slot).
   """
   attr :flash, :map, required: true
   attr :current_scope, :map, default: nil
   attr :current_user, :map, default: nil
   attr :page_title, :string, default: "Owner Dashboard"
   attr :active_tab, :string, default: "overview"
-  slot :inner_block, required: true
 
   def owner_dashboard(assigns) do
     ~H"""
@@ -429,7 +433,7 @@ defmodule FiletransferWeb.Layouts do
       <%!-- Main content --%>
       <main class="pl-64">
         <div class="p-8">
-          {render_slot(@inner_block)}
+          {@inner_content}
         </div>
       </main>
 
@@ -482,6 +486,22 @@ defmodule FiletransferWeb.Layouts do
       <.icon name={@icon} class="w-5 h-5" />
       {render_slot(@inner_block)}
     </a>
+    """
+  end
+
+  @doc """
+  Auth layout for login and registration pages.
+  Clean, minimal layout optimized for authentication flows.
+
+  This layout is used via `layout: {FiletransferWeb.Layouts, :auth}` in LiveView mount,
+  which passes content as `@inner_content` (not a slot).
+  """
+  def auth(assigns) do
+    ~H"""
+    <div class="min-h-screen">
+      {@inner_content}
+      <.flash_group flash={@flash} />
+    </div>
     """
   end
 end

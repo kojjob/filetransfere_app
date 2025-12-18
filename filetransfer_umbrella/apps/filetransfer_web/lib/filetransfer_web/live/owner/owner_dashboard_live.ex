@@ -6,8 +6,6 @@ defmodule FiletransferWeb.Owner.OwnerDashboardLive do
   use FiletransferWeb, :live_view
 
   alias FiletransferCore.Accounts
-  alias FiletransferCore.Transfers
-  alias FiletransferCore.Usage
 
   @impl true
   def mount(_params, _session, socket) do
