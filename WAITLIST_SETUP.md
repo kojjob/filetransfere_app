@@ -197,3 +197,5 @@ Then set `ALLOWED_ORIGINS` environment variable to your landing page domain.
 ### Issue: Duplicate email errors
 - **Solution**: This is expected - emails must be unique
 - Show user-friendly message: "This email is already on the waitlist"
+
+

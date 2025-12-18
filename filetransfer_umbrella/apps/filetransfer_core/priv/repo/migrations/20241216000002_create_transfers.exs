@@ -29,3 +29,5 @@ defmodule FiletransferCore.Repo.Migrations.CreateTransfers do
     create index(:transfers, [:inserted_at])
   end
 end
+
+

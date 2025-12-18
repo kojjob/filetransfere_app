@@ -18,3 +18,5 @@ defmodule FiletransferCore.Repo.Migrations.CreateUsageStats do
     create index(:usage_stats, [:user_id])
   end
 end
+
+

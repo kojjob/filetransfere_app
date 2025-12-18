@@ -23,63 +23,61 @@ defmodule FiletransferWeb.Owner.OwnerDashboardLive do
   def render(assigns) do
     ~H"""
     <div class="space-y-6">
-      <!-- Welcome Header -->
-      <div class="bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl p-6 text-white">
-        <div class="flex items-center gap-2 mb-2">
-          <.icon name="hero-shield-check" class="w-6 h-6" />
-          <span class="text-sm font-medium text-purple-200">Project Owner</span>
-        </div>
-        <h1 class="text-2xl font-bold">Platform Overview</h1>
-        <p class="text-purple-100 mt-1">Monitor and manage your file transfer platform.</p>
-      </div>
-      
-    <!-- Platform Stats -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <%!-- Platform Stats --%>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <.stat_card
           title="Total Users"
           value={@platform_stats.total_users}
           change={@platform_stats.users_change}
           icon="hero-users"
-          color="purple"
+          color="amber"
         />
         <.stat_card
           title="Total Transfers"
           value={@platform_stats.total_transfers}
           change={@platform_stats.transfers_change}
           icon="hero-arrow-up-tray"
-          color="blue"
+          color="emerald"
         />
         <.stat_card
           title="Active Shares"
           value={@platform_stats.active_shares}
           change={@platform_stats.shares_change}
-          icon="hero-share"
-          color="green"
+          icon="hero-link"
+          color="sky"
         />
         <.stat_card
           title="Storage Used"
           value={format_bytes(@platform_stats.total_storage)}
           change={@platform_stats.storage_change}
           icon="hero-server-stack"
-          color="orange"
+          color="coral"
         />
       </div>
-      
-    <!-- Main Content Grid -->
+
+      <%!-- Main Content Grid --%>
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <!-- Recent Users -->
-        <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-100">
-          <div class="p-4 border-b border-gray-100 flex items-center justify-between">
-            <h2 class="text-lg font-semibold text-gray-900">Recent Users</h2>
-            <.link navigate={~p"/owner/users"} class="text-sm text-purple-600 hover:text-purple-700">
-              View all →
+        <%!-- Recent Users --%>
+        <div class="lg:col-span-2 obsidian-card rounded-xl overflow-hidden">
+          <div class="px-5 py-4 flex items-center justify-between border-b border-white/5 [[data-theme=light]_&]:border-black/5">
+            <div class="flex items-center gap-3">
+              <div class="obsidian-icon-box">
+                <.icon name="hero-users" class="w-4 h-4 obsidian-text-secondary" />
+              </div>
+              <h2 class="text-sm font-semibold obsidian-text-primary">Recent Users</h2>
+            </div>
+            <.link navigate={~p"/owner/users"} class="text-xs font-medium obsidian-accent-amber hover:underline">
+              View all
             </.link>
           </div>
-          <div class="divide-y divide-gray-50">
+          <div class="divide-y divide-white/5 [[data-theme=light]_&]:divide-black/5">
             <%= if Enum.empty?(@recent_users) do %>
-              <div class="p-8 text-center text-gray-500">
-                <.icon name="hero-users" class="w-12 h-12 mx-auto text-gray-300 mb-3" />
-                <p>No users yet</p>
+              <div class="p-10 text-center">
+                <div class="obsidian-icon-box mx-auto mb-3 w-12 h-12">
+                  <.icon name="hero-users" class="w-6 h-6 obsidian-text-tertiary" />
+                </div>
+                <p class="text-sm obsidian-text-secondary">No users yet</p>
+                <p class="text-xs obsidian-text-tertiary mt-1">Users will appear here once they register</p>
               </div>
             <% else %>
               <%= for user <- @recent_users do %>
@@ -88,86 +86,106 @@ defmodule FiletransferWeb.Owner.OwnerDashboardLive do
             <% end %>
           </div>
         </div>
-        
-    <!-- Quick Stats & Actions -->
+
+        <%!-- Right Column --%>
         <div class="space-y-6">
-          <!-- User Distribution -->
-          <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-            <h3 class="font-semibold text-gray-900 mb-4">User Distribution</h3>
-            <div class="space-y-3">
+          <%!-- User Distribution --%>
+          <div class="obsidian-card rounded-xl p-5">
+            <div class="flex items-center gap-3 mb-5">
+              <div class="obsidian-icon-box">
+                <.icon name="hero-chart-pie" class="w-4 h-4 obsidian-text-secondary" />
+              </div>
+              <h3 class="text-sm font-semibold obsidian-text-primary">User Tiers</h3>
+            </div>
+            <div class="space-y-4">
               <.distribution_bar
                 label="Free"
                 value={@platform_stats.users_by_tier["free"] || 0}
                 total={@platform_stats.total_users}
-                color="gray"
+                color="slate"
               />
               <.distribution_bar
                 label="Pro"
                 value={@platform_stats.users_by_tier["pro"] || 0}
                 total={@platform_stats.total_users}
-                color="blue"
+                color="sky"
               />
               <.distribution_bar
                 label="Business"
                 value={@platform_stats.users_by_tier["business"] || 0}
                 total={@platform_stats.total_users}
-                color="purple"
+                color="amber"
               />
               <.distribution_bar
                 label="Enterprise"
                 value={@platform_stats.users_by_tier["enterprise"] || 0}
                 total={@platform_stats.total_users}
-                color="orange"
+                color="emerald"
               />
             </div>
           </div>
-          
-    <!-- Quick Actions -->
-          <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-            <h3 class="font-semibold text-gray-900 mb-4">Quick Actions</h3>
+
+          <%!-- Quick Actions --%>
+          <div class="obsidian-card rounded-xl p-5">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="obsidian-icon-box">
+                <.icon name="hero-bolt" class="w-4 h-4 obsidian-text-secondary" />
+              </div>
+              <h3 class="text-sm font-semibold obsidian-text-primary">Quick Actions</h3>
+            </div>
             <div class="space-y-2">
               <.link
                 navigate={~p"/owner/users"}
-                class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors"
+                class="flex items-center gap-3 p-3 rounded-lg transition-colors hover:bg-white/5 [[data-theme=light]_&]:hover:bg-black/5 group"
               >
-                <div class="p-2 bg-purple-100 rounded-lg">
-                  <.icon name="hero-user-plus" class="w-5 h-5 text-purple-600" />
+                <div class="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center group-hover:bg-amber-500/20 transition-colors">
+                  <.icon name="hero-user-plus" class="w-4 h-4 obsidian-accent-amber" />
                 </div>
-                <span class="font-medium text-gray-700">Manage Users</span>
+                <span class="text-sm font-medium obsidian-text-secondary group-hover:obsidian-text-primary transition-colors">Manage Users</span>
               </.link>
               <.link
                 navigate={~p"/owner/analytics"}
-                class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors"
+                class="flex items-center gap-3 p-3 rounded-lg transition-colors hover:bg-white/5 [[data-theme=light]_&]:hover:bg-black/5 group"
               >
-                <div class="p-2 bg-blue-100 rounded-lg">
-                  <.icon name="hero-chart-bar" class="w-5 h-5 text-blue-600" />
+                <div class="w-8 h-8 rounded-lg bg-sky-500/10 flex items-center justify-center group-hover:bg-sky-500/20 transition-colors">
+                  <.icon name="hero-chart-bar" class="w-4 h-4 obsidian-accent-sky" />
                 </div>
-                <span class="font-medium text-gray-700">View Analytics</span>
+                <span class="text-sm font-medium obsidian-text-secondary group-hover:obsidian-text-primary transition-colors">View Analytics</span>
               </.link>
               <.link
                 navigate={~p"/owner/settings"}
-                class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors"
+                class="flex items-center gap-3 p-3 rounded-lg transition-colors hover:bg-white/5 [[data-theme=light]_&]:hover:bg-black/5 group"
               >
-                <div class="p-2 bg-gray-100 rounded-lg">
-                  <.icon name="hero-cog-6-tooth" class="w-5 h-5 text-gray-600" />
+                <div class="w-8 h-8 rounded-lg bg-white/5 [[data-theme=light]_&]:bg-black/5 flex items-center justify-center group-hover:bg-white/10 [[data-theme=light]_&]:group-hover:bg-black/10 transition-colors">
+                  <.icon name="hero-cog-6-tooth" class="w-4 h-4 obsidian-text-secondary" />
                 </div>
-                <span class="font-medium text-gray-700">Platform Settings</span>
+                <span class="text-sm font-medium obsidian-text-secondary group-hover:obsidian-text-primary transition-colors">Platform Settings</span>
               </.link>
             </div>
           </div>
         </div>
       </div>
-      
-    <!-- Recent Activity -->
-      <div class="bg-white rounded-xl shadow-sm border border-gray-100">
-        <div class="p-4 border-b border-gray-100">
-          <h2 class="text-lg font-semibold text-gray-900">Recent Platform Activity</h2>
+
+      <%!-- Recent Activity --%>
+      <div class="obsidian-card rounded-xl overflow-hidden">
+        <div class="px-5 py-4 flex items-center gap-3 border-b border-white/5 [[data-theme=light]_&]:border-black/5">
+          <div class="obsidian-icon-box">
+            <.icon name="hero-clock" class="w-4 h-4 obsidian-text-secondary" />
+          </div>
+          <h2 class="text-sm font-semibold obsidian-text-primary">Recent Activity</h2>
+          <div class="flex items-center gap-1.5 ml-auto">
+            <span class="obsidian-live-dot"></span>
+            <span class="text-[11px] obsidian-text-tertiary">Live</span>
+          </div>
         </div>
-        <div class="divide-y divide-gray-50">
+        <div class="divide-y divide-white/5 [[data-theme=light]_&]:divide-black/5">
           <%= if Enum.empty?(@recent_activity) do %>
-            <div class="p-8 text-center text-gray-500">
-              <.icon name="hero-clock" class="w-12 h-12 mx-auto text-gray-300 mb-3" />
-              <p>No recent activity</p>
+            <div class="p-10 text-center">
+              <div class="obsidian-icon-box mx-auto mb-3 w-12 h-12">
+                <.icon name="hero-clock" class="w-6 h-6 obsidian-text-tertiary" />
+              </div>
+              <p class="text-sm obsidian-text-secondary">No recent activity</p>
+              <p class="text-xs obsidian-text-tertiary mt-1">Activity will appear here as users interact with the platform</p>
             </div>
           <% else %>
             <%= for activity <- @recent_activity do %>

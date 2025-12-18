@@ -23,70 +23,82 @@
   on Elixir colors. Build your own at: https://daisyui.com/theme-generator/ */
 @plugin "../vendor/daisyui-theme" {
   name: "dark";
-  default: false;
+  default: true;
   prefersdark: true;
   color-scheme: "dark";
-  --color-base-100: oklch(30.33% 0.016 252.42);
-  --color-base-200: oklch(25.26% 0.014 253.1);
-  --color-base-300: oklch(20.15% 0.012 254.09);
-  --color-base-content: oklch(97.807% 0.029 256.847);
-  --color-primary: oklch(58% 0.233 277.117);
-  --color-primary-content: oklch(96% 0.018 272.314);
-  --color-secondary: oklch(58% 0.233 277.117);
-  --color-secondary-content: oklch(96% 0.018 272.314);
-  --color-accent: oklch(60% 0.25 292.717);
-  --color-accent-content: oklch(96% 0.016 293.756);
-  --color-neutral: oklch(37% 0.044 257.287);
-  --color-neutral-content: oklch(98% 0.003 247.858);
-  --color-info: oklch(58% 0.158 241.966);
-  --color-info-content: oklch(97% 0.013 236.62);
-  --color-success: oklch(60% 0.118 184.704);
-  --color-success-content: oklch(98% 0.014 180.72);
-  --color-warning: oklch(66% 0.179 58.318);
-  --color-warning-content: oklch(98% 0.022 95.277);
-  --color-error: oklch(58% 0.253 17.585);
-  --color-error-content: oklch(96% 0.015 12.422);
-  --radius-selector: 0.25rem;
-  --radius-field: 0.25rem;
-  --radius-box: 0.5rem;
-  --size-selector: 0.21875rem;
-  --size-field: 0.21875rem;
-  --border: 1.5px;
+  /* Obsidian Studio - Premium Dark Theme */
+  --color-base-100: oklch(13% 0.005 285);
+  --color-base-200: oklch(11% 0.004 285);
+  --color-base-300: oklch(9% 0.003 285);
+  --color-base-content: oklch(95% 0.005 285);
+  /* Warm Amber accent - premium feel */
+  --color-primary: oklch(75% 0.15 75);
+  --color-primary-content: oklch(15% 0.02 75);
+  /* Muted sage for secondary */
+  --color-secondary: oklch(65% 0.08 165);
+  --color-secondary-content: oklch(98% 0.01 165);
+  /* Coral accent for highlights */
+  --color-accent: oklch(70% 0.14 25);
+  --color-accent-content: oklch(98% 0.01 25);
+  /* Warm neutral grays */
+  --color-neutral: oklch(25% 0.01 285);
+  --color-neutral-content: oklch(90% 0.005 285);
+  /* Semantic colors */
+  --color-info: oklch(70% 0.12 230);
+  --color-info-content: oklch(98% 0.01 230);
+  --color-success: oklch(72% 0.14 155);
+  --color-success-content: oklch(98% 0.01 155);
+  --color-warning: oklch(78% 0.15 80);
+  --color-warning-content: oklch(15% 0.02 80);
+  --color-error: oklch(65% 0.2 25);
+  --color-error-content: oklch(98% 0.01 25);
+  --radius-selector: 0.375rem;
+  --radius-field: 0.375rem;
+  --radius-box: 0.75rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
   --depth: 1;
   --noise: 0;
 }
 
 @plugin "../vendor/daisyui-theme" {
   name: "light";
-  default: true;
+  default: false;
   prefersdark: false;
   color-scheme: "light";
-  --color-base-100: oklch(98% 0 0);
-  --color-base-200: oklch(96% 0.001 286.375);
-  --color-base-300: oklch(92% 0.004 286.32);
-  --color-base-content: oklch(21% 0.006 285.885);
-  --color-primary: oklch(70% 0.213 47.604);
-  --color-primary-content: oklch(98% 0.016 73.684);
-  --color-secondary: oklch(55% 0.027 264.364);
-  --color-secondary-content: oklch(98% 0.002 247.839);
-  --color-accent: oklch(0% 0 0);
-  --color-accent-content: oklch(100% 0 0);
-  --color-neutral: oklch(44% 0.017 285.786);
-  --color-neutral-content: oklch(98% 0 0);
-  --color-info: oklch(62% 0.214 259.815);
-  --color-info-content: oklch(97% 0.014 254.604);
-  --color-success: oklch(70% 0.14 182.503);
-  --color-success-content: oklch(98% 0.014 180.72);
-  --color-warning: oklch(66% 0.179 58.318);
-  --color-warning-content: oklch(98% 0.022 95.277);
-  --color-error: oklch(58% 0.253 17.585);
-  --color-error-content: oklch(96% 0.015 12.422);
-  --radius-selector: 0.25rem;
-  --radius-field: 0.25rem;
-  --radius-box: 0.5rem;
-  --size-selector: 0.21875rem;
-  --size-field: 0.21875rem;
-  --border: 1.5px;
+  /* Obsidian Studio - Warm Paper Light Theme */
+  --color-base-100: oklch(98.5% 0.008 85);
+  --color-base-200: oklch(96% 0.01 85);
+  --color-base-300: oklch(92% 0.015 85);
+  --color-base-content: oklch(18% 0.01 285);
+  /* Deep amber primary */
+  --color-primary: oklch(55% 0.18 55);
+  --color-primary-content: oklch(98% 0.01 55);
+  /* Teal secondary */
+  --color-secondary: oklch(45% 0.12 195);
+  --color-secondary-content: oklch(98% 0.01 195);
+  /* Charcoal accent */
+  --color-accent: oklch(25% 0.02 285);
+  --color-accent-content: oklch(98% 0.005 285);
+  /* Warm gray neutrals */
+  --color-neutral: oklch(55% 0.02 285);
+  --color-neutral-content: oklch(98% 0.005 285);
+  /* Semantic colors */
+  --color-info: oklch(55% 0.15 240);
+  --color-info-content: oklch(98% 0.01 240);
+  --color-success: oklch(55% 0.16 155);
+  --color-success-content: oklch(98% 0.01 155);
+  --color-warning: oklch(65% 0.18 70);
+  --color-warning-content: oklch(18% 0.02 70);
+  --color-error: oklch(55% 0.22 25);
+  --color-error-content: oklch(98% 0.01 25);
+  --radius-selector: 0.375rem;
+  --radius-field: 0.375rem;
+  --radius-box: 0.75rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
   --depth: 1;
   --noise: 0;
 }
@@ -541,3 +553,363 @@ html {
 .benefits-list > div:nth-child(2) { animation-delay: 100ms; }
 .benefits-list > div:nth-child(3) { animation-delay: 200ms; }
 .benefits-list > div:nth-child(4) { animation-delay: 300ms; }
+
+/* ========================================
+   Obsidian Studio - Premium Dashboard System
+   ======================================== */
+
+/* Premium surface cards with subtle borders */
+.obsidian-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(12px);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.obsidian-card:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="light"] .obsidian-card {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+[data-theme="light"] .obsidian-card:hover {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06), 0 8px 24px rgba(0, 0, 0, 0.05);
+}
+
+/* Premium sidebar styling */
+.obsidian-sidebar {
+  background: rgba(10, 10, 12, 0.95);
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(20px);
+}
+
+[data-theme="light"] .obsidian-sidebar {
+  background: rgba(255, 255, 255, 0.95);
+  border-right: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* Premium navigation links */
+.obsidian-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.625rem 0.875rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.55);
+  transition: all 0.15s ease;
+}
+
+.obsidian-nav-link:hover {
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.obsidian-nav-link.active {
+  color: #f5a623;
+  background: rgba(245, 166, 35, 0.1);
+}
+
+[data-theme="light"] .obsidian-nav-link {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="light"] .obsidian-nav-link:hover {
+  color: rgba(0, 0, 0, 0.85);
+  background: rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="light"] .obsidian-nav-link.active {
+  color: #c47a00;
+  background: rgba(196, 122, 0, 0.08);
+}
+
+/* Premium stat numbers */
+.obsidian-stat {
+  font-family: 'JetBrains Mono', 'SF Mono', Monaco, 'Cascadia Code', monospace;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+/* Subtle gradient text for headings */
+.obsidian-heading {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.7) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+[data-theme="light"] .obsidian-heading {
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.7) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Premium icon containers */
+.obsidian-icon-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.625rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="light"] .obsidian-icon-box {
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+/* Premium progress bars */
+.obsidian-progress {
+  height: 0.375rem;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.obsidian-progress-bar {
+  height: 100%;
+  border-radius: 9999px;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme="light"] .obsidian-progress {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+/* Premium badge styles */
+.obsidian-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: 9999px;
+  letter-spacing: 0.01em;
+}
+
+.obsidian-badge-amber {
+  background: rgba(245, 166, 35, 0.15);
+  color: #f5a623;
+  border: 1px solid rgba(245, 166, 35, 0.2);
+}
+
+.obsidian-badge-emerald {
+  background: rgba(52, 211, 153, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(52, 211, 153, 0.2);
+}
+
+.obsidian-badge-sky {
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+.obsidian-badge-slate {
+  background: rgba(148, 163, 184, 0.15);
+  color: #94a3b8;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+[data-theme="light"] .obsidian-badge-amber {
+  background: rgba(196, 122, 0, 0.1);
+  color: #b45309;
+  border: 1px solid rgba(196, 122, 0, 0.2);
+}
+
+[data-theme="light"] .obsidian-badge-emerald {
+  background: rgba(16, 185, 129, 0.1);
+  color: #059669;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+[data-theme="light"] .obsidian-badge-sky {
+  background: rgba(14, 165, 233, 0.1);
+  color: #0284c7;
+  border: 1px solid rgba(14, 165, 233, 0.2);
+}
+
+[data-theme="light"] .obsidian-badge-slate {
+  background: rgba(100, 116, 139, 0.1);
+  color: #475569;
+  border: 1px solid rgba(100, 116, 139, 0.2);
+}
+
+/* Premium button styles */
+.obsidian-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+
+.obsidian-btn-primary {
+  background: linear-gradient(135deg, #f5a623 0%, #e09000 100%);
+  color: #000;
+  border: none;
+  box-shadow: 0 2px 8px rgba(245, 166, 35, 0.25);
+}
+
+.obsidian-btn-primary:hover {
+  box-shadow: 0 4px 16px rgba(245, 166, 35, 0.35);
+  transform: translateY(-1px);
+}
+
+.obsidian-btn-ghost {
+  background: transparent;
+  color: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.obsidian-btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.95);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+[data-theme="light"] .obsidian-btn-primary {
+  background: linear-gradient(135deg, #c47a00 0%, #a66800 100%);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(196, 122, 0, 0.2);
+}
+
+[data-theme="light"] .obsidian-btn-primary:hover {
+  box-shadow: 0 4px 16px rgba(196, 122, 0, 0.3);
+}
+
+[data-theme="light"] .obsidian-btn-ghost {
+  color: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .obsidian-btn-ghost:hover {
+  background: rgba(0, 0, 0, 0.04);
+  color: rgba(0, 0, 0, 0.85);
+  border-color: rgba(0, 0, 0, 0.15);
+}
+
+/* Premium divider */
+.obsidian-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.08) 50%, transparent 100%);
+}
+
+[data-theme="light"] .obsidian-divider {
+  background: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.08) 50%, transparent 100%);
+}
+
+/* Premium avatar ring */
+.obsidian-avatar-ring {
+  padding: 2px;
+  background: linear-gradient(135deg, #f5a623 0%, #e09000 100%);
+  border-radius: 9999px;
+}
+
+[data-theme="light"] .obsidian-avatar-ring {
+  background: linear-gradient(135deg, #c47a00 0%, #a66800 100%);
+}
+
+/* Subtle pulse animation for live indicators */
+@keyframes obsidian-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.obsidian-live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: #34d399;
+  animation: obsidian-pulse 2s ease-in-out infinite;
+}
+
+/* Premium table row hover */
+.obsidian-table-row {
+  transition: background 0.15s ease;
+}
+
+.obsidian-table-row:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+[data-theme="light"] .obsidian-table-row:hover {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+/* Premium text colors */
+.obsidian-text-primary {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.obsidian-text-secondary {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.obsidian-text-tertiary {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+[data-theme="light"] .obsidian-text-primary {
+  color: rgba(0, 0, 0, 0.9);
+}
+
+[data-theme="light"] .obsidian-text-secondary {
+  color: rgba(0, 0, 0, 0.55);
+}
+
+[data-theme="light"] .obsidian-text-tertiary {
+  color: rgba(0, 0, 0, 0.35);
+}
+
+/* Premium accent colors */
+.obsidian-accent-amber {
+  color: #f5a623;
+}
+
+.obsidian-accent-emerald {
+  color: #34d399;
+}
+
+.obsidian-accent-sky {
+  color: #38bdf8;
+}
+
+.obsidian-accent-coral {
+  color: #f97171;
+}
+
+[data-theme="light"] .obsidian-accent-amber {
+  color: #c47a00;
+}
+
+[data-theme="light"] .obsidian-accent-emerald {
+  color: #059669;
+}
+
+[data-theme="light"] .obsidian-accent-sky {
+  color: #0284c7;
+}
+
+[data-theme="light"] .obsidian-accent-coral {
+  color: #dc2626;
+}

@@ -351,87 +351,98 @@ defmodule FiletransferWeb.Layouts do
 
   def owner_dashboard(assigns) do
     ~H"""
-    <div class="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900">
+    <div class="min-h-screen bg-[#0a0a0b] dark:bg-[#0a0a0b] [[data-theme=light]_&]:bg-[#faf9f7]">
       <%!-- Sidebar --%>
-      <aside class="fixed inset-y-0 left-0 w-64 bg-slate-900/80 backdrop-blur-xl border-r border-purple-500/20">
-        <%!-- Logo with Owner badge --%>
-        <div class="flex items-center gap-3 px-6 py-5 border-b border-purple-500/20">
-          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center">
-            <.icon name="hero-shield-check" class="w-5 h-5 text-white" />
+      <aside class="obsidian-sidebar fixed inset-y-0 left-0 w-60 flex flex-col">
+        <%!-- Logo --%>
+        <div class="flex items-center gap-3 px-5 py-4">
+          <div class="obsidian-avatar-ring">
+            <div class="w-8 h-8 rounded-full bg-[#0a0a0b] [[data-theme=light]_&]:bg-white flex items-center justify-center">
+              <.icon name="hero-bolt" class="w-4 h-4 obsidian-accent-amber" />
+            </div>
           </div>
           <div>
-            <h1 class="text-lg font-bold text-white">ZipShare</h1>
-            <p class="text-xs text-purple-300">Project Owner</p>
+            <h1 class="text-sm font-semibold obsidian-text-primary tracking-tight">ZipShare</h1>
+            <p class="text-[11px] obsidian-text-tertiary uppercase tracking-wider">Owner</p>
           </div>
         </div>
 
         <%!-- Navigation --%>
-        <nav class="px-4 py-6 space-y-2">
-          <.owner_nav_link href="/owner" icon="hero-chart-pie" active={@active_tab == "overview"}>
+        <nav class="flex-1 px-3 py-4 space-y-1">
+          <.obsidian_nav_link href="/owner" icon="hero-squares-2x2" active={@active_tab == "overview"}>
             Overview
-          </.owner_nav_link>
-          <.owner_nav_link href="/owner/users" icon="hero-users" active={@active_tab == "users"}>
+          </.obsidian_nav_link>
+          <.obsidian_nav_link href="/owner/users" icon="hero-users" active={@active_tab == "users"}>
             Users
-          </.owner_nav_link>
-          <.owner_nav_link
-            href="/owner/analytics"
-            icon="hero-chart-bar-square"
-            active={@active_tab == "analytics"}
-          >
+          </.obsidian_nav_link>
+          <.obsidian_nav_link href="/owner/analytics" icon="hero-chart-bar" active={@active_tab == "analytics"}>
             Analytics
-          </.owner_nav_link>
-          <.owner_nav_link
-            href="/owner/settings"
-            icon="hero-cog-8-tooth"
-            active={@active_tab == "settings"}
-          >
+          </.obsidian_nav_link>
+          <.obsidian_nav_link href="/owner/settings" icon="hero-cog-6-tooth" active={@active_tab == "settings"}>
             Settings
-          </.owner_nav_link>
+          </.obsidian_nav_link>
         </nav>
 
-        <%!-- Divider --%>
-        <div class="px-4 py-2">
-          <div class="border-t border-purple-500/20"></div>
+        <%!-- Divider with label --%>
+        <div class="px-5">
+          <div class="obsidian-divider"></div>
         </div>
 
         <%!-- Quick Links --%>
-        <nav class="px-4 py-2 space-y-2">
-          <p class="px-4 text-xs font-semibold text-purple-400 uppercase tracking-wider">
-            Quick Links
+        <nav class="px-3 py-4 space-y-1">
+          <p class="px-3 mb-2 text-[10px] font-medium obsidian-text-tertiary uppercase tracking-widest">
+            Switch View
           </p>
-          <.owner_nav_link href="/dashboard" icon="hero-home" active={false}>
-            User Dashboard
-          </.owner_nav_link>
-          <.owner_nav_link href="/admin/waitlist" icon="hero-queue-list" active={false}>
-            Admin Panel
-          </.owner_nav_link>
+          <.obsidian_nav_link href="/dashboard" icon="hero-home" active={false}>
+            Dashboard
+          </.obsidian_nav_link>
+          <.obsidian_nav_link href="/admin/waitlist" icon="hero-clipboard-document-list" active={false}>
+            Admin
+          </.obsidian_nav_link>
         </nav>
 
-        <%!-- User info & logout --%>
-        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-purple-500/20">
-          <div class="flex items-center gap-3 px-2 py-2 mb-2">
-            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center">
-              <.icon name="hero-shield-check-mini" class="w-4 h-4 text-white" />
+        <%!-- User section --%>
+        <div class="p-3 mt-auto">
+          <div class="obsidian-card rounded-xl p-3">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500/20 to-orange-500/20 flex items-center justify-center">
+                <span class="text-xs font-semibold obsidian-accent-amber">
+                  {if @current_user, do: String.first(@current_user.email) |> String.upcase(), else: "O"}
+                </span>
+              </div>
+              <div class="flex-1 min-w-0">
+                <p class="text-sm font-medium obsidian-text-primary truncate">
+                  {if @current_user, do: @current_user.name || @current_user.email, else: "Owner"}
+                </p>
+                <div class="flex items-center gap-1.5">
+                  <span class="obsidian-live-dot"></span>
+                  <span class="text-[11px] obsidian-text-tertiary">Online</span>
+                </div>
+              </div>
             </div>
-            <div class="flex-1 min-w-0">
-              <p class="text-sm font-medium text-white truncate">
-                {if @current_user, do: @current_user.name || @current_user.email, else: "Owner"}
-              </p>
-              <p class="text-xs text-purple-300">Project Owner</p>
-            </div>
+            <a
+              href="/api/auth/logout"
+              class="flex items-center justify-center gap-2 mt-3 py-2 rounded-lg obsidian-text-secondary hover:obsidian-text-primary transition-colors hover:bg-white/5 [[data-theme=light]_&]:hover:bg-black/5"
+            >
+              <.icon name="hero-arrow-right-on-rectangle" class="w-4 h-4" />
+              <span class="text-xs font-medium">Sign out</span>
+            </a>
           </div>
-          <a
-            href="/api/auth/logout"
-            class="flex items-center gap-2 px-4 py-2 text-purple-300 hover:text-white transition-colors"
-          >
-            <.icon name="hero-arrow-right-on-rectangle" class="w-4 h-4" />
-            <span class="text-sm">Sign out</span>
-          </a>
         </div>
       </aside>
 
       <%!-- Main content --%>
-      <main class="pl-64">
+      <main class="pl-60">
+        <%!-- Top bar with theme toggle --%>
+        <header class="sticky top-0 z-10 flex items-center justify-between px-8 py-4 bg-[#0a0a0b]/80 [[data-theme=light]_&]:bg-[#faf9f7]/80 backdrop-blur-xl border-b border-white/5 [[data-theme=light]_&]:border-black/5">
+          <div class="flex items-center gap-3">
+            <h2 class="text-lg font-semibold obsidian-text-primary">{@page_title}</h2>
+          </div>
+          <div class="flex items-center gap-3">
+            <.theme_toggle />
+          </div>
+        </header>
+
         <div class="p-8">
           {@inner_content}
         </div>
@@ -485,6 +496,20 @@ defmodule FiletransferWeb.Layouts do
     >
       <.icon name={@icon} class="w-5 h-5" />
       {render_slot(@inner_block)}
+    </a>
+    """
+  end
+
+  attr :href, :string, required: true
+  attr :icon, :string, required: true
+  attr :active, :boolean, default: false
+  slot :inner_block, required: true
+
+  defp obsidian_nav_link(assigns) do
+    ~H"""
+    <a href={@href} class={["obsidian-nav-link", @active && "active"]}>
+      <.icon name={@icon} class="w-[18px] h-[18px]" />
+      <span>{render_slot(@inner_block)}</span>
     </a>
     """
   end

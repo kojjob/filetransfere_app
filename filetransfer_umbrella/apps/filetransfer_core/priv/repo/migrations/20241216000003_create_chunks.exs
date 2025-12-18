@@ -20,3 +20,5 @@ defmodule FiletransferCore.Repo.Migrations.CreateChunks do
     create index(:chunks, [:transfer_id, :status])
   end
 end
+
+

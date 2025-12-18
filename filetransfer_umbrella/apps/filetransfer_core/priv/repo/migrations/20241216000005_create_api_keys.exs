@@ -20,3 +20,5 @@ defmodule FiletransferCore.Repo.Migrations.CreateApiKeys do
     create index(:api_keys, [:is_active])
   end
 end
+
+
