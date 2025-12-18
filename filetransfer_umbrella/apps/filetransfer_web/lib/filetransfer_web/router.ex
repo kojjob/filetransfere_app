@@ -32,6 +32,7 @@ defmodule FiletransferWeb.Router do
   scope "/", FiletransferWeb do
     pipe_through :browser
     get "/", PageController, :home
+    live "/dashboard", DashboardLive, :index
   end
 
   # Public auth routes (no authentication required)
