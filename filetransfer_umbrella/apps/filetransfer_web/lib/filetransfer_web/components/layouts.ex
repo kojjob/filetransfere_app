@@ -122,31 +122,34 @@ defmodule FiletransferWeb.Layouts do
   """
   def theme_toggle(assigns) do
     ~H"""
-    <div class="card relative flex flex-row items-center border-2 border-base-300 bg-base-300 rounded-full">
-      <div class="absolute w-1/3 h-full rounded-full border-1 border-base-200 bg-base-100 brightness-200 left-0 [[data-theme=light]_&]:left-1/3 [[data-theme=dark]_&]:left-2/3 transition-[left]" />
+    <div class="relative flex flex-row items-center bg-white/5 [[data-theme=light]_&]:bg-black/5 rounded-lg p-0.5">
+      <div class="absolute w-1/3 h-[calc(100%-4px)] rounded-md bg-white/10 [[data-theme=light]_&]:bg-black/10 left-0.5 [[data-theme=light]_&]:left-[calc(33.33%+2px)] [[data-theme=dark]_&]:left-[calc(66.66%+2px)] transition-all duration-200" />
 
       <button
-        class="flex p-2 cursor-pointer w-1/3"
+        class="relative flex items-center justify-center p-2 cursor-pointer w-1/3 z-10 transition-colors"
         phx-click={JS.dispatch("phx:set-theme")}
         data-phx-theme="system"
+        title="System theme"
       >
-        <.icon name="hero-computer-desktop-micro" class="size-4 opacity-75 hover:opacity-100" />
+        <.icon name="hero-computer-desktop-micro" class="size-4 obsidian-text-secondary hover:obsidian-text-primary transition-colors" />
       </button>
 
       <button
-        class="flex p-2 cursor-pointer w-1/3"
+        class="relative flex items-center justify-center p-2 cursor-pointer w-1/3 z-10 transition-colors"
         phx-click={JS.dispatch("phx:set-theme")}
         data-phx-theme="light"
+        title="Light theme"
       >
-        <.icon name="hero-sun-micro" class="size-4 opacity-75 hover:opacity-100" />
+        <.icon name="hero-sun-micro" class="size-4 obsidian-text-secondary hover:obsidian-text-primary transition-colors" />
       </button>
 
       <button
-        class="flex p-2 cursor-pointer w-1/3"
+        class="relative flex items-center justify-center p-2 cursor-pointer w-1/3 z-10 transition-colors"
         phx-click={JS.dispatch("phx:set-theme")}
         data-phx-theme="dark"
+        title="Dark theme"
       >
-        <.icon name="hero-moon-micro" class="size-4 opacity-75 hover:opacity-100" />
+        <.icon name="hero-moon-micro" class="size-4 obsidian-text-secondary hover:obsidian-text-primary transition-colors" />
       </button>
     </div>
     """
@@ -351,19 +354,17 @@ defmodule FiletransferWeb.Layouts do
 
   def owner_dashboard(assigns) do
     ~H"""
-    <div class="min-h-screen bg-[#0a0a0b] dark:bg-[#0a0a0b] [[data-theme=light]_&]:bg-[#faf9f7]">
+    <div class="min-h-screen bg-[#0f0d0a] dark:bg-[#0f0d0a] [[data-theme=light]_&]:bg-[#faf8f5]">
       <%!-- Sidebar --%>
       <aside class="obsidian-sidebar fixed inset-y-0 left-0 w-60 flex flex-col">
         <%!-- Logo --%>
-        <div class="flex items-center gap-3 px-5 py-4">
-          <div class="obsidian-avatar-ring">
-            <div class="w-8 h-8 rounded-full bg-[#0a0a0b] [[data-theme=light]_&]:bg-white flex items-center justify-center">
-              <.icon name="hero-bolt" class="w-4 h-4 obsidian-accent-amber" />
-            </div>
+        <div class="flex items-center gap-3 px-5 py-5 border-b border-[#d4af37]/10 [[data-theme=light]_&]:border-[#8b6914]/10">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#d4af37] to-[#c49b28] flex items-center justify-center shadow-lg shadow-[#d4af37]/20">
+            <.icon name="hero-paper-airplane" class="w-5 h-5 text-[#1a1612] -rotate-45" />
           </div>
           <div>
-            <h1 class="text-sm font-semibold obsidian-text-primary tracking-tight">ZipShare</h1>
-            <p class="text-[11px] obsidian-text-tertiary uppercase tracking-wider">Owner</p>
+            <h1 class="text-base font-bold obsidian-text-primary tracking-tight">FlowDownload</h1>
+            <p class="text-[10px] obsidian-accent-amber uppercase tracking-widest">Owner Portal</p>
           </div>
         </div>
 
@@ -402,30 +403,30 @@ defmodule FiletransferWeb.Layouts do
         </nav>
 
         <%!-- User section --%>
-        <div class="p-3 mt-auto">
-          <div class="obsidian-card rounded-xl p-3">
-            <div class="flex items-center gap-3">
-              <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500/20 to-orange-500/20 flex items-center justify-center">
-                <span class="text-xs font-semibold obsidian-accent-amber">
+        <div class="p-3 mt-auto border-t border-[#d4af37]/10 [[data-theme=light]_&]:border-[#8b6914]/10">
+          <div class="flex items-center gap-3 p-2">
+            <div class="obsidian-avatar-ring">
+              <div class="w-8 h-8 rounded-full bg-[#0f0d0a] [[data-theme=light]_&]:bg-white flex items-center justify-center">
+                <span class="text-xs font-bold obsidian-accent-amber">
                   {if @current_user, do: String.first(@current_user.email) |> String.upcase(), else: "O"}
                 </span>
               </div>
-              <div class="flex-1 min-w-0">
-                <p class="text-sm font-medium obsidian-text-primary truncate">
-                  {if @current_user, do: @current_user.name || @current_user.email, else: "Owner"}
-                </p>
-                <div class="flex items-center gap-1.5">
-                  <span class="obsidian-live-dot"></span>
-                  <span class="text-[11px] obsidian-text-tertiary">Online</span>
-                </div>
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-medium obsidian-text-primary truncate">
+                {if @current_user, do: @current_user.name || @current_user.email, else: "Owner"}
+              </p>
+              <div class="flex items-center gap-1.5">
+                <span class="obsidian-live-dot"></span>
+                <span class="text-[10px] obsidian-text-tertiary">Active now</span>
               </div>
             </div>
             <a
               href="/api/auth/logout"
-              class="flex items-center justify-center gap-2 mt-3 py-2 rounded-lg obsidian-text-secondary hover:obsidian-text-primary transition-colors hover:bg-white/5 [[data-theme=light]_&]:hover:bg-black/5"
+              class="p-2 rounded-lg obsidian-text-secondary hover:obsidian-accent-coral transition-colors hover:bg-white/5 [[data-theme=light]_&]:hover:bg-black/5"
+              title="Sign out"
             >
               <.icon name="hero-arrow-right-on-rectangle" class="w-4 h-4" />
-              <span class="text-xs font-medium">Sign out</span>
             </a>
           </div>
         </div>
@@ -434,11 +435,15 @@ defmodule FiletransferWeb.Layouts do
       <%!-- Main content --%>
       <main class="pl-60">
         <%!-- Top bar with theme toggle --%>
-        <header class="sticky top-0 z-10 flex items-center justify-between px-8 py-4 bg-[#0a0a0b]/80 [[data-theme=light]_&]:bg-[#faf9f7]/80 backdrop-blur-xl border-b border-white/5 [[data-theme=light]_&]:border-black/5">
+        <header class="sticky top-0 z-10 flex items-center justify-between px-8 py-4 bg-[#0f0d0a]/90 [[data-theme=light]_&]:bg-[#faf8f5]/90 backdrop-blur-xl border-b border-[#d4af37]/10 [[data-theme=light]_&]:border-[#8b6914]/10">
           <div class="flex items-center gap-3">
             <h2 class="text-lg font-semibold obsidian-text-primary">{@page_title}</h2>
           </div>
-          <div class="flex items-center gap-3">
+          <div class="flex items-center gap-4">
+            <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#d4af37]/10 [[data-theme=light]_&]:bg-[#8b6914]/10">
+              <span class="obsidian-live-dot"></span>
+              <span class="text-xs font-medium obsidian-accent-emerald">System Online</span>
+            </div>
             <.theme_toggle />
           </div>
         </header>

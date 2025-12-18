@@ -9,8 +9,9 @@ defmodule FiletransferWeb.Owner.SettingsLive do
   def mount(_params, _session, socket) do
     socket =
       socket
-      |> assign(:page_title, "Platform Settings")
-      |> assign(:active_tab, "general")
+      |> assign(:page_title, "Settings")
+      |> assign(:active_tab, "settings")
+      |> assign(:settings_tab, "general")
       |> assign(:settings, load_settings())
       |> assign(:unsaved_changes, false)
 
@@ -20,53 +21,28 @@ defmodule FiletransferWeb.Owner.SettingsLive do
   @impl true
   def handle_params(params, _uri, socket) do
     tab = Map.get(params, "tab", "general")
-    {:noreply, assign(socket, :active_tab, tab)}
+    {:noreply, assign(socket, :settings_tab, tab)}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <div class="space-y-6">
-      <!-- Header -->
-      <div class="bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl p-6 text-white">
-        <div class="flex items-center gap-2 mb-2">
-          <.icon name="hero-cog-6-tooth" class="w-6 h-6" />
-          <span class="text-sm font-medium text-purple-200">Platform Configuration</span>
-        </div>
-        <h1 class="text-2xl font-bold">Platform Settings</h1>
-        <p class="text-purple-100 mt-1">Configure platform-wide settings and feature flags.</p>
-      </div>
-      
-    <!-- Settings Navigation -->
-      <div class="bg-white rounded-xl shadow-sm border border-gray-100">
-        <div class="border-b border-gray-100">
-          <nav class="flex gap-1 p-2">
-            <.tab_button tab="general" current={@active_tab} label="General" icon="hero-cog-6-tooth" />
-            <.tab_button tab="storage" current={@active_tab} label="Storage" icon="hero-server-stack" />
-            <.tab_button
-              tab="transfers"
-              current={@active_tab}
-              label="Transfers"
-              icon="hero-arrow-up-tray"
-            />
-            <.tab_button
-              tab="security"
-              current={@active_tab}
-              label="Security"
-              icon="hero-shield-check"
-            />
-            <.tab_button tab="email" current={@active_tab} label="Email" icon="hero-envelope" />
-            <.tab_button
-              tab="maintenance"
-              current={@active_tab}
-              label="Maintenance"
-              icon="hero-wrench-screwdriver"
-            />
+      <%!-- Settings Navigation --%>
+      <div class="obsidian-card rounded-xl overflow-hidden">
+        <div class="border-b border-white/5 [[data-theme=light]_&]:border-black/5">
+          <nav class="flex gap-1 p-2 overflow-x-auto">
+            <.tab_button tab="general" current={@settings_tab} label="General" icon="hero-cog-6-tooth" />
+            <.tab_button tab="storage" current={@settings_tab} label="Storage" icon="hero-server-stack" />
+            <.tab_button tab="transfers" current={@settings_tab} label="Transfers" icon="hero-arrow-up-tray" />
+            <.tab_button tab="security" current={@settings_tab} label="Security" icon="hero-shield-check" />
+            <.tab_button tab="email" current={@settings_tab} label="Email" icon="hero-envelope" />
+            <.tab_button tab="maintenance" current={@settings_tab} label="Maintenance" icon="hero-wrench-screwdriver" />
           </nav>
         </div>
 
         <div class="p-6">
-          <%= case @active_tab do %>
+          <%= case @settings_tab do %>
             <% "general" -> %>
               <.general_settings settings={@settings} />
             <% "storage" -> %>
@@ -84,20 +60,23 @@ defmodule FiletransferWeb.Owner.SettingsLive do
           <% end %>
         </div>
       </div>
-      
-    <!-- Save Button -->
+
+      <%!-- Save Button --%>
       <div class="flex justify-end gap-3">
         <button
           type="button"
           phx-click="reset_settings"
-          class="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+          class="obsidian-btn obsidian-btn-ghost"
         >
           Reset to Defaults
         </button>
         <button
           type="button"
           phx-click="save_settings"
-          class={"px-4 py-2 text-white rounded-lg transition-colors #{if @unsaved_changes, do: "bg-purple-600 hover:bg-purple-700", else: "bg-gray-400 cursor-not-allowed"}"}
+          class={[
+            "obsidian-btn",
+            if(@unsaved_changes, do: "obsidian-btn-primary", else: "opacity-50 cursor-not-allowed bg-white/10 [[data-theme=light]_&]:bg-black/10 obsidian-text-tertiary")
+          ]}
           disabled={not @unsaved_changes}
         >
           Save Changes
@@ -116,16 +95,16 @@ defmodule FiletransferWeb.Owner.SettingsLive do
         assigns,
         :class,
         if active do
-          "flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg bg-purple-100 text-purple-700"
+          "flex items-center gap-2 px-3 py-2 text-xs font-medium rounded-lg bg-[#d4af37]/10 obsidian-accent-amber transition-all"
         else
-          "flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg text-gray-600 hover:bg-gray-100"
+          "flex items-center gap-2 px-3 py-2 text-xs font-medium rounded-lg obsidian-text-tertiary hover:obsidian-text-secondary hover:bg-white/5 [[data-theme=light]_&]:hover:bg-black/5 transition-all"
         end
       )
 
     ~H"""
     <.link patch={~p"/owner/settings?tab=#{@tab}"} class={@class}>
       <.icon name={@icon} class="w-4 h-4" />
-      {@label}
+      <span class="hidden sm:inline">{@label}</span>
     </.link>
     """
   end
@@ -135,11 +114,11 @@ defmodule FiletransferWeb.Owner.SettingsLive do
     ~H"""
     <div class="space-y-6">
       <div>
-        <h3 class="text-lg font-semibold text-gray-900 mb-4">General Settings</h3>
-        <p class="text-sm text-gray-500 mb-6">Configure basic platform settings and branding.</p>
+        <h3 class="text-sm font-semibold obsidian-text-primary mb-1">General Settings</h3>
+        <p class="text-xs obsidian-text-tertiary">Configure basic platform settings and branding.</p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
         <.setting_field
           label="Platform Name"
           description="The name displayed throughout the application"
@@ -171,36 +150,18 @@ defmodule FiletransferWeb.Owner.SettingsLive do
           type="select"
           name="default_timezone"
           value={@settings.default_timezone}
-          options={[
-            {"UTC", "UTC"},
-            {"US/Eastern", "US/Eastern"},
-            {"US/Pacific", "US/Pacific"},
-            {"Europe/London", "Europe/London"}
-          ]}
+          options={[{"UTC", "UTC"}, {"US/Eastern", "US/Eastern"}, {"US/Pacific", "US/Pacific"}, {"Europe/London", "Europe/London"}]}
         />
       </div>
 
-      <div class="border-t border-gray-100 pt-6">
-        <h4 class="font-medium text-gray-900 mb-4">Feature Flags</h4>
+      <div class="obsidian-divider my-6"></div>
+
+      <div>
+        <h4 class="text-sm font-medium obsidian-text-primary mb-4">Feature Flags</h4>
         <div class="space-y-4">
-          <.toggle_setting
-            label="User Registration"
-            description="Allow new users to register"
-            name="allow_registration"
-            enabled={@settings.allow_registration}
-          />
-          <.toggle_setting
-            label="Public Shares"
-            description="Allow users to create public share links"
-            name="allow_public_shares"
-            enabled={@settings.allow_public_shares}
-          />
-          <.toggle_setting
-            label="API Access"
-            description="Enable API access for users"
-            name="api_enabled"
-            enabled={@settings.api_enabled}
-          />
+          <.toggle_setting label="User Registration" description="Allow new users to register" name="allow_registration" enabled={@settings.allow_registration} />
+          <.toggle_setting label="Public Shares" description="Allow users to create public share links" name="allow_public_shares" enabled={@settings.allow_public_shares} />
+          <.toggle_setting label="API Access" description="Enable API access for users" name="api_enabled" enabled={@settings.api_enabled} />
         </div>
       </div>
     </div>
@@ -212,72 +173,39 @@ defmodule FiletransferWeb.Owner.SettingsLive do
     ~H"""
     <div class="space-y-6">
       <div>
-        <h3 class="text-lg font-semibold text-gray-900 mb-4">Storage Settings</h3>
-        <p class="text-sm text-gray-500 mb-6">Configure storage limits and file handling options.</p>
+        <h3 class="text-sm font-semibold obsidian-text-primary mb-1">Storage Settings</h3>
+        <p class="text-xs obsidian-text-tertiary">Configure storage limits and file handling options.</p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <.setting_field
-          label="Max File Size (MB)"
-          description="Maximum size for individual file uploads"
-          type="number"
-          name="max_file_size_mb"
-          value={@settings.max_file_size_mb}
-        />
-
-        <.setting_field
-          label="Default User Storage (GB)"
-          description="Default storage quota for free users"
-          type="number"
-          name="default_storage_gb"
-          value={@settings.default_storage_gb}
-        />
-
-        <.setting_field
-          label="Pro Storage (GB)"
-          description="Storage quota for Pro users"
-          type="number"
-          name="pro_storage_gb"
-          value={@settings.pro_storage_gb}
-        />
-
-        <.setting_field
-          label="Business Storage (GB)"
-          description="Storage quota for Business users"
-          type="number"
-          name="business_storage_gb"
-          value={@settings.business_storage_gb}
-        />
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <.setting_field label="Max File Size (MB)" description="Maximum size for individual file uploads" type="number" name="max_file_size_mb" value={@settings.max_file_size_mb} />
+        <.setting_field label="Default User Storage (GB)" description="Default storage quota for free users" type="number" name="default_storage_gb" value={@settings.default_storage_gb} />
+        <.setting_field label="Pro Storage (GB)" description="Storage quota for Pro users" type="number" name="pro_storage_gb" value={@settings.pro_storage_gb} />
+        <.setting_field label="Business Storage (GB)" description="Storage quota for Business users" type="number" name="business_storage_gb" value={@settings.business_storage_gb} />
       </div>
 
-      <div class="border-t border-gray-100 pt-6">
-        <h4 class="font-medium text-gray-900 mb-4">Allowed File Types</h4>
-        <div class="bg-gray-50 rounded-lg p-4">
-          <p class="text-sm text-gray-600 mb-3">Comma-separated list of allowed file extensions</p>
+      <div class="obsidian-divider my-6"></div>
+
+      <div>
+        <h4 class="text-sm font-medium obsidian-text-primary mb-3">Allowed File Types</h4>
+        <div class="bg-white/5 [[data-theme=light]_&]:bg-black/5 rounded-lg p-4">
+          <p class="text-xs obsidian-text-tertiary mb-3">Comma-separated list of allowed file extensions</p>
           <textarea
             name="allowed_extensions"
             phx-change="update_setting"
-            class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+            class="w-full px-3 py-2 text-sm bg-white/5 [[data-theme=light]_&]:bg-black/5 border border-white/10 [[data-theme=light]_&]:border-black/10 rounded-lg obsidian-text-primary focus:ring-1 focus:ring-amber-500/50 focus:border-amber-500/50"
             rows="3"
           >{@settings.allowed_extensions}</textarea>
         </div>
       </div>
 
-      <div class="border-t border-gray-100 pt-6">
-        <h4 class="font-medium text-gray-900 mb-4">Storage Provider</h4>
+      <div class="obsidian-divider my-6"></div>
+
+      <div>
+        <h4 class="text-sm font-medium obsidian-text-primary mb-4">Storage Provider</h4>
         <div class="space-y-4">
-          <.toggle_setting
-            label="Local Storage"
-            description="Store files on local disk"
-            name="use_local_storage"
-            enabled={@settings.use_local_storage}
-          />
-          <.toggle_setting
-            label="S3 Compatible Storage"
-            description="Use S3-compatible object storage"
-            name="use_s3_storage"
-            enabled={@settings.use_s3_storage}
-          />
+          <.toggle_setting label="Local Storage" description="Store files on local disk" name="use_local_storage" enabled={@settings.use_local_storage} />
+          <.toggle_setting label="S3 Compatible Storage" description="Use S3-compatible object storage" name="use_s3_storage" enabled={@settings.use_s3_storage} />
         </div>
       </div>
     </div>
@@ -289,65 +217,25 @@ defmodule FiletransferWeb.Owner.SettingsLive do
     ~H"""
     <div class="space-y-6">
       <div>
-        <h3 class="text-lg font-semibold text-gray-900 mb-4">Transfer Settings</h3>
-        <p class="text-sm text-gray-500 mb-6">Configure file transfer behavior and limits.</p>
+        <h3 class="text-sm font-semibold obsidian-text-primary mb-1">Transfer Settings</h3>
+        <p class="text-xs obsidian-text-tertiary">Configure file transfer behavior and limits.</p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <.setting_field
-          label="Default Share Expiry (Days)"
-          description="Default expiration time for share links"
-          type="number"
-          name="default_share_expiry_days"
-          value={@settings.default_share_expiry_days}
-        />
-
-        <.setting_field
-          label="Max Share Expiry (Days)"
-          description="Maximum expiration time allowed for shares"
-          type="number"
-          name="max_share_expiry_days"
-          value={@settings.max_share_expiry_days}
-        />
-
-        <.setting_field
-          label="Chunk Size (MB)"
-          description="Size of file chunks for large uploads"
-          type="number"
-          name="chunk_size_mb"
-          value={@settings.chunk_size_mb}
-        />
-
-        <.setting_field
-          label="Concurrent Uploads"
-          description="Max concurrent upload streams per user"
-          type="number"
-          name="max_concurrent_uploads"
-          value={@settings.max_concurrent_uploads}
-        />
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <.setting_field label="Default Share Expiry (Days)" description="Default expiration time for share links" type="number" name="default_share_expiry_days" value={@settings.default_share_expiry_days} />
+        <.setting_field label="Max Share Expiry (Days)" description="Maximum expiration time allowed for shares" type="number" name="max_share_expiry_days" value={@settings.max_share_expiry_days} />
+        <.setting_field label="Chunk Size (MB)" description="Size of file chunks for large uploads" type="number" name="chunk_size_mb" value={@settings.chunk_size_mb} />
+        <.setting_field label="Concurrent Uploads" description="Max concurrent upload streams per user" type="number" name="max_concurrent_uploads" value={@settings.max_concurrent_uploads} />
       </div>
 
-      <div class="border-t border-gray-100 pt-6">
-        <h4 class="font-medium text-gray-900 mb-4">Transfer Features</h4>
+      <div class="obsidian-divider my-6"></div>
+
+      <div>
+        <h4 class="text-sm font-medium obsidian-text-primary mb-4">Transfer Features</h4>
         <div class="space-y-4">
-          <.toggle_setting
-            label="Password Protection"
-            description="Allow users to password-protect shares"
-            name="allow_password_protection"
-            enabled={@settings.allow_password_protection}
-          />
-          <.toggle_setting
-            label="Download Limits"
-            description="Allow users to set download limits on shares"
-            name="allow_download_limits"
-            enabled={@settings.allow_download_limits}
-          />
-          <.toggle_setting
-            label="Email Notifications"
-            description="Send email when files are downloaded"
-            name="download_notifications"
-            enabled={@settings.download_notifications}
-          />
+          <.toggle_setting label="Password Protection" description="Allow users to password-protect shares" name="allow_password_protection" enabled={@settings.allow_password_protection} />
+          <.toggle_setting label="Download Limits" description="Allow users to set download limits on shares" name="allow_download_limits" enabled={@settings.allow_download_limits} />
+          <.toggle_setting label="Email Notifications" description="Send email when files are downloaded" name="download_notifications" enabled={@settings.download_notifications} />
         </div>
       </div>
     </div>
@@ -359,71 +247,26 @@ defmodule FiletransferWeb.Owner.SettingsLive do
     ~H"""
     <div class="space-y-6">
       <div>
-        <h3 class="text-lg font-semibold text-gray-900 mb-4">Security Settings</h3>
-        <p class="text-sm text-gray-500 mb-6">Configure security policies and access controls.</p>
+        <h3 class="text-sm font-semibold obsidian-text-primary mb-1">Security Settings</h3>
+        <p class="text-xs obsidian-text-tertiary">Configure security policies and access controls.</p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <.setting_field
-          label="Session Timeout (Hours)"
-          description="Auto-logout after inactivity period"
-          type="number"
-          name="session_timeout_hours"
-          value={@settings.session_timeout_hours}
-        />
-
-        <.setting_field
-          label="Max Login Attempts"
-          description="Lock account after failed login attempts"
-          type="number"
-          name="max_login_attempts"
-          value={@settings.max_login_attempts}
-        />
-
-        <.setting_field
-          label="Password Min Length"
-          description="Minimum password length required"
-          type="number"
-          name="password_min_length"
-          value={@settings.password_min_length}
-        />
-
-        <.setting_field
-          label="Lockout Duration (Minutes)"
-          description="How long accounts stay locked"
-          type="number"
-          name="lockout_duration_minutes"
-          value={@settings.lockout_duration_minutes}
-        />
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <.setting_field label="Session Timeout (Hours)" description="Auto-logout after inactivity period" type="number" name="session_timeout_hours" value={@settings.session_timeout_hours} />
+        <.setting_field label="Max Login Attempts" description="Lock account after failed login attempts" type="number" name="max_login_attempts" value={@settings.max_login_attempts} />
+        <.setting_field label="Password Min Length" description="Minimum password length required" type="number" name="password_min_length" value={@settings.password_min_length} />
+        <.setting_field label="Lockout Duration (Minutes)" description="How long accounts stay locked" type="number" name="lockout_duration_minutes" value={@settings.lockout_duration_minutes} />
       </div>
 
-      <div class="border-t border-gray-100 pt-6">
-        <h4 class="font-medium text-gray-900 mb-4">Security Features</h4>
+      <div class="obsidian-divider my-6"></div>
+
+      <div>
+        <h4 class="text-sm font-medium obsidian-text-primary mb-4">Security Features</h4>
         <div class="space-y-4">
-          <.toggle_setting
-            label="Two-Factor Authentication"
-            description="Require 2FA for all users"
-            name="require_2fa"
-            enabled={@settings.require_2fa}
-          />
-          <.toggle_setting
-            label="Email Verification"
-            description="Require email verification for new accounts"
-            name="require_email_verification"
-            enabled={@settings.require_email_verification}
-          />
-          <.toggle_setting
-            label="IP Logging"
-            description="Log IP addresses for security auditing"
-            name="log_ip_addresses"
-            enabled={@settings.log_ip_addresses}
-          />
-          <.toggle_setting
-            label="Virus Scanning"
-            description="Scan uploaded files for malware"
-            name="virus_scanning"
-            enabled={@settings.virus_scanning}
-          />
+          <.toggle_setting label="Two-Factor Authentication" description="Require 2FA for all users" name="require_2fa" enabled={@settings.require_2fa} />
+          <.toggle_setting label="Email Verification" description="Require email verification for new accounts" name="require_email_verification" enabled={@settings.require_email_verification} />
+          <.toggle_setting label="IP Logging" description="Log IP addresses for security auditing" name="log_ip_addresses" enabled={@settings.log_ip_addresses} />
+          <.toggle_setting label="Virus Scanning" description="Scan uploaded files for malware" name="virus_scanning" enabled={@settings.virus_scanning} />
         </div>
       </div>
     </div>
@@ -435,77 +278,34 @@ defmodule FiletransferWeb.Owner.SettingsLive do
     ~H"""
     <div class="space-y-6">
       <div>
-        <h3 class="text-lg font-semibold text-gray-900 mb-4">Email Settings</h3>
-        <p class="text-sm text-gray-500 mb-6">Configure email delivery and notification settings.</p>
+        <h3 class="text-sm font-semibold obsidian-text-primary mb-1">Email Settings</h3>
+        <p class="text-xs obsidian-text-tertiary">Configure email delivery and notification settings.</p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <.setting_field
-          label="From Email"
-          description="Email address for outgoing emails"
-          type="email"
-          name="from_email"
-          value={@settings.from_email}
-        />
-
-        <.setting_field
-          label="From Name"
-          description="Display name for outgoing emails"
-          type="text"
-          name="from_name"
-          value={@settings.from_name}
-        />
-
-        <.setting_field
-          label="SMTP Host"
-          description="SMTP server hostname"
-          type="text"
-          name="smtp_host"
-          value={@settings.smtp_host}
-        />
-
-        <.setting_field
-          label="SMTP Port"
-          description="SMTP server port"
-          type="number"
-          name="smtp_port"
-          value={@settings.smtp_port}
-        />
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <.setting_field label="From Email" description="Email address for outgoing emails" type="email" name="from_email" value={@settings.from_email} />
+        <.setting_field label="From Name" description="Display name for outgoing emails" type="text" name="from_name" value={@settings.from_name} />
+        <.setting_field label="SMTP Host" description="SMTP server hostname" type="text" name="smtp_host" value={@settings.smtp_host} />
+        <.setting_field label="SMTP Port" description="SMTP server port" type="number" name="smtp_port" value={@settings.smtp_port} />
       </div>
 
-      <div class="border-t border-gray-100 pt-6">
-        <h4 class="font-medium text-gray-900 mb-4">Email Notifications</h4>
+      <div class="obsidian-divider my-6"></div>
+
+      <div>
+        <h4 class="text-sm font-medium obsidian-text-primary mb-4">Email Notifications</h4>
         <div class="space-y-4">
-          <.toggle_setting
-            label="Welcome Emails"
-            description="Send welcome email to new users"
-            name="send_welcome_email"
-            enabled={@settings.send_welcome_email}
-          />
-          <.toggle_setting
-            label="Share Notifications"
-            description="Notify users when shares are accessed"
-            name="send_share_notifications"
-            enabled={@settings.send_share_notifications}
-          />
-          <.toggle_setting
-            label="Storage Alerts"
-            description="Alert users when approaching storage limit"
-            name="send_storage_alerts"
-            enabled={@settings.send_storage_alerts}
-          />
+          <.toggle_setting label="Welcome Emails" description="Send welcome email to new users" name="send_welcome_email" enabled={@settings.send_welcome_email} />
+          <.toggle_setting label="Share Notifications" description="Notify users when shares are accessed" name="send_share_notifications" enabled={@settings.send_share_notifications} />
+          <.toggle_setting label="Storage Alerts" description="Alert users when approaching storage limit" name="send_storage_alerts" enabled={@settings.send_storage_alerts} />
         </div>
       </div>
 
-      <div class="border-t border-gray-100 pt-6">
-        <button
-          type="button"
-          phx-click="test_email"
-          class="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
-        >
-          <.icon name="hero-paper-airplane" class="w-4 h-4" /> Send Test Email
-        </button>
-      </div>
+      <div class="obsidian-divider my-6"></div>
+
+      <button type="button" phx-click="test_email" class="obsidian-btn obsidian-btn-primary">
+        <.icon name="hero-paper-airplane" class="w-4 h-4" />
+        <span>Send Test Email</span>
+      </button>
     </div>
     """
   end
@@ -515,95 +315,57 @@ defmodule FiletransferWeb.Owner.SettingsLive do
     ~H"""
     <div class="space-y-6">
       <div>
-        <h3 class="text-lg font-semibold text-gray-900 mb-4">Maintenance Settings</h3>
-        <p class="text-sm text-gray-500 mb-6">
-          Configure maintenance mode and system cleanup settings.
-        </p>
+        <h3 class="text-sm font-semibold obsidian-text-primary mb-1">Maintenance Settings</h3>
+        <p class="text-xs obsidian-text-tertiary">Configure maintenance mode and system cleanup settings.</p>
       </div>
-      
-    <!-- Maintenance Mode -->
-      <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+
+      <%!-- Maintenance Mode Warning --%>
+      <div class="bg-[#d4af37]/10 border border-[#d4af37]/20 rounded-lg p-4">
         <div class="flex items-start gap-3">
-          <.icon
-            name="hero-exclamation-triangle"
-            class="w-6 h-6 text-yellow-600 flex-shrink-0 mt-0.5"
-          />
+          <.icon name="hero-exclamation-triangle" class="w-5 h-5 obsidian-accent-amber flex-shrink-0 mt-0.5" />
           <div class="flex-1">
-            <h4 class="font-medium text-yellow-800">Maintenance Mode</h4>
-            <p class="text-sm text-yellow-700 mt-1">
+            <h4 class="text-sm font-medium obsidian-accent-amber">Maintenance Mode</h4>
+            <p class="text-xs obsidian-text-secondary mt-1">
               When enabled, only project owners can access the platform. Users will see a maintenance message.
             </p>
             <div class="mt-3">
-              <.toggle_setting
-                label="Enable Maintenance Mode"
-                description=""
-                name="maintenance_mode"
-                enabled={@settings.maintenance_mode}
-              />
+              <.toggle_setting label="Enable Maintenance Mode" description="" name="maintenance_mode" enabled={@settings.maintenance_mode} />
             </div>
           </div>
         </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <.setting_field
-          label="Maintenance Message"
-          description="Message shown during maintenance"
-          type="text"
-          name="maintenance_message"
-          value={@settings.maintenance_message}
-        />
-
-        <.setting_field
-          label="Cleanup Retention (Days)"
-          description="Days to keep deleted files before permanent removal"
-          type="number"
-          name="cleanup_retention_days"
-          value={@settings.cleanup_retention_days}
-        />
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <.setting_field label="Maintenance Message" description="Message shown during maintenance" type="text" name="maintenance_message" value={@settings.maintenance_message} />
+        <.setting_field label="Cleanup Retention (Days)" description="Days to keep deleted files before permanent removal" type="number" name="cleanup_retention_days" value={@settings.cleanup_retention_days} />
       </div>
 
-      <div class="border-t border-gray-100 pt-6">
-        <h4 class="font-medium text-gray-900 mb-4">Automated Cleanup</h4>
+      <div class="obsidian-divider my-6"></div>
+
+      <div>
+        <h4 class="text-sm font-medium obsidian-text-primary mb-4">Automated Cleanup</h4>
         <div class="space-y-4">
-          <.toggle_setting
-            label="Auto-Delete Expired Shares"
-            description="Automatically delete shares after expiration"
-            name="auto_delete_expired_shares"
-            enabled={@settings.auto_delete_expired_shares}
-          />
-          <.toggle_setting
-            label="Auto-Cleanup Orphaned Files"
-            description="Remove files with no associated transfers"
-            name="auto_cleanup_orphans"
-            enabled={@settings.auto_cleanup_orphans}
-          />
+          <.toggle_setting label="Auto-Delete Expired Shares" description="Automatically delete shares after expiration" name="auto_delete_expired_shares" enabled={@settings.auto_delete_expired_shares} />
+          <.toggle_setting label="Auto-Cleanup Orphaned Files" description="Remove files with no associated transfers" name="auto_cleanup_orphans" enabled={@settings.auto_cleanup_orphans} />
         </div>
       </div>
 
-      <div class="border-t border-gray-100 pt-6">
-        <h4 class="font-medium text-gray-900 mb-4">Manual Actions</h4>
-        <div class="flex flex-wrap gap-3">
-          <button
-            type="button"
-            phx-click="clear_cache"
-            class="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
-          >
-            <.icon name="hero-trash" class="w-4 h-4" /> Clear Cache
+      <div class="obsidian-divider my-6"></div>
+
+      <div>
+        <h4 class="text-sm font-medium obsidian-text-primary mb-4">Manual Actions</h4>
+        <div class="flex flex-wrap gap-2">
+          <button type="button" phx-click="clear_cache" class="obsidian-btn obsidian-btn-ghost">
+            <.icon name="hero-trash" class="w-4 h-4" />
+            <span>Clear Cache</span>
           </button>
-          <button
-            type="button"
-            phx-click="run_cleanup"
-            class="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
-          >
-            <.icon name="hero-archive-box-x-mark" class="w-4 h-4" /> Run Cleanup Now
+          <button type="button" phx-click="run_cleanup" class="obsidian-btn obsidian-btn-ghost">
+            <.icon name="hero-archive-box-x-mark" class="w-4 h-4" />
+            <span>Run Cleanup</span>
           </button>
-          <button
-            type="button"
-            phx-click="export_settings"
-            class="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
-          >
-            <.icon name="hero-arrow-down-tray" class="w-4 h-4" /> Export Settings
+          <button type="button" phx-click="export_settings" class="obsidian-btn obsidian-btn-ghost">
+            <.icon name="hero-arrow-down-tray" class="w-4 h-4" />
+            <span>Export</span>
           </button>
         </div>
       </div>
@@ -617,14 +379,14 @@ defmodule FiletransferWeb.Owner.SettingsLive do
 
     ~H"""
     <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1">{@label}</label>
-      <p class="text-xs text-gray-500 mb-2">{@description}</p>
+      <label class="block text-xs font-medium obsidian-text-secondary mb-1">{@label}</label>
+      <p class="text-[11px] obsidian-text-tertiary mb-2">{@description}</p>
       <%= case @type do %>
         <% "select" -> %>
           <select
             name={@name}
             phx-change="update_setting"
-            class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+            class="w-full px-3 py-2 text-sm bg-white/5 [[data-theme=light]_&]:bg-black/5 border border-white/10 [[data-theme=light]_&]:border-black/10 rounded-lg obsidian-text-primary focus:ring-1 focus:ring-amber-500/50 focus:border-amber-500/50 transition-colors"
           >
             <%= for {label, value} <- @options do %>
               <option value={value} selected={value == @value}>{label}</option>
@@ -636,7 +398,7 @@ defmodule FiletransferWeb.Owner.SettingsLive do
             name={@name}
             value={@value}
             phx-change="update_setting"
-            class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+            class="w-full px-3 py-2 text-sm bg-white/5 [[data-theme=light]_&]:bg-black/5 border border-white/10 [[data-theme=light]_&]:border-black/10 rounded-lg obsidian-text-primary focus:ring-1 focus:ring-amber-500/50 focus:border-amber-500/50 transition-colors"
           />
       <% end %>
     </div>
@@ -646,20 +408,26 @@ defmodule FiletransferWeb.Owner.SettingsLive do
   # Toggle Setting Component
   defp toggle_setting(assigns) do
     ~H"""
-    <div class="flex items-center justify-between">
+    <div class="flex items-center justify-between py-1">
       <div>
-        <p class="font-medium text-gray-900">{@label}</p>
+        <p class="text-sm font-medium obsidian-text-primary">{@label}</p>
         <%= if @description != "" do %>
-          <p class="text-sm text-gray-500">{@description}</p>
+          <p class="text-xs obsidian-text-tertiary mt-0.5">{@description}</p>
         <% end %>
       </div>
       <button
         type="button"
         phx-click="toggle_setting"
         phx-value-name={@name}
-        class={"relative inline-flex h-6 w-11 items-center rounded-full transition-colors #{if @enabled, do: "bg-purple-600", else: "bg-gray-200"}"}
+        class={[
+          "relative inline-flex h-5 w-9 items-center rounded-full transition-colors",
+          if(@enabled, do: "bg-[#d4af37]", else: "bg-white/10 [[data-theme=light]_&]:bg-black/10")
+        ]}
       >
-        <span class={"inline-block h-4 w-4 transform rounded-full bg-white transition-transform #{if @enabled, do: "translate-x-6", else: "translate-x-1"}"}>
+        <span class={[
+          "inline-block h-3.5 w-3.5 transform rounded-full bg-white shadow transition-transform",
+          if(@enabled, do: "translate-x-5", else: "translate-x-0.5")
+        ]}>
         </span>
       </button>
     </div>

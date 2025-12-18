@@ -11,7 +11,8 @@ defmodule FiletransferWeb.Owner.OwnerDashboardLive do
   def mount(_params, _session, socket) do
     socket =
       socket
-      |> assign(:page_title, "Owner Dashboard")
+      |> assign(:page_title, "Overview")
+      |> assign(:active_tab, "overview")
       |> assign(:platform_stats, load_platform_stats())
       |> assign(:recent_users, load_recent_users())
       |> assign(:recent_activity, load_recent_activity())
@@ -23,46 +24,87 @@ defmodule FiletransferWeb.Owner.OwnerDashboardLive do
   def render(assigns) do
     ~H"""
     <div class="space-y-6">
-      <%!-- Platform Stats --%>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <.stat_card
-          title="Total Users"
-          value={@platform_stats.total_users}
-          change={@platform_stats.users_change}
-          icon="hero-users"
-          color="amber"
-        />
-        <.stat_card
-          title="Total Transfers"
-          value={@platform_stats.total_transfers}
-          change={@platform_stats.transfers_change}
-          icon="hero-arrow-up-tray"
-          color="emerald"
-        />
-        <.stat_card
-          title="Active Shares"
-          value={@platform_stats.active_shares}
-          change={@platform_stats.shares_change}
-          icon="hero-link"
-          color="sky"
-        />
-        <.stat_card
-          title="Storage Used"
-          value={format_bytes(@platform_stats.total_storage)}
-          change={@platform_stats.storage_change}
-          icon="hero-server-stack"
-          color="coral"
-        />
+      <%!-- Top Row: Key Metrics --%>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        <.stat_card title="Total Users" value={@platform_stats.total_users} change={@platform_stats.users_change} icon="hero-users" color="amber" />
+        <.stat_card title="Transfers" value={@platform_stats.total_transfers} change={@platform_stats.transfers_change} icon="hero-arrow-up-tray" color="emerald" />
+        <.stat_card title="Active Shares" value={@platform_stats.active_shares} change={@platform_stats.shares_change} icon="hero-link" color="sky" />
+        <.stat_card title="Storage" value={format_bytes(@platform_stats.total_storage)} change={@platform_stats.storage_change} icon="hero-server-stack" color="coral" />
+        <.stat_card title="Bandwidth" value={format_bandwidth(@platform_stats)} change={nil} icon="hero-signal" color="emerald" />
+        <.stat_card title="Success Rate" value="99.8%" change={nil} icon="hero-check-badge" color="amber" />
       </div>
 
-      <%!-- Main Content Grid --%>
+      <%!-- Second Row: Map + Charts --%>
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <%!-- Recent Users --%>
+        <%!-- User Location Map --%>
         <div class="lg:col-span-2 obsidian-card rounded-xl overflow-hidden">
-          <div class="px-5 py-4 flex items-center justify-between border-b border-white/5 [[data-theme=light]_&]:border-black/5">
+          <div class="px-5 py-4 flex items-center justify-between border-b border-[#d4af37]/10 [[data-theme=light]_&]:border-[#8b6914]/10">
             <div class="flex items-center gap-3">
               <div class="obsidian-icon-box">
-                <.icon name="hero-users" class="w-4 h-4 obsidian-text-secondary" />
+                <.icon name="hero-globe-alt" class="w-4 h-4 obsidian-accent-amber" />
+              </div>
+              <h2 class="text-sm font-semibold obsidian-text-primary">User Locations</h2>
+            </div>
+            <div class="flex items-center gap-4 text-[11px]">
+              <span class="flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-[#d4af37]"></span>
+                <span class="obsidian-text-tertiary">Active</span>
+              </span>
+              <span class="flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-[#2dd4bf]"></span>
+                <span class="obsidian-text-tertiary">New</span>
+              </span>
+            </div>
+          </div>
+          <div class="luxe-map-container p-6 h-64 relative">
+            <%!-- Simple world map visualization with dots --%>
+            <svg viewBox="0 0 800 400" class="w-full h-full opacity-20">
+              <path d="M150,120 Q200,80 250,100 T350,90 T450,100 T550,85 T650,100" fill="none" stroke="currentColor" stroke-width="1" class="obsidian-text-tertiary" />
+              <path d="M100,200 Q180,180 260,195 T400,180 T540,200 T680,190" fill="none" stroke="currentColor" stroke-width="1" class="obsidian-text-tertiary" />
+              <path d="M180,280 Q250,260 350,275 T500,260 T620,280" fill="none" stroke="currentColor" stroke-width="1" class="obsidian-text-tertiary" />
+            </svg>
+            <%!-- Location dots --%>
+            <div class="luxe-map-dot" style="top: 30%; left: 20%;"></div>
+            <div class="luxe-map-dot luxe-map-dot-teal" style="top: 35%; left: 48%;"></div>
+            <div class="luxe-map-dot" style="top: 40%; left: 75%;"></div>
+            <div class="luxe-map-dot luxe-map-dot-teal" style="top: 55%; left: 25%;"></div>
+            <div class="luxe-map-dot luxe-map-dot-coral" style="top: 45%; left: 85%;"></div>
+            <div class="luxe-map-dot" style="top: 60%; left: 55%;"></div>
+            <%!-- Region stats overlay --%>
+            <div class="absolute bottom-4 left-4 right-4 flex justify-between">
+              <.region_stat region="Americas" users={@platform_stats.users_by_region["americas"] || 0} percentage={45} />
+              <.region_stat region="Europe" users={@platform_stats.users_by_region["europe"] || 0} percentage={32} />
+              <.region_stat region="Asia Pacific" users={@platform_stats.users_by_region["apac"] || 0} percentage={23} />
+            </div>
+          </div>
+        </div>
+
+        <%!-- File Types Breakdown --%>
+        <div class="obsidian-card rounded-xl p-5">
+          <div class="flex items-center gap-3 mb-5">
+            <div class="obsidian-icon-box">
+              <.icon name="hero-document" class="w-4 h-4 obsidian-accent-amber" />
+            </div>
+            <h3 class="text-sm font-semibold obsidian-text-primary">File Types</h3>
+          </div>
+          <div class="space-y-4">
+            <.file_type_bar label="Documents" icon="hero-document-text" percentage={35} color="amber" />
+            <.file_type_bar label="Images" icon="hero-photo" percentage={28} color="emerald" />
+            <.file_type_bar label="Videos" icon="hero-film" percentage={20} color="sky" />
+            <.file_type_bar label="Archives" icon="hero-archive-box" percentage={12} color="coral" />
+            <.file_type_bar label="Other" icon="hero-folder" percentage={5} color="slate" />
+          </div>
+        </div>
+      </div>
+
+      <%!-- Third Row: Users + Distribution + Activity --%>
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <%!-- Recent Users --%>
+        <div class="obsidian-card rounded-xl overflow-hidden">
+          <div class="px-5 py-4 flex items-center justify-between border-b border-[#d4af37]/10 [[data-theme=light]_&]:border-[#8b6914]/10">
+            <div class="flex items-center gap-3">
+              <div class="obsidian-icon-box">
+                <.icon name="hero-users" class="w-4 h-4 obsidian-accent-amber" />
               </div>
               <h2 class="text-sm font-semibold obsidian-text-primary">Recent Users</h2>
             </div>
@@ -70,129 +112,126 @@ defmodule FiletransferWeb.Owner.OwnerDashboardLive do
               View all
             </.link>
           </div>
-          <div class="divide-y divide-white/5 [[data-theme=light]_&]:divide-black/5">
+          <div class="divide-y divide-[#d4af37]/5 [[data-theme=light]_&]:divide-[#8b6914]/5">
             <%= if Enum.empty?(@recent_users) do %>
-              <div class="p-10 text-center">
-                <div class="obsidian-icon-box mx-auto mb-3 w-12 h-12">
-                  <.icon name="hero-users" class="w-6 h-6 obsidian-text-tertiary" />
+              <div class="p-8 text-center">
+                <div class="obsidian-icon-box mx-auto mb-3 w-10 h-10">
+                  <.icon name="hero-users" class="w-5 h-5 obsidian-text-tertiary" />
                 </div>
                 <p class="text-sm obsidian-text-secondary">No users yet</p>
-                <p class="text-xs obsidian-text-tertiary mt-1">Users will appear here once they register</p>
               </div>
             <% else %>
-              <%= for user <- @recent_users do %>
+              <%= for user <- Enum.take(@recent_users, 4) do %>
                 <.user_row user={user} />
               <% end %>
             <% end %>
           </div>
         </div>
 
-        <%!-- Right Column --%>
+        <%!-- User Tiers & Peak Hours --%>
         <div class="space-y-6">
           <%!-- User Distribution --%>
           <div class="obsidian-card rounded-xl p-5">
-            <div class="flex items-center gap-3 mb-5">
+            <div class="flex items-center gap-3 mb-4">
               <div class="obsidian-icon-box">
-                <.icon name="hero-chart-pie" class="w-4 h-4 obsidian-text-secondary" />
+                <.icon name="hero-chart-pie" class="w-4 h-4 obsidian-accent-amber" />
               </div>
-              <h3 class="text-sm font-semibold obsidian-text-primary">User Tiers</h3>
+              <h3 class="text-sm font-semibold obsidian-text-primary">Subscriptions</h3>
             </div>
-            <div class="space-y-4">
-              <.distribution_bar
-                label="Free"
-                value={@platform_stats.users_by_tier["free"] || 0}
-                total={@platform_stats.total_users}
-                color="slate"
-              />
-              <.distribution_bar
-                label="Pro"
-                value={@platform_stats.users_by_tier["pro"] || 0}
-                total={@platform_stats.total_users}
-                color="sky"
-              />
-              <.distribution_bar
-                label="Business"
-                value={@platform_stats.users_by_tier["business"] || 0}
-                total={@platform_stats.total_users}
-                color="amber"
-              />
-              <.distribution_bar
-                label="Enterprise"
-                value={@platform_stats.users_by_tier["enterprise"] || 0}
-                total={@platform_stats.total_users}
-                color="emerald"
-              />
+            <div class="space-y-3">
+              <.distribution_bar label="Free" value={@platform_stats.users_by_tier["free"] || 0} total={@platform_stats.total_users} color="slate" />
+              <.distribution_bar label="Pro" value={@platform_stats.users_by_tier["pro"] || 0} total={@platform_stats.total_users} color="sky" />
+              <.distribution_bar label="Business" value={@platform_stats.users_by_tier["business"] || 0} total={@platform_stats.total_users} color="amber" />
+              <.distribution_bar label="Enterprise" value={@platform_stats.users_by_tier["enterprise"] || 0} total={@platform_stats.total_users} color="emerald" />
             </div>
           </div>
 
-          <%!-- Quick Actions --%>
+          <%!-- Peak Hours --%>
           <div class="obsidian-card rounded-xl p-5">
             <div class="flex items-center gap-3 mb-4">
               <div class="obsidian-icon-box">
-                <.icon name="hero-bolt" class="w-4 h-4 obsidian-text-secondary" />
+                <.icon name="hero-clock" class="w-4 h-4 obsidian-accent-emerald" />
               </div>
-              <h3 class="text-sm font-semibold obsidian-text-primary">Quick Actions</h3>
+              <h3 class="text-sm font-semibold obsidian-text-primary">Peak Hours</h3>
             </div>
-            <div class="space-y-2">
-              <.link
-                navigate={~p"/owner/users"}
-                class="flex items-center gap-3 p-3 rounded-lg transition-colors hover:bg-white/5 [[data-theme=light]_&]:hover:bg-black/5 group"
-              >
-                <div class="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center group-hover:bg-amber-500/20 transition-colors">
-                  <.icon name="hero-user-plus" class="w-4 h-4 obsidian-accent-amber" />
+            <div class="flex items-end justify-between h-16 gap-1">
+              <%= for {hour, activity} <- peak_hours_data() do %>
+                <div class="flex-1 flex flex-col items-center gap-1">
+                  <div
+                    class="w-full rounded-t bg-gradient-to-t from-[#d4af37]/60 to-[#d4af37] transition-all"
+                    style={"height: #{activity}%"}
+                  ></div>
+                  <span class="text-[9px] obsidian-text-tertiary">{hour}</span>
                 </div>
-                <span class="text-sm font-medium obsidian-text-secondary group-hover:obsidian-text-primary transition-colors">Manage Users</span>
-              </.link>
-              <.link
-                navigate={~p"/owner/analytics"}
-                class="flex items-center gap-3 p-3 rounded-lg transition-colors hover:bg-white/5 [[data-theme=light]_&]:hover:bg-black/5 group"
-              >
-                <div class="w-8 h-8 rounded-lg bg-sky-500/10 flex items-center justify-center group-hover:bg-sky-500/20 transition-colors">
-                  <.icon name="hero-chart-bar" class="w-4 h-4 obsidian-accent-sky" />
-                </div>
-                <span class="text-sm font-medium obsidian-text-secondary group-hover:obsidian-text-primary transition-colors">View Analytics</span>
-              </.link>
-              <.link
-                navigate={~p"/owner/settings"}
-                class="flex items-center gap-3 p-3 rounded-lg transition-colors hover:bg-white/5 [[data-theme=light]_&]:hover:bg-black/5 group"
-              >
-                <div class="w-8 h-8 rounded-lg bg-white/5 [[data-theme=light]_&]:bg-black/5 flex items-center justify-center group-hover:bg-white/10 [[data-theme=light]_&]:group-hover:bg-black/10 transition-colors">
-                  <.icon name="hero-cog-6-tooth" class="w-4 h-4 obsidian-text-secondary" />
-                </div>
-                <span class="text-sm font-medium obsidian-text-secondary group-hover:obsidian-text-primary transition-colors">Platform Settings</span>
-              </.link>
+              <% end %>
             </div>
+          </div>
+        </div>
+
+        <%!-- Recent Activity --%>
+        <div class="obsidian-card rounded-xl overflow-hidden">
+          <div class="px-5 py-4 flex items-center gap-3 border-b border-[#d4af37]/10 [[data-theme=light]_&]:border-[#8b6914]/10">
+            <div class="obsidian-icon-box">
+              <.icon name="hero-bolt" class="w-4 h-4 obsidian-accent-emerald" />
+            </div>
+            <h2 class="text-sm font-semibold obsidian-text-primary">Activity</h2>
+            <div class="flex items-center gap-1.5 ml-auto">
+              <span class="obsidian-live-dot"></span>
+              <span class="text-[10px] obsidian-text-tertiary">Live</span>
+            </div>
+          </div>
+          <div class="divide-y divide-[#d4af37]/5 [[data-theme=light]_&]:divide-[#8b6914]/5">
+            <%= if Enum.empty?(@recent_activity) do %>
+              <div class="p-8 text-center">
+                <div class="obsidian-icon-box mx-auto mb-3 w-10 h-10">
+                  <.icon name="hero-clock" class="w-5 h-5 obsidian-text-tertiary" />
+                </div>
+                <p class="text-sm obsidian-text-secondary">No recent activity</p>
+              </div>
+            <% else %>
+              <%= for activity <- @recent_activity do %>
+                <.activity_row activity={activity} />
+              <% end %>
+            <% end %>
           </div>
         </div>
       </div>
 
-      <%!-- Recent Activity --%>
-      <div class="obsidian-card rounded-xl overflow-hidden">
-        <div class="px-5 py-4 flex items-center gap-3 border-b border-white/5 [[data-theme=light]_&]:border-black/5">
-          <div class="obsidian-icon-box">
-            <.icon name="hero-clock" class="w-4 h-4 obsidian-text-secondary" />
-          </div>
-          <h2 class="text-sm font-semibold obsidian-text-primary">Recent Activity</h2>
-          <div class="flex items-center gap-1.5 ml-auto">
-            <span class="obsidian-live-dot"></span>
-            <span class="text-[11px] obsidian-text-tertiary">Live</span>
-          </div>
-        </div>
-        <div class="divide-y divide-white/5 [[data-theme=light]_&]:divide-black/5">
-          <%= if Enum.empty?(@recent_activity) do %>
-            <div class="p-10 text-center">
-              <div class="obsidian-icon-box mx-auto mb-3 w-12 h-12">
-                <.icon name="hero-clock" class="w-6 h-6 obsidian-text-tertiary" />
-              </div>
-              <p class="text-sm obsidian-text-secondary">No recent activity</p>
-              <p class="text-xs obsidian-text-tertiary mt-1">Activity will appear here as users interact with the platform</p>
+      <%!-- Bottom Row: Quick Actions --%>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <.link navigate={~p"/owner/users"} class="obsidian-card rounded-xl p-5 group hover:border-[#d4af37]/30 transition-all">
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-[#d4af37]/10 flex items-center justify-center group-hover:bg-[#d4af37]/20 transition-colors">
+              <.icon name="hero-user-plus" class="w-6 h-6 obsidian-accent-amber" />
             </div>
-          <% else %>
-            <%= for activity <- @recent_activity do %>
-              <.activity_row activity={activity} />
-            <% end %>
-          <% end %>
-        </div>
+            <div>
+              <h3 class="text-sm font-semibold obsidian-text-primary group-hover:obsidian-accent-amber transition-colors">Manage Users</h3>
+              <p class="text-xs obsidian-text-tertiary">View and manage platform users</p>
+            </div>
+          </div>
+        </.link>
+        <.link navigate={~p"/owner/analytics"} class="obsidian-card rounded-xl p-5 group hover:border-[#2dd4bf]/30 transition-all">
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-[#2dd4bf]/10 flex items-center justify-center group-hover:bg-[#2dd4bf]/20 transition-colors">
+              <.icon name="hero-chart-bar" class="w-6 h-6 obsidian-accent-emerald" />
+            </div>
+            <div>
+              <h3 class="text-sm font-semibold obsidian-text-primary group-hover:obsidian-accent-emerald transition-colors">Analytics</h3>
+              <p class="text-xs obsidian-text-tertiary">Detailed platform insights</p>
+            </div>
+          </div>
+        </.link>
+        <.link navigate={~p"/owner/settings"} class="obsidian-card rounded-xl p-5 group hover:border-[#38bdf8]/30 transition-all">
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-[#38bdf8]/10 flex items-center justify-center group-hover:bg-[#38bdf8]/20 transition-colors">
+              <.icon name="hero-cog-6-tooth" class="w-6 h-6 obsidian-accent-sky" />
+            </div>
+            <div>
+              <h3 class="text-sm font-semibold obsidian-text-primary group-hover:obsidian-accent-sky transition-colors">Settings</h3>
+              <p class="text-xs obsidian-text-tertiary">Configure platform settings</p>
+            </div>
+          </div>
+        </.link>
       </div>
     </div>
     """
@@ -200,60 +239,104 @@ defmodule FiletransferWeb.Owner.OwnerDashboardLive do
 
   # Components
 
+  defp region_stat(assigns) do
+    ~H"""
+    <div class="text-center">
+      <p class="text-[10px] obsidian-text-tertiary uppercase tracking-wider">{@region}</p>
+      <p class="text-sm font-semibold obsidian-text-primary">{@percentage}%</p>
+    </div>
+    """
+  end
+
+  defp file_type_bar(assigns) do
+    bar_colors = %{
+      "amber" => "bg-[#d4af37]",
+      "emerald" => "bg-[#2dd4bf]",
+      "sky" => "bg-[#38bdf8]",
+      "coral" => "bg-[#fb923c]",
+      "slate" => "bg-[#b4aa9b]"
+    }
+
+    assigns = assign(assigns, :bar_color, Map.get(bar_colors, assigns.color, "bg-[#b4aa9b]"))
+
+    ~H"""
+    <div class="flex items-center gap-3">
+      <div class="w-7 h-7 rounded-lg bg-white/5 [[data-theme=light]_&]:bg-black/5 flex items-center justify-center">
+        <.icon name={@icon} class="w-3.5 h-3.5 obsidian-text-secondary" />
+      </div>
+      <div class="flex-1">
+        <div class="flex justify-between mb-1">
+          <span class="text-xs obsidian-text-secondary">{@label}</span>
+          <span class="text-xs obsidian-text-primary font-medium">{@percentage}%</span>
+        </div>
+        <div class="h-1.5 bg-white/5 [[data-theme=light]_&]:bg-black/5 rounded-full overflow-hidden">
+          <div class={"h-full rounded-full #{@bar_color}"} style={"width: #{@percentage}%"}></div>
+        </div>
+      </div>
+    </div>
+    """
+  end
+
   defp stat_card(assigns) do
-    color_classes = %{
-      "purple" => "bg-purple-50 text-purple-600",
-      "blue" => "bg-blue-50 text-blue-600",
-      "green" => "bg-green-50 text-green-600",
-      "orange" => "bg-orange-50 text-orange-600"
+    icon_colors = %{
+      "amber" => "obsidian-accent-amber",
+      "emerald" => "obsidian-accent-emerald",
+      "sky" => "obsidian-accent-sky",
+      "coral" => "obsidian-accent-coral"
+    }
+
+    icon_bg = %{
+      "amber" => "bg-[#d4af37]/10",
+      "emerald" => "bg-[#2dd4bf]/10",
+      "sky" => "bg-[#38bdf8]/10",
+      "coral" => "bg-[#fb923c]/10"
     }
 
     assigns =
-      assign(
-        assigns,
-        :color_class,
-        Map.get(color_classes, assigns.color, "bg-gray-50 text-gray-600")
-      )
+      assigns
+      |> assign(:icon_color, Map.get(icon_colors, assigns.color, "obsidian-text-secondary"))
+      |> assign(:icon_bg, Map.get(icon_bg, assigns.color, "bg-white/5"))
 
     ~H"""
-    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-      <div class="flex items-center justify-between">
-        <div class={"p-3 rounded-lg #{@color_class}"}>
-          <.icon name={@icon} class="w-6 h-6" />
+    <div class="obsidian-card rounded-xl p-5 group">
+      <div class="flex items-start justify-between mb-4">
+        <div class={"w-10 h-10 rounded-xl #{@icon_bg} flex items-center justify-center transition-transform group-hover:scale-105"}>
+          <.icon name={@icon} class={"w-5 h-5 #{@icon_color}"} />
         </div>
         <%= if @change do %>
-          <span class={"text-sm font-medium #{if @change >= 0, do: "text-green-600", else: "text-red-600"}"}>
-            {if @change >= 0, do: "+", else: ""}{@change}%
+          <span class={[
+            "obsidian-badge text-[11px]",
+            if(@change >= 0, do: "obsidian-badge-emerald", else: "bg-red-500/15 text-red-400 border border-red-500/20")
+          ]}>
+            {if @change >= 0, do: "↑", else: "↓"} {abs(@change)}%
           </span>
         <% end %>
       </div>
-      <div class="mt-4">
-        <p class="text-2xl font-bold text-gray-900">{@value}</p>
-        <p class="text-sm text-gray-500 mt-1">{@title}</p>
-      </div>
+      <p class="obsidian-stat text-2xl obsidian-text-primary">{@value}</p>
+      <p class="text-xs obsidian-text-tertiary mt-1 uppercase tracking-wider">{@title}</p>
     </div>
     """
   end
 
   defp user_row(assigns) do
     ~H"""
-    <div class="p-4 hover:bg-gray-50 transition-colors">
+    <div class="obsidian-table-row px-5 py-4">
       <div class="flex items-center gap-4">
-        <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
-          <span class="text-purple-600 font-medium">
+        <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-amber-500/20 to-orange-500/10 flex items-center justify-center">
+          <span class="text-sm font-semibold obsidian-accent-amber">
             {String.first(@user.name || @user.email) |> String.upcase()}
           </span>
         </div>
         <div class="flex-1 min-w-0">
-          <p class="font-medium text-gray-900 truncate">{@user.name || "No name"}</p>
-          <p class="text-sm text-gray-500 truncate">{@user.email}</p>
+          <p class="text-sm font-medium obsidian-text-primary truncate">{@user.name || "No name"}</p>
+          <p class="text-xs obsidian-text-tertiary truncate">{@user.email}</p>
         </div>
-        <div class="text-right">
-          <span class={"px-2 py-1 text-xs rounded-full #{tier_badge(@user.subscription_tier)}"}>
+        <div class="text-right flex flex-col items-end gap-1">
+          <span class={tier_badge(@user.subscription_tier)}>
             {String.capitalize(@user.subscription_tier || "free")}
           </span>
-          <p class="text-xs text-gray-400 mt-1">
-            Joined {format_date(@user.inserted_at)}
+          <p class="text-[11px] obsidian-text-tertiary">
+            {format_date(@user.inserted_at)}
           </p>
         </div>
       </div>
@@ -269,26 +352,26 @@ defmodule FiletransferWeb.Owner.OwnerDashboardLive do
         0
       end
 
-    color_classes = %{
-      "gray" => "bg-gray-400",
-      "blue" => "bg-blue-500",
-      "purple" => "bg-purple-500",
-      "orange" => "bg-orange-500"
+    bar_colors = %{
+      "slate" => "bg-[#b4aa9b]",
+      "sky" => "bg-[#38bdf8]",
+      "amber" => "bg-[#d4af37]",
+      "emerald" => "bg-[#2dd4bf]"
     }
 
     assigns =
       assigns
       |> assign(:percentage, percentage)
-      |> assign(:bar_color, Map.get(color_classes, assigns.color, "bg-gray-400"))
+      |> assign(:bar_color, Map.get(bar_colors, assigns.color, "bg-slate-400"))
 
     ~H"""
     <div>
-      <div class="flex justify-between text-sm mb-1">
-        <span class="text-gray-600">{@label}</span>
-        <span class="text-gray-900 font-medium">{@value}</span>
+      <div class="flex justify-between items-center mb-2">
+        <span class="text-xs obsidian-text-secondary">{@label}</span>
+        <span class="obsidian-stat text-xs obsidian-text-primary">{@value}</span>
       </div>
-      <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
-        <div class={"h-full rounded-full #{@bar_color}"} style={"width: #{@percentage}%"}></div>
+      <div class="obsidian-progress">
+        <div class={"obsidian-progress-bar #{@bar_color}"} style={"width: #{@percentage}%"}></div>
       </div>
     </div>
     """
@@ -296,17 +379,17 @@ defmodule FiletransferWeb.Owner.OwnerDashboardLive do
 
   defp activity_row(assigns) do
     ~H"""
-    <div class="p-4 hover:bg-gray-50 transition-colors">
+    <div class="obsidian-table-row px-5 py-4">
       <div class="flex items-center gap-4">
-        <div class={"p-2 rounded-lg #{activity_icon_bg(@activity.type)}"}>
+        <div class={"w-9 h-9 rounded-lg flex items-center justify-center #{activity_icon_bg(@activity.type)}"}>
           <.icon
             name={activity_icon(@activity.type)}
-            class={"w-5 h-5 #{activity_icon_color(@activity.type)}"}
+            class={"w-4 h-4 #{activity_icon_color(@activity.type)}"}
           />
         </div>
         <div class="flex-1 min-w-0">
-          <p class="text-gray-900">{@activity.description}</p>
-          <p class="text-sm text-gray-500">{format_datetime(@activity.inserted_at)}</p>
+          <p class="text-sm obsidian-text-primary">{@activity.description}</p>
+          <p class="text-xs obsidian-text-tertiary mt-0.5">{format_datetime(@activity.inserted_at)}</p>
         </div>
       </div>
     </div>
@@ -315,17 +398,37 @@ defmodule FiletransferWeb.Owner.OwnerDashboardLive do
 
   # Helper Functions
 
+  defp peak_hours_data do
+    # Returns list of {hour_label, activity_percentage} for peak hours visualization
+    [
+      {"6am", 15},
+      {"9am", 65},
+      {"12pm", 85},
+      {"3pm", 95},
+      {"6pm", 70},
+      {"9pm", 45},
+      {"12am", 20}
+    ]
+  end
+
+  defp format_bandwidth(%{total_bandwidth: bandwidth}) when is_integer(bandwidth) do
+    format_bytes(bandwidth) <> "/mo"
+  end
+  defp format_bandwidth(_), do: "0 B/mo"
+
   defp load_platform_stats do
     base_stats = %{
       total_users: 0,
       total_transfers: 0,
       active_shares: 0,
       total_storage: 0,
+      total_bandwidth: 0,
       users_change: nil,
       transfers_change: nil,
       shares_change: nil,
       storage_change: nil,
-      users_by_tier: %{}
+      users_by_tier: %{},
+      users_by_region: %{"americas" => 0, "europe" => 0, "apac" => 0}
     }
 
     # Try to load actual stats
@@ -350,11 +453,13 @@ defmodule FiletransferWeb.Owner.OwnerDashboardLive do
         total_transfers: 0,
         active_shares: 0,
         total_storage: 0,
+        total_bandwidth: 0,
         users_change: nil,
         transfers_change: nil,
         shares_change: nil,
         storage_change: nil,
-        users_by_tier: %{}
+        users_by_tier: %{},
+        users_by_region: %{"americas" => 0, "europe" => 0, "apac" => 0}
       }
   end
 
@@ -393,10 +498,10 @@ defmodule FiletransferWeb.Owner.OwnerDashboardLive do
 
   defp tier_badge(tier) do
     case tier do
-      "enterprise" -> "bg-orange-100 text-orange-700"
-      "business" -> "bg-purple-100 text-purple-700"
-      "pro" -> "bg-blue-100 text-blue-700"
-      _ -> "bg-gray-100 text-gray-700"
+      "enterprise" -> "obsidian-badge obsidian-badge-emerald"
+      "business" -> "obsidian-badge obsidian-badge-amber"
+      "pro" -> "obsidian-badge obsidian-badge-sky"
+      _ -> "obsidian-badge obsidian-badge-slate"
     end
   end
 
@@ -404,26 +509,26 @@ defmodule FiletransferWeb.Owner.OwnerDashboardLive do
     case type do
       :user_registered -> "hero-user-plus"
       :transfer_completed -> "hero-arrow-up-tray"
-      :share_created -> "hero-share"
+      :share_created -> "hero-link"
       _ -> "hero-clock"
     end
   end
 
   defp activity_icon_bg(type) do
     case type do
-      :user_registered -> "bg-purple-50"
-      :transfer_completed -> "bg-blue-50"
-      :share_created -> "bg-green-50"
-      _ -> "bg-gray-50"
+      :user_registered -> "bg-[#d4af37]/10"
+      :transfer_completed -> "bg-[#2dd4bf]/10"
+      :share_created -> "bg-[#38bdf8]/10"
+      _ -> "bg-white/5 [[data-theme=light]_&]:bg-black/5"
     end
   end
 
   defp activity_icon_color(type) do
     case type do
-      :user_registered -> "text-purple-600"
-      :transfer_completed -> "text-blue-600"
-      :share_created -> "text-green-600"
-      _ -> "text-gray-600"
+      :user_registered -> "obsidian-accent-amber"
+      :transfer_completed -> "obsidian-accent-emerald"
+      :share_created -> "obsidian-accent-sky"
+      _ -> "obsidian-text-secondary"
     end
   end
 end

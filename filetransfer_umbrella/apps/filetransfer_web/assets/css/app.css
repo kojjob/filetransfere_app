@@ -26,35 +26,35 @@
   default: true;
   prefersdark: true;
   color-scheme: "dark";
-  /* Obsidian Studio - Premium Dark Theme */
-  --color-base-100: oklch(13% 0.005 285);
-  --color-base-200: oklch(11% 0.004 285);
-  --color-base-300: oklch(9% 0.003 285);
-  --color-base-content: oklch(95% 0.005 285);
-  /* Warm Amber accent - premium feel */
-  --color-primary: oklch(75% 0.15 75);
-  --color-primary-content: oklch(15% 0.02 75);
-  /* Muted sage for secondary */
-  --color-secondary: oklch(65% 0.08 165);
-  --color-secondary-content: oklch(98% 0.01 165);
-  /* Coral accent for highlights */
-  --color-accent: oklch(70% 0.14 25);
-  --color-accent-content: oklch(98% 0.01 25);
-  /* Warm neutral grays */
-  --color-neutral: oklch(25% 0.01 285);
-  --color-neutral-content: oklch(90% 0.005 285);
+  /* Luxe - Premium Dark Theme inspired by Luxe Dine */
+  --color-base-100: oklch(12% 0.008 60);
+  --color-base-200: oklch(10% 0.006 60);
+  --color-base-300: oklch(8% 0.004 60);
+  --color-base-content: oklch(95% 0.008 60);
+  /* Rich Gold primary - luxury feel */
+  --color-primary: oklch(78% 0.16 85);
+  --color-primary-content: oklch(12% 0.02 85);
+  /* Warm Teal secondary */
+  --color-secondary: oklch(70% 0.12 180);
+  --color-secondary-content: oklch(98% 0.01 180);
+  /* Soft coral accent */
+  --color-accent: oklch(72% 0.14 30);
+  --color-accent-content: oklch(98% 0.01 30);
+  /* Warm dark neutrals */
+  --color-neutral: oklch(22% 0.015 60);
+  --color-neutral-content: oklch(88% 0.008 60);
   /* Semantic colors */
-  --color-info: oklch(70% 0.12 230);
-  --color-info-content: oklch(98% 0.01 230);
-  --color-success: oklch(72% 0.14 155);
-  --color-success-content: oklch(98% 0.01 155);
-  --color-warning: oklch(78% 0.15 80);
-  --color-warning-content: oklch(15% 0.02 80);
-  --color-error: oklch(65% 0.2 25);
+  --color-info: oklch(72% 0.11 220);
+  --color-info-content: oklch(98% 0.01 220);
+  --color-success: oklch(75% 0.15 160);
+  --color-success-content: oklch(98% 0.01 160);
+  --color-warning: oklch(80% 0.14 85);
+  --color-warning-content: oklch(12% 0.02 85);
+  --color-error: oklch(68% 0.18 25);
   --color-error-content: oklch(98% 0.01 25);
-  --radius-selector: 0.375rem;
-  --radius-field: 0.375rem;
-  --radius-box: 0.75rem;
+  --radius-selector: 0.5rem;
+  --radius-field: 0.5rem;
+  --radius-box: 1rem;
   --size-selector: 0.25rem;
   --size-field: 0.25rem;
   --border: 1px;
@@ -67,35 +67,35 @@
   default: false;
   prefersdark: false;
   color-scheme: "light";
-  /* Obsidian Studio - Warm Paper Light Theme */
-  --color-base-100: oklch(98.5% 0.008 85);
-  --color-base-200: oklch(96% 0.01 85);
-  --color-base-300: oklch(92% 0.015 85);
-  --color-base-content: oklch(18% 0.01 285);
-  /* Deep amber primary */
-  --color-primary: oklch(55% 0.18 55);
-  --color-primary-content: oklch(98% 0.01 55);
-  /* Teal secondary */
-  --color-secondary: oklch(45% 0.12 195);
-  --color-secondary-content: oklch(98% 0.01 195);
-  /* Charcoal accent */
-  --color-accent: oklch(25% 0.02 285);
-  --color-accent-content: oklch(98% 0.005 285);
+  /* Luxe - Warm Cream Light Theme */
+  --color-base-100: oklch(98% 0.012 85);
+  --color-base-200: oklch(95% 0.015 85);
+  --color-base-300: oklch(90% 0.02 85);
+  --color-base-content: oklch(15% 0.015 60);
+  /* Rich Bronze primary */
+  --color-primary: oklch(52% 0.16 65);
+  --color-primary-content: oklch(98% 0.01 65);
+  /* Deep Teal secondary */
+  --color-secondary: oklch(48% 0.14 185);
+  --color-secondary-content: oklch(98% 0.01 185);
+  /* Dark charcoal accent */
+  --color-accent: oklch(22% 0.02 60);
+  --color-accent-content: oklch(98% 0.005 60);
   /* Warm gray neutrals */
-  --color-neutral: oklch(55% 0.02 285);
-  --color-neutral-content: oklch(98% 0.005 285);
+  --color-neutral: oklch(50% 0.025 60);
+  --color-neutral-content: oklch(98% 0.005 60);
   /* Semantic colors */
-  --color-info: oklch(55% 0.15 240);
-  --color-info-content: oklch(98% 0.01 240);
-  --color-success: oklch(55% 0.16 155);
-  --color-success-content: oklch(98% 0.01 155);
-  --color-warning: oklch(65% 0.18 70);
-  --color-warning-content: oklch(18% 0.02 70);
-  --color-error: oklch(55% 0.22 25);
+  --color-info: oklch(52% 0.14 230);
+  --color-info-content: oklch(98% 0.01 230);
+  --color-success: oklch(52% 0.16 160);
+  --color-success-content: oklch(98% 0.01 160);
+  --color-warning: oklch(60% 0.16 75);
+  --color-warning-content: oklch(15% 0.02 75);
+  --color-error: oklch(52% 0.2 25);
   --color-error-content: oklch(98% 0.01 25);
-  --radius-selector: 0.375rem;
-  --radius-field: 0.375rem;
-  --radius-box: 0.75rem;
+  --radius-selector: 0.5rem;
+  --radius-field: 0.5rem;
+  --radius-box: 1rem;
   --size-selector: 0.25rem;
   --size-field: 0.25rem;
   --border: 1px;
@@ -558,124 +558,126 @@ html {
    Obsidian Studio - Premium Dashboard System
    ======================================== */
 
-/* Premium surface cards with subtle borders */
+/* Premium surface cards - Luxe style */
 .obsidian-card {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(12px);
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  background: linear-gradient(145deg, rgba(30, 28, 24, 0.9) 0%, rgba(22, 20, 17, 0.95) 100%);
+  border: 1px solid rgba(212, 175, 55, 0.08);
+  backdrop-filter: blur(16px);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .obsidian-card:hover {
-  background: rgba(255, 255, 255, 0.04);
-  border-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(212, 175, 55, 0.15);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
 [data-theme="light"] .obsidian-card {
-  background: rgba(255, 255, 255, 0.8);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.95) 0%, rgba(250, 248, 245, 0.98) 100%);
   border: 1px solid rgba(0, 0, 0, 0.06);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.03);
 }
 
 [data-theme="light"] .obsidian-card:hover {
-  background: rgba(255, 255, 255, 0.95);
-  border-color: rgba(0, 0, 0, 0.1);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06), 0 8px 24px rgba(0, 0, 0, 0.05);
+  border-color: rgba(180, 140, 50, 0.2);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
-/* Premium sidebar styling */
+/* Premium sidebar styling - Luxe */
 .obsidian-sidebar {
-  background: rgba(10, 10, 12, 0.95);
-  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  background: linear-gradient(180deg, rgba(18, 16, 14, 0.98) 0%, rgba(12, 10, 8, 0.99) 100%);
+  border-right: 1px solid rgba(212, 175, 55, 0.1);
   backdrop-filter: blur(20px);
 }
 
 [data-theme="light"] .obsidian-sidebar {
-  background: rgba(255, 255, 255, 0.95);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(250, 248, 245, 0.99) 100%);
   border-right: 1px solid rgba(0, 0, 0, 0.08);
 }
 
-/* Premium navigation links */
+/* Premium navigation links - Luxe */
 .obsidian-nav-link {
   display: flex;
   align-items: center;
   gap: 0.75rem;
   padding: 0.625rem 0.875rem;
-  border-radius: 0.5rem;
-  font-size: 0.875rem;
+  border-radius: 0.625rem;
+  font-size: 0.8125rem;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.55);
-  transition: all 0.15s ease;
+  color: rgba(255, 248, 230, 0.5);
+  transition: all 0.2s ease;
+  letter-spacing: 0.01em;
 }
 
 .obsidian-nav-link:hover {
-  color: rgba(255, 255, 255, 0.9);
-  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 248, 230, 0.9);
+  background: rgba(212, 175, 55, 0.08);
 }
 
 .obsidian-nav-link.active {
-  color: #f5a623;
-  background: rgba(245, 166, 35, 0.1);
+  color: #d4af37;
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(212, 175, 55, 0.08) 100%);
+  border: 1px solid rgba(212, 175, 55, 0.2);
 }
 
 [data-theme="light"] .obsidian-nav-link {
-  color: rgba(0, 0, 0, 0.5);
+  color: rgba(60, 50, 40, 0.55);
 }
 
 [data-theme="light"] .obsidian-nav-link:hover {
-  color: rgba(0, 0, 0, 0.85);
-  background: rgba(0, 0, 0, 0.04);
+  color: rgba(60, 50, 40, 0.9);
+  background: rgba(180, 140, 50, 0.08);
 }
 
 [data-theme="light"] .obsidian-nav-link.active {
-  color: #c47a00;
-  background: rgba(196, 122, 0, 0.08);
+  color: #8b6914;
+  background: linear-gradient(135deg, rgba(180, 140, 50, 0.12) 0%, rgba(180, 140, 50, 0.06) 100%);
+  border: 1px solid rgba(180, 140, 50, 0.2);
 }
 
-/* Premium stat numbers */
+/* Premium stat numbers - Luxe */
 .obsidian-stat {
-  font-family: 'JetBrains Mono', 'SF Mono', Monaco, 'Cascadia Code', monospace;
-  font-weight: 600;
+  font-family: 'DM Sans', 'Inter', system-ui, sans-serif;
+  font-weight: 700;
   font-variant-numeric: tabular-nums;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.025em;
 }
 
-/* Subtle gradient text for headings */
+/* Subtle gradient text for headings - Luxe Gold */
 .obsidian-heading {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.7) 100%);
+  background: linear-gradient(135deg, rgba(255, 248, 230, 0.95) 0%, rgba(212, 175, 55, 0.8) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 [data-theme="light"] .obsidian-heading {
-  background: linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.7) 100%);
+  background: linear-gradient(135deg, rgba(40, 35, 25, 0.95) 0%, rgba(139, 105, 20, 0.85) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* Premium icon containers */
+/* Premium icon containers - Luxe */
 .obsidian-icon-box {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 2.5rem;
   height: 2.5rem;
-  border-radius: 0.625rem;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0.75rem;
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(212, 175, 55, 0.05) 100%);
+  border: 1px solid rgba(212, 175, 55, 0.15);
 }
 
 [data-theme="light"] .obsidian-icon-box {
-  background: rgba(0, 0, 0, 0.03);
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  background: linear-gradient(135deg, rgba(180, 140, 50, 0.08) 0%, rgba(180, 140, 50, 0.04) 100%);
+  border: 1px solid rgba(180, 140, 50, 0.12);
 }
 
-/* Premium progress bars */
+/* Premium progress bars - Luxe */
 .obsidian-progress {
-  height: 0.375rem;
-  background: rgba(255, 255, 255, 0.08);
+  height: 0.5rem;
+  background: rgba(212, 175, 55, 0.1);
   border-radius: 9999px;
   overflow: hidden;
 }
@@ -683,163 +685,186 @@ html {
 .obsidian-progress-bar {
   height: 100%;
   border-radius: 9999px;
-  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  background: linear-gradient(90deg, #d4af37 0%, #f4d03f 100%);
 }
 
 [data-theme="light"] .obsidian-progress {
-  background: rgba(0, 0, 0, 0.06);
+  background: rgba(180, 140, 50, 0.1);
 }
 
-/* Premium badge styles */
+[data-theme="light"] .obsidian-progress-bar {
+  background: linear-gradient(90deg, #8b6914 0%, #b8942a 100%);
+}
+
+/* Premium badge styles - Luxe */
 .obsidian-badge {
   display: inline-flex;
   align-items: center;
-  padding: 0.25rem 0.625rem;
-  font-size: 0.75rem;
-  font-weight: 500;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
   border-radius: 9999px;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
 }
 
 .obsidian-badge-amber {
-  background: rgba(245, 166, 35, 0.15);
-  color: #f5a623;
-  border: 1px solid rgba(245, 166, 35, 0.2);
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(212, 175, 55, 0.1) 100%);
+  color: #d4af37;
+  border: 1px solid rgba(212, 175, 55, 0.3);
 }
 
 .obsidian-badge-emerald {
-  background: rgba(52, 211, 153, 0.15);
-  color: #34d399;
-  border: 1px solid rgba(52, 211, 153, 0.2);
+  background: linear-gradient(135deg, rgba(45, 212, 191, 0.2) 0%, rgba(45, 212, 191, 0.1) 100%);
+  color: #2dd4bf;
+  border: 1px solid rgba(45, 212, 191, 0.3);
 }
 
 .obsidian-badge-sky {
-  background: rgba(56, 189, 248, 0.15);
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.2) 0%, rgba(56, 189, 248, 0.1) 100%);
   color: #38bdf8;
-  border: 1px solid rgba(56, 189, 248, 0.2);
+  border: 1px solid rgba(56, 189, 248, 0.3);
 }
 
 .obsidian-badge-slate {
-  background: rgba(148, 163, 184, 0.15);
-  color: #94a3b8;
-  border: 1px solid rgba(148, 163, 184, 0.2);
+  background: linear-gradient(135deg, rgba(180, 170, 155, 0.15) 0%, rgba(180, 170, 155, 0.08) 100%);
+  color: #b4aa9b;
+  border: 1px solid rgba(180, 170, 155, 0.2);
+}
+
+.obsidian-badge-coral {
+  background: linear-gradient(135deg, rgba(251, 146, 60, 0.2) 0%, rgba(251, 146, 60, 0.1) 100%);
+  color: #fb923c;
+  border: 1px solid rgba(251, 146, 60, 0.3);
 }
 
 [data-theme="light"] .obsidian-badge-amber {
-  background: rgba(196, 122, 0, 0.1);
-  color: #b45309;
-  border: 1px solid rgba(196, 122, 0, 0.2);
+  background: linear-gradient(135deg, rgba(139, 105, 20, 0.12) 0%, rgba(139, 105, 20, 0.06) 100%);
+  color: #8b6914;
+  border: 1px solid rgba(139, 105, 20, 0.2);
 }
 
 [data-theme="light"] .obsidian-badge-emerald {
-  background: rgba(16, 185, 129, 0.1);
-  color: #059669;
-  border: 1px solid rgba(16, 185, 129, 0.2);
+  background: linear-gradient(135deg, rgba(13, 148, 136, 0.12) 0%, rgba(13, 148, 136, 0.06) 100%);
+  color: #0d9488;
+  border: 1px solid rgba(13, 148, 136, 0.2);
 }
 
 [data-theme="light"] .obsidian-badge-sky {
-  background: rgba(14, 165, 233, 0.1);
+  background: linear-gradient(135deg, rgba(2, 132, 199, 0.12) 0%, rgba(2, 132, 199, 0.06) 100%);
   color: #0284c7;
-  border: 1px solid rgba(14, 165, 233, 0.2);
+  border: 1px solid rgba(2, 132, 199, 0.2);
 }
 
 [data-theme="light"] .obsidian-badge-slate {
-  background: rgba(100, 116, 139, 0.1);
-  color: #475569;
-  border: 1px solid rgba(100, 116, 139, 0.2);
+  background: linear-gradient(135deg, rgba(100, 90, 75, 0.1) 0%, rgba(100, 90, 75, 0.05) 100%);
+  color: #645a4b;
+  border: 1px solid rgba(100, 90, 75, 0.15);
 }
 
-/* Premium button styles */
+[data-theme="light"] .obsidian-badge-coral {
+  background: linear-gradient(135deg, rgba(234, 88, 12, 0.12) 0%, rgba(234, 88, 12, 0.06) 100%);
+  color: #ea580c;
+  border: 1px solid rgba(234, 88, 12, 0.2);
+}
+
+/* Premium button styles - Luxe */
 .obsidian-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  border-radius: 0.5rem;
-  transition: all 0.15s ease;
+  padding: 0.5rem 1.125rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  border-radius: 0.625rem;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
+  letter-spacing: 0.01em;
 }
 
 .obsidian-btn-primary {
-  background: linear-gradient(135deg, #f5a623 0%, #e09000 100%);
-  color: #000;
-  border: none;
-  box-shadow: 0 2px 8px rgba(245, 166, 35, 0.25);
+  background: linear-gradient(135deg, #d4af37 0%, #c49b28 100%);
+  color: #1a1612;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  box-shadow: 0 2px 12px rgba(212, 175, 55, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
 .obsidian-btn-primary:hover {
-  box-shadow: 0 4px 16px rgba(245, 166, 35, 0.35);
+  background: linear-gradient(135deg, #e4bf47 0%, #d4af37 100%);
+  box-shadow: 0 4px 20px rgba(212, 175, 55, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
   transform: translateY(-1px);
 }
 
 .obsidian-btn-ghost {
-  background: transparent;
-  color: rgba(255, 255, 255, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(212, 175, 55, 0.08);
+  color: rgba(255, 248, 230, 0.75);
+  border: 1px solid rgba(212, 175, 55, 0.15);
 }
 
 .obsidian-btn-ghost:hover {
-  background: rgba(255, 255, 255, 0.05);
-  color: rgba(255, 255, 255, 0.95);
-  border-color: rgba(255, 255, 255, 0.15);
+  background: rgba(212, 175, 55, 0.15);
+  color: #d4af37;
+  border-color: rgba(212, 175, 55, 0.25);
 }
 
 [data-theme="light"] .obsidian-btn-primary {
-  background: linear-gradient(135deg, #c47a00 0%, #a66800 100%);
+  background: linear-gradient(135deg, #8b6914 0%, #7a5c12 100%);
   color: #fff;
-  box-shadow: 0 2px 8px rgba(196, 122, 0, 0.2);
+  border: 1px solid rgba(139, 105, 20, 0.3);
+  box-shadow: 0 2px 12px rgba(139, 105, 20, 0.25);
 }
 
 [data-theme="light"] .obsidian-btn-primary:hover {
-  box-shadow: 0 4px 16px rgba(196, 122, 0, 0.3);
+  background: linear-gradient(135deg, #9b7924 0%, #8b6914 100%);
+  box-shadow: 0 4px 20px rgba(139, 105, 20, 0.35);
 }
 
 [data-theme="light"] .obsidian-btn-ghost {
-  color: rgba(0, 0, 0, 0.6);
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(139, 105, 20, 0.06);
+  color: rgba(60, 50, 40, 0.7);
+  border: 1px solid rgba(139, 105, 20, 0.12);
 }
 
 [data-theme="light"] .obsidian-btn-ghost:hover {
-  background: rgba(0, 0, 0, 0.04);
-  color: rgba(0, 0, 0, 0.85);
-  border-color: rgba(0, 0, 0, 0.15);
+  background: rgba(139, 105, 20, 0.12);
+  color: #8b6914;
+  border-color: rgba(139, 105, 20, 0.2);
 }
 
-/* Premium divider */
+/* Premium divider - Luxe */
 .obsidian-divider {
   height: 1px;
-  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.08) 50%, transparent 100%);
+  background: linear-gradient(90deg, transparent 0%, rgba(212, 175, 55, 0.15) 50%, transparent 100%);
 }
 
 [data-theme="light"] .obsidian-divider {
-  background: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.08) 50%, transparent 100%);
+  background: linear-gradient(90deg, transparent 0%, rgba(139, 105, 20, 0.15) 50%, transparent 100%);
 }
 
-/* Premium avatar ring */
+/* Premium avatar ring - Luxe */
 .obsidian-avatar-ring {
   padding: 2px;
-  background: linear-gradient(135deg, #f5a623 0%, #e09000 100%);
+  background: linear-gradient(135deg, #d4af37 0%, #c49b28 100%);
   border-radius: 9999px;
 }
 
 [data-theme="light"] .obsidian-avatar-ring {
-  background: linear-gradient(135deg, #c47a00 0%, #a66800 100%);
+  background: linear-gradient(135deg, #8b6914 0%, #7a5c12 100%);
 }
 
-/* Subtle pulse animation for live indicators */
+/* Subtle pulse animation for live indicators - Luxe teal */
 @keyframes obsidian-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(45, 212, 191, 0.4); }
+  50% { opacity: 0.7; box-shadow: 0 0 0 4px rgba(45, 212, 191, 0); }
 }
 
 .obsidian-live-dot {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
   border-radius: 9999px;
-  background: #34d399;
+  background: #2dd4bf;
   animation: obsidian-pulse 2s ease-in-out infinite;
 }
 
@@ -856,38 +881,38 @@ html {
   background: rgba(0, 0, 0, 0.02);
 }
 
-/* Premium text colors */
+/* Premium text colors - Luxe */
 .obsidian-text-primary {
-  color: rgba(255, 255, 255, 0.95);
+  color: rgba(255, 248, 230, 0.95);
 }
 
 .obsidian-text-secondary {
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(255, 248, 230, 0.6);
 }
 
 .obsidian-text-tertiary {
-  color: rgba(255, 255, 255, 0.35);
+  color: rgba(255, 248, 230, 0.38);
 }
 
 [data-theme="light"] .obsidian-text-primary {
-  color: rgba(0, 0, 0, 0.9);
+  color: rgba(40, 35, 25, 0.92);
 }
 
 [data-theme="light"] .obsidian-text-secondary {
-  color: rgba(0, 0, 0, 0.55);
+  color: rgba(60, 50, 40, 0.6);
 }
 
 [data-theme="light"] .obsidian-text-tertiary {
-  color: rgba(0, 0, 0, 0.35);
+  color: rgba(80, 70, 55, 0.45);
 }
 
-/* Premium accent colors */
+/* Premium accent colors - Luxe */
 .obsidian-accent-amber {
-  color: #f5a623;
+  color: #d4af37;
 }
 
 .obsidian-accent-emerald {
-  color: #34d399;
+  color: #2dd4bf;
 }
 
 .obsidian-accent-sky {
@@ -895,15 +920,15 @@ html {
 }
 
 .obsidian-accent-coral {
-  color: #f97171;
+  color: #fb923c;
 }
 
 [data-theme="light"] .obsidian-accent-amber {
-  color: #c47a00;
+  color: #8b6914;
 }
 
 [data-theme="light"] .obsidian-accent-emerald {
-  color: #059669;
+  color: #0d9488;
 }
 
 [data-theme="light"] .obsidian-accent-sky {
@@ -911,5 +936,61 @@ html {
 }
 
 [data-theme="light"] .obsidian-accent-coral {
-  color: #dc2626;
+  color: #ea580c;
+}
+
+/* World map component for user locations */
+.luxe-map-container {
+  position: relative;
+  background: linear-gradient(180deg, rgba(212, 175, 55, 0.03) 0%, transparent 100%);
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.luxe-map-dot {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #d4af37;
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.3), 0 0 20px rgba(212, 175, 55, 0.4);
+  animation: luxe-dot-pulse 2s ease-in-out infinite;
+}
+
+.luxe-map-dot-teal {
+  background: #2dd4bf;
+  box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.3), 0 0 20px rgba(45, 212, 191, 0.4);
+}
+
+.luxe-map-dot-coral {
+  background: #fb923c;
+  box-shadow: 0 0 0 3px rgba(251, 146, 60, 0.3), 0 0 20px rgba(251, 146, 60, 0.4);
+}
+
+@keyframes luxe-dot-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.2); opacity: 0.8; }
+}
+
+/* Metric card with glow effect */
+.luxe-metric-glow {
+  position: relative;
+}
+
+.luxe-metric-glow::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  right: -1px;
+  bottom: -1px;
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, transparent 50%, rgba(45, 212, 191, 0.1) 100%);
+  border-radius: inherit;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.luxe-metric-glow:hover::before {
+  opacity: 1;
 }
