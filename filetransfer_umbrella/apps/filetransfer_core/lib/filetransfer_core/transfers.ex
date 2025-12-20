@@ -253,5 +253,3 @@ defmodule FiletransferCore.Transfers do
     end)
   end
 end
-
-

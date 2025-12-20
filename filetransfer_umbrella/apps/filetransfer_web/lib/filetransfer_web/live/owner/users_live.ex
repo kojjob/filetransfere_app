@@ -118,7 +118,11 @@ defmodule FiletransferWeb.Owner.UsersLive do
                 </th>
               </tr>
             </thead>
-            <tbody id="users-list" phx-update="stream" class="divide-y divide-white/5 [[data-theme=light]_&]:divide-black/5">
+            <tbody
+              id="users-list"
+              phx-update="stream"
+              class="divide-y divide-white/5 [[data-theme=light]_&]:divide-black/5"
+            >
               <tr
                 :for={{dom_id, user} <- @streams.users}
                 id={dom_id}
@@ -132,7 +136,9 @@ defmodule FiletransferWeb.Owner.UsersLive do
                       </span>
                     </div>
                     <div>
-                      <p class="text-sm font-medium obsidian-text-primary">{user.name || "No name"}</p>
+                      <p class="text-sm font-medium obsidian-text-primary">
+                        {user.name || "No name"}
+                      </p>
                       <p class="text-xs obsidian-text-tertiary">{user.email}</p>
                     </div>
                   </div>
@@ -206,7 +212,9 @@ defmodule FiletransferWeb.Owner.UsersLive do
                       title={if user_active?(user), do: "Deactivate", else: "Activate"}
                     >
                       <.icon
-                        name={if user_active?(user), do: "hero-pause-circle", else: "hero-play-circle"}
+                        name={
+                          if user_active?(user), do: "hero-pause-circle", else: "hero-play-circle"
+                        }
                         class="w-4 h-4"
                       />
                     </button>

@@ -14,5 +14,3 @@ defmodule FiletransferWeb.Plugs.CORS do
     |> put_resp_header("access-control-max-age", "86400")
   end
 end
-
-

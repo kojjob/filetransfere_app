@@ -314,5 +314,3 @@ defmodule FiletransferCore.Accounts do
     |> Repo.aggregate(:count)
   end
 end
-
-

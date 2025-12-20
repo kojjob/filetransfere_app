@@ -365,7 +365,12 @@ defmodule FiletransferWeb.Owner.AnalyticsLive do
       "critical" => "bg-red-500/15 text-red-400 border border-red-500/20"
     }
 
-    assigns = assign(assigns, :status_badge, Map.get(status_badge, assigns.status, "obsidian-badge-slate"))
+    assigns =
+      assign(
+        assigns,
+        :status_badge,
+        Map.get(status_badge, assigns.status, "obsidian-badge-slate")
+      )
 
     ~H"""
     <div class="flex items-center justify-between">

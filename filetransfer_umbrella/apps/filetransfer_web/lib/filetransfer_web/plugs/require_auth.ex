@@ -28,5 +28,3 @@ defmodule FiletransferWeb.Plugs.RequireAuth do
     end
   end
 end
-
-

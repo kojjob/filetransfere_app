@@ -33,5 +33,3 @@ defmodule FiletransferCore.Usage.UsageStat do
     |> unique_constraint([:user_id, :year, :month])
   end
 end
-
-

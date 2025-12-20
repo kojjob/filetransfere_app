@@ -131,7 +131,10 @@ defmodule FiletransferWeb.Layouts do
         data-phx-theme="system"
         title="System theme"
       >
-        <.icon name="hero-computer-desktop-micro" class="size-4 obsidian-text-secondary hover:obsidian-text-primary transition-colors" />
+        <.icon
+          name="hero-computer-desktop-micro"
+          class="size-4 obsidian-text-secondary hover:obsidian-text-primary transition-colors"
+        />
       </button>
 
       <button
@@ -140,7 +143,10 @@ defmodule FiletransferWeb.Layouts do
         data-phx-theme="light"
         title="Light theme"
       >
-        <.icon name="hero-sun-micro" class="size-4 obsidian-text-secondary hover:obsidian-text-primary transition-colors" />
+        <.icon
+          name="hero-sun-micro"
+          class="size-4 obsidian-text-secondary hover:obsidian-text-primary transition-colors"
+        />
       </button>
 
       <button
@@ -149,7 +155,10 @@ defmodule FiletransferWeb.Layouts do
         data-phx-theme="dark"
         title="Dark theme"
       >
-        <.icon name="hero-moon-micro" class="size-4 obsidian-text-secondary hover:obsidian-text-primary transition-colors" />
+        <.icon
+          name="hero-moon-micro"
+          class="size-4 obsidian-text-secondary hover:obsidian-text-primary transition-colors"
+        />
       </button>
     </div>
     """
@@ -376,10 +385,18 @@ defmodule FiletransferWeb.Layouts do
           <.obsidian_nav_link href="/owner/users" icon="hero-users" active={@active_tab == "users"}>
             Users
           </.obsidian_nav_link>
-          <.obsidian_nav_link href="/owner/analytics" icon="hero-chart-bar" active={@active_tab == "analytics"}>
+          <.obsidian_nav_link
+            href="/owner/analytics"
+            icon="hero-chart-bar"
+            active={@active_tab == "analytics"}
+          >
             Analytics
           </.obsidian_nav_link>
-          <.obsidian_nav_link href="/owner/settings" icon="hero-cog-6-tooth" active={@active_tab == "settings"}>
+          <.obsidian_nav_link
+            href="/owner/settings"
+            icon="hero-cog-6-tooth"
+            active={@active_tab == "settings"}
+          >
             Settings
           </.obsidian_nav_link>
         </nav>
@@ -397,7 +414,11 @@ defmodule FiletransferWeb.Layouts do
           <.obsidian_nav_link href="/dashboard" icon="hero-home" active={false}>
             Dashboard
           </.obsidian_nav_link>
-          <.obsidian_nav_link href="/admin/waitlist" icon="hero-clipboard-document-list" active={false}>
+          <.obsidian_nav_link
+            href="/admin/waitlist"
+            icon="hero-clipboard-document-list"
+            active={false}
+          >
             Admin
           </.obsidian_nav_link>
         </nav>
@@ -408,7 +429,9 @@ defmodule FiletransferWeb.Layouts do
             <div class="obsidian-avatar-ring">
               <div class="w-8 h-8 rounded-full bg-[#0f0d0a] [[data-theme=light]_&]:bg-white flex items-center justify-center">
                 <span class="text-xs font-bold obsidian-accent-amber">
-                  {if @current_user, do: String.first(@current_user.email) |> String.upcase(), else: "O"}
+                  {if @current_user,
+                    do: String.first(@current_user.email) |> String.upcase(),
+                    else: "O"}
                 </span>
               </div>
             </div>

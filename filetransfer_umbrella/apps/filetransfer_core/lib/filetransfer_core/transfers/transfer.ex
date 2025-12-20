@@ -78,5 +78,3 @@ defmodule FiletransferCore.Transfers.Transfer do
     end
   end
 end
-
-

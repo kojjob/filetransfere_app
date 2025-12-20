@@ -77,13 +77,19 @@ defmodule FiletransferCore.Sharing do
     query =
       if status && status != "" do
         now = DateTime.utc_now()
+
         case status do
           "active" ->
-            from(s in query, where: s.is_active == true and (is_nil(s.expires_at) or s.expires_at > ^now))
+            from(s in query,
+              where: s.is_active == true and (is_nil(s.expires_at) or s.expires_at > ^now)
+            )
+
           "expired" ->
             from(s in query, where: not is_nil(s.expires_at) and s.expires_at <= ^now)
+
           "revoked" ->
             from(s in query, where: s.is_active == false)
+
           _ ->
             query
         end

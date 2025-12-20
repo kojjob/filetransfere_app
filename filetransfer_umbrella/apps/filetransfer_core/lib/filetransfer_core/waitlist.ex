@@ -213,5 +213,3 @@ defmodule FiletransferCore.Waitlist do
     end
   end
 end
-
-

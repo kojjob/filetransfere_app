@@ -36,5 +36,3 @@ defmodule FiletransferCore.Chunks.Chunk do
     |> unique_constraint([:transfer_id, :chunk_index])
   end
 end
-
-

@@ -26,12 +26,48 @@ defmodule FiletransferWeb.Owner.OwnerDashboardLive do
     <div class="space-y-6">
       <%!-- Top Row: Key Metrics --%>
       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-        <.stat_card title="Total Users" value={@platform_stats.total_users} change={@platform_stats.users_change} icon="hero-users" color="amber" />
-        <.stat_card title="Transfers" value={@platform_stats.total_transfers} change={@platform_stats.transfers_change} icon="hero-arrow-up-tray" color="emerald" />
-        <.stat_card title="Active Shares" value={@platform_stats.active_shares} change={@platform_stats.shares_change} icon="hero-link" color="sky" />
-        <.stat_card title="Storage" value={format_bytes(@platform_stats.total_storage)} change={@platform_stats.storage_change} icon="hero-server-stack" color="coral" />
-        <.stat_card title="Bandwidth" value={format_bandwidth(@platform_stats)} change={nil} icon="hero-signal" color="emerald" />
-        <.stat_card title="Success Rate" value="99.8%" change={nil} icon="hero-check-badge" color="amber" />
+        <.stat_card
+          title="Total Users"
+          value={@platform_stats.total_users}
+          change={@platform_stats.users_change}
+          icon="hero-users"
+          color="amber"
+        />
+        <.stat_card
+          title="Transfers"
+          value={@platform_stats.total_transfers}
+          change={@platform_stats.transfers_change}
+          icon="hero-arrow-up-tray"
+          color="emerald"
+        />
+        <.stat_card
+          title="Active Shares"
+          value={@platform_stats.active_shares}
+          change={@platform_stats.shares_change}
+          icon="hero-link"
+          color="sky"
+        />
+        <.stat_card
+          title="Storage"
+          value={format_bytes(@platform_stats.total_storage)}
+          change={@platform_stats.storage_change}
+          icon="hero-server-stack"
+          color="coral"
+        />
+        <.stat_card
+          title="Bandwidth"
+          value={format_bandwidth(@platform_stats)}
+          change={nil}
+          icon="hero-signal"
+          color="emerald"
+        />
+        <.stat_card
+          title="Success Rate"
+          value="99.8%"
+          change={nil}
+          icon="hero-check-badge"
+          color="amber"
+        />
       </div>
 
       <%!-- Second Row: Map + Charts --%>
@@ -59,9 +95,27 @@ defmodule FiletransferWeb.Owner.OwnerDashboardLive do
           <div class="luxe-map-container p-6 h-64 relative">
             <%!-- Simple world map visualization with dots --%>
             <svg viewBox="0 0 800 400" class="w-full h-full opacity-20">
-              <path d="M150,120 Q200,80 250,100 T350,90 T450,100 T550,85 T650,100" fill="none" stroke="currentColor" stroke-width="1" class="obsidian-text-tertiary" />
-              <path d="M100,200 Q180,180 260,195 T400,180 T540,200 T680,190" fill="none" stroke="currentColor" stroke-width="1" class="obsidian-text-tertiary" />
-              <path d="M180,280 Q250,260 350,275 T500,260 T620,280" fill="none" stroke="currentColor" stroke-width="1" class="obsidian-text-tertiary" />
+              <path
+                d="M150,120 Q200,80 250,100 T350,90 T450,100 T550,85 T650,100"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1"
+                class="obsidian-text-tertiary"
+              />
+              <path
+                d="M100,200 Q180,180 260,195 T400,180 T540,200 T680,190"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1"
+                class="obsidian-text-tertiary"
+              />
+              <path
+                d="M180,280 Q250,260 350,275 T500,260 T620,280"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1"
+                class="obsidian-text-tertiary"
+              />
             </svg>
             <%!-- Location dots --%>
             <div class="luxe-map-dot" style="top: 30%; left: 20%;"></div>
@@ -72,9 +126,21 @@ defmodule FiletransferWeb.Owner.OwnerDashboardLive do
             <div class="luxe-map-dot" style="top: 60%; left: 55%;"></div>
             <%!-- Region stats overlay --%>
             <div class="absolute bottom-4 left-4 right-4 flex justify-between">
-              <.region_stat region="Americas" users={@platform_stats.users_by_region["americas"] || 0} percentage={45} />
-              <.region_stat region="Europe" users={@platform_stats.users_by_region["europe"] || 0} percentage={32} />
-              <.region_stat region="Asia Pacific" users={@platform_stats.users_by_region["apac"] || 0} percentage={23} />
+              <.region_stat
+                region="Americas"
+                users={@platform_stats.users_by_region["americas"] || 0}
+                percentage={45}
+              />
+              <.region_stat
+                region="Europe"
+                users={@platform_stats.users_by_region["europe"] || 0}
+                percentage={32}
+              />
+              <.region_stat
+                region="Asia Pacific"
+                users={@platform_stats.users_by_region["apac"] || 0}
+                percentage={23}
+              />
             </div>
           </div>
         </div>
@@ -108,7 +174,10 @@ defmodule FiletransferWeb.Owner.OwnerDashboardLive do
               </div>
               <h2 class="text-sm font-semibold obsidian-text-primary">Recent Users</h2>
             </div>
-            <.link navigate={~p"/owner/users"} class="text-xs font-medium obsidian-accent-amber hover:underline">
+            <.link
+              navigate={~p"/owner/users"}
+              class="text-xs font-medium obsidian-accent-amber hover:underline"
+            >
               View all
             </.link>
           </div>
@@ -139,10 +208,30 @@ defmodule FiletransferWeb.Owner.OwnerDashboardLive do
               <h3 class="text-sm font-semibold obsidian-text-primary">Subscriptions</h3>
             </div>
             <div class="space-y-3">
-              <.distribution_bar label="Free" value={@platform_stats.users_by_tier["free"] || 0} total={@platform_stats.total_users} color="slate" />
-              <.distribution_bar label="Pro" value={@platform_stats.users_by_tier["pro"] || 0} total={@platform_stats.total_users} color="sky" />
-              <.distribution_bar label="Business" value={@platform_stats.users_by_tier["business"] || 0} total={@platform_stats.total_users} color="amber" />
-              <.distribution_bar label="Enterprise" value={@platform_stats.users_by_tier["enterprise"] || 0} total={@platform_stats.total_users} color="emerald" />
+              <.distribution_bar
+                label="Free"
+                value={@platform_stats.users_by_tier["free"] || 0}
+                total={@platform_stats.total_users}
+                color="slate"
+              />
+              <.distribution_bar
+                label="Pro"
+                value={@platform_stats.users_by_tier["pro"] || 0}
+                total={@platform_stats.total_users}
+                color="sky"
+              />
+              <.distribution_bar
+                label="Business"
+                value={@platform_stats.users_by_tier["business"] || 0}
+                total={@platform_stats.total_users}
+                color="amber"
+              />
+              <.distribution_bar
+                label="Enterprise"
+                value={@platform_stats.users_by_tier["enterprise"] || 0}
+                total={@platform_stats.total_users}
+                color="emerald"
+              />
             </div>
           </div>
 
@@ -160,7 +249,8 @@ defmodule FiletransferWeb.Owner.OwnerDashboardLive do
                   <div
                     class="w-full rounded-t bg-gradient-to-t from-[#d4af37]/60 to-[#d4af37] transition-all"
                     style={"height: #{activity}%"}
-                  ></div>
+                  >
+                  </div>
                   <span class="text-[9px] obsidian-text-tertiary">{hour}</span>
                 </div>
               <% end %>
@@ -199,35 +289,50 @@ defmodule FiletransferWeb.Owner.OwnerDashboardLive do
 
       <%!-- Bottom Row: Quick Actions --%>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <.link navigate={~p"/owner/users"} class="obsidian-card rounded-xl p-5 group hover:border-[#d4af37]/30 transition-all">
+        <.link
+          navigate={~p"/owner/users"}
+          class="obsidian-card rounded-xl p-5 group hover:border-[#d4af37]/30 transition-all"
+        >
           <div class="flex items-center gap-4">
             <div class="w-12 h-12 rounded-xl bg-[#d4af37]/10 flex items-center justify-center group-hover:bg-[#d4af37]/20 transition-colors">
               <.icon name="hero-user-plus" class="w-6 h-6 obsidian-accent-amber" />
             </div>
             <div>
-              <h3 class="text-sm font-semibold obsidian-text-primary group-hover:obsidian-accent-amber transition-colors">Manage Users</h3>
+              <h3 class="text-sm font-semibold obsidian-text-primary group-hover:obsidian-accent-amber transition-colors">
+                Manage Users
+              </h3>
               <p class="text-xs obsidian-text-tertiary">View and manage platform users</p>
             </div>
           </div>
         </.link>
-        <.link navigate={~p"/owner/analytics"} class="obsidian-card rounded-xl p-5 group hover:border-[#2dd4bf]/30 transition-all">
+        <.link
+          navigate={~p"/owner/analytics"}
+          class="obsidian-card rounded-xl p-5 group hover:border-[#2dd4bf]/30 transition-all"
+        >
           <div class="flex items-center gap-4">
             <div class="w-12 h-12 rounded-xl bg-[#2dd4bf]/10 flex items-center justify-center group-hover:bg-[#2dd4bf]/20 transition-colors">
               <.icon name="hero-chart-bar" class="w-6 h-6 obsidian-accent-emerald" />
             </div>
             <div>
-              <h3 class="text-sm font-semibold obsidian-text-primary group-hover:obsidian-accent-emerald transition-colors">Analytics</h3>
+              <h3 class="text-sm font-semibold obsidian-text-primary group-hover:obsidian-accent-emerald transition-colors">
+                Analytics
+              </h3>
               <p class="text-xs obsidian-text-tertiary">Detailed platform insights</p>
             </div>
           </div>
         </.link>
-        <.link navigate={~p"/owner/settings"} class="obsidian-card rounded-xl p-5 group hover:border-[#38bdf8]/30 transition-all">
+        <.link
+          navigate={~p"/owner/settings"}
+          class="obsidian-card rounded-xl p-5 group hover:border-[#38bdf8]/30 transition-all"
+        >
           <div class="flex items-center gap-4">
             <div class="w-12 h-12 rounded-xl bg-[#38bdf8]/10 flex items-center justify-center group-hover:bg-[#38bdf8]/20 transition-colors">
               <.icon name="hero-cog-6-tooth" class="w-6 h-6 obsidian-accent-sky" />
             </div>
             <div>
-              <h3 class="text-sm font-semibold obsidian-text-primary group-hover:obsidian-accent-sky transition-colors">Settings</h3>
+              <h3 class="text-sm font-semibold obsidian-text-primary group-hover:obsidian-accent-sky transition-colors">
+                Settings
+              </h3>
               <p class="text-xs obsidian-text-tertiary">Configure platform settings</p>
             </div>
           </div>
@@ -306,7 +411,10 @@ defmodule FiletransferWeb.Owner.OwnerDashboardLive do
         <%= if @change do %>
           <span class={[
             "obsidian-badge text-[11px]",
-            if(@change >= 0, do: "obsidian-badge-emerald", else: "bg-red-500/15 text-red-400 border border-red-500/20")
+            if(@change >= 0,
+              do: "obsidian-badge-emerald",
+              else: "bg-red-500/15 text-red-400 border border-red-500/20"
+            )
           ]}>
             {if @change >= 0, do: "↑", else: "↓"} {abs(@change)}%
           </span>
@@ -389,7 +497,9 @@ defmodule FiletransferWeb.Owner.OwnerDashboardLive do
         </div>
         <div class="flex-1 min-w-0">
           <p class="text-sm obsidian-text-primary">{@activity.description}</p>
-          <p class="text-xs obsidian-text-tertiary mt-0.5">{format_datetime(@activity.inserted_at)}</p>
+          <p class="text-xs obsidian-text-tertiary mt-0.5">
+            {format_datetime(@activity.inserted_at)}
+          </p>
         </div>
       </div>
     </div>
@@ -414,6 +524,7 @@ defmodule FiletransferWeb.Owner.OwnerDashboardLive do
   defp format_bandwidth(%{total_bandwidth: bandwidth}) when is_integer(bandwidth) do
     format_bytes(bandwidth) <> "/mo"
   end
+
   defp format_bandwidth(_), do: "0 B/mo"
 
   defp load_platform_stats do

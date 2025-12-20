@@ -33,5 +33,3 @@ defmodule FiletransferCore.Api.ApiKey do
     |> unique_constraint(:key_hash)
   end
 end
-
-

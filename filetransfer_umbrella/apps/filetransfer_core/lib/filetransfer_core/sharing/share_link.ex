@@ -50,5 +50,3 @@ defmodule FiletransferCore.Sharing.ShareLink do
     end
   end
 end
-
-

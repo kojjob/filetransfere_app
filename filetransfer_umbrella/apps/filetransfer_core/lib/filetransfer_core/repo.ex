@@ -3,5 +3,3 @@ defmodule FiletransferCore.Repo do
     otp_app: :filetransfer_core,
     adapter: Ecto.Adapters.Postgres
 end
-
-

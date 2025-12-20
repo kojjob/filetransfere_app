@@ -91,5 +91,3 @@ defmodule FiletransferWeb.AuthController do
     end)
   end
 end
-
-
