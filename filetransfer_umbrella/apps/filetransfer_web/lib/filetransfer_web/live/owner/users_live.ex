@@ -9,6 +9,9 @@ defmodule FiletransferWeb.Owner.UsersLive do
 
   @impl true
   def mount(_params, _session, socket) do
+    # Load users into variable to check if empty before streaming
+    users = load_users("all", "", "created_at", "desc")
+
     socket =
       socket
       |> assign(:page_title, "Users")
@@ -17,7 +20,8 @@ defmodule FiletransferWeb.Owner.UsersLive do
       |> assign(:search, "")
       |> assign(:sort_by, "created_at")
       |> assign(:sort_order, "desc")
-      |> stream(:users, load_users("all", "", "created_at", "desc"))
+      |> assign(:has_users?, users != [] && length(users) > 0)
+      |> stream(:users, users)
 
     {:ok, socket, layout: {FiletransferWeb.Layouts, :owner_dashboard}}
   end
@@ -29,13 +33,17 @@ defmodule FiletransferWeb.Owner.UsersLive do
     sort_by = Map.get(params, "sort_by", "created_at")
     sort_order = Map.get(params, "sort_order", "desc")
 
+    # Load users into variable to check if empty before streaming
+    users = load_users(filter, search, sort_by, sort_order)
+
     socket =
       socket
       |> assign(:filter, filter)
       |> assign(:search, search)
       |> assign(:sort_by, sort_by)
       |> assign(:sort_order, sort_order)
-      |> stream(:users, load_users(filter, search, sort_by, sort_order), reset: true)
+      |> assign(:has_users?, users != [] && length(users) > 0)
+      |> stream(:users, users, reset: true)
 
     {:noreply, socket}
   end
@@ -226,7 +234,7 @@ defmodule FiletransferWeb.Owner.UsersLive do
         </div>
 
         <%!-- Empty State --%>
-        <div :if={@streams.users |> Enum.empty?()} class="p-12 text-center">
+        <div :if={!@has_users?} class="p-12 text-center">
           <div class="obsidian-icon-box mx-auto mb-4 w-14 h-14">
             <.icon name="hero-users" class="w-7 h-7 obsidian-text-tertiary" />
           </div>
