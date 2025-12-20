@@ -445,11 +445,6 @@ defmodule FiletransferWeb.DashboardLive do
     end
   end
 
-  @impl true
-  def handle_event("logout", _, socket) do
-    {:noreply, redirect(socket, to: ~p"/api/auth/logout")}
-  end
-
   # Theme classes helper
   defp tc(theme) do
     if theme == "light" do
@@ -836,13 +831,17 @@ defmodule FiletransferWeb.DashboardLive do
                 </div>
 
                 <div class={"p-2 border-t #{@t.border}"}>
-                  <button
-                    phx-click="logout"
-                    class="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-red-500/10 text-red-500"
-                  >
-                    <.icon name="hero-arrow-right-on-rectangle" class="w-5 h-5" />
-                    <span>Sign Out</span>
-                  </button>
+                  <form action="/session" method="post" class="w-full">
+                    <input type="hidden" name="_method" value="delete" />
+                    <input type="hidden" name="_csrf_token" value={Plug.CSRFProtection.get_csrf_token()} />
+                    <button
+                      type="submit"
+                      class="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-red-500/10 text-red-500"
+                    >
+                      <.icon name="hero-arrow-right-on-rectangle" class="w-5 h-5" />
+                      <span>Sign Out</span>
+                    </button>
+                  </form>
                 </div>
               </div>
             </div>
