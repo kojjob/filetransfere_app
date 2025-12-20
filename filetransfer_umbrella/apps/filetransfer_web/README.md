@@ -1,18 +1,26 @@
-# FiletransferWeb
+# ZipShare Web
 
-To start your Phoenix server:
+Phoenix web interface for the ZipShare file transfer platform.
 
-* Run `mix setup` to install and setup dependencies
-* Start Phoenix endpoint with `mix phx.server`
+## Running
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+```bash
+# From the umbrella root
+mix setup        # Install and setup dependencies
+mix phx.server   # Start Phoenix server at localhost:4000
+```
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+## Features
 
-## Learn more
+- Phoenix 1.8 with LiveView 1.1
+- Tailwind CSS v4
+- Real-time file upload progress
+- User dashboard
+- Owner dashboard (project owners only)
+- Admin panel (HTTP Basic Auth)
 
-* Official website: https://www.phoenixframework.org/
-* Guides: https://hexdocs.pm/phoenix/overview.html
-* Docs: https://hexdocs.pm/phoenix
-* Forum: https://elixirforum.com/c/phoenix-forum
-* Source: https://github.com/phoenixframework/phoenix
+## Learn More
+
+- [Phoenix Framework](https://www.phoenixframework.org/)
+- [Phoenix LiveView](https://hexdocs.pm/phoenix_live_view)
+- [Tailwind CSS](https://tailwindcss.com/)

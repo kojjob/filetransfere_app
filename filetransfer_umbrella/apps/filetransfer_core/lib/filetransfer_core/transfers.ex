@@ -24,6 +24,54 @@ defmodule FiletransferCore.Transfers do
   end
 
   @doc """
+  Returns the list of transfers for a user with filtering options.
+
+  ## Options
+    * `:search` - Search by filename
+    * `:status` - Filter by status ("pending", "uploading", "completed", "failed")
+    * `:sort_by` - Sort field (:inserted_at, :file_name, :file_size)
+    * `:sort_order` - Sort direction (:asc, :desc)
+  """
+  def list_user_transfers(user_id, opts \\ []) do
+    search = Keyword.get(opts, :search, "")
+    status = Keyword.get(opts, :status)
+    sort_by = Keyword.get(opts, :sort_by, :inserted_at)
+    sort_order = Keyword.get(opts, :sort_order, :desc)
+
+    query = from(t in Transfer, where: t.user_id == ^user_id)
+
+    query =
+      if search != "" do
+        search_term = "%#{search}%"
+        from(t in query, where: ilike(t.file_name, ^search_term))
+      else
+        query
+      end
+
+    query =
+      if status && status != "" do
+        from(t in query, where: t.status == ^status)
+      else
+        query
+      end
+
+    query =
+      case {sort_by, sort_order} do
+        {:inserted_at, :asc} -> from(t in query, order_by: [asc: t.inserted_at])
+        {:inserted_at, :desc} -> from(t in query, order_by: [desc: t.inserted_at])
+        {:file_name, :asc} -> from(t in query, order_by: [asc: t.file_name])
+        {:file_name, :desc} -> from(t in query, order_by: [desc: t.file_name])
+        {:file_size, :asc} -> from(t in query, order_by: [asc: t.file_size])
+        {:file_size, :desc} -> from(t in query, order_by: [desc: t.file_size])
+        _ -> from(t in query, order_by: [desc: t.inserted_at])
+      end
+
+    query
+    |> preload(:chunks)
+    |> Repo.all()
+  end
+
+  @doc """
   Gets a single transfer (raises if not found).
   """
   def get_transfer!(id), do: Repo.get!(Transfer, id) |> Repo.preload(:chunks)
@@ -89,6 +137,19 @@ defmodule FiletransferCore.Transfers do
   """
   def delete_transfer(%Transfer{} = transfer) do
     Repo.delete(transfer)
+  end
+
+  @doc """
+  Deletes a transfer only if it belongs to the specified user.
+
+  Returns `{:ok, transfer}` if deleted, `{:error, :not_found}` if not found
+  or doesn't belong to user.
+  """
+  def delete_user_transfer(user_id, transfer_id) do
+    case get_user_transfer(user_id, transfer_id) do
+      nil -> {:error, :not_found}
+      transfer -> delete_transfer(transfer)
+    end
   end
 
   @doc """
@@ -192,3 +253,5 @@ defmodule FiletransferCore.Transfers do
     end)
   end
 end
+
+

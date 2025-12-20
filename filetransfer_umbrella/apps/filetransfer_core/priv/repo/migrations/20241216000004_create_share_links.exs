@@ -22,3 +22,5 @@ defmodule FiletransferCore.Repo.Migrations.CreateShareLinks do
     create index(:share_links, [:expires_at])
   end
 end
+
+

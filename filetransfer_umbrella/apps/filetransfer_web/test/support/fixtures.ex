@@ -44,10 +44,29 @@ defmodule FiletransferWeb.Fixtures do
   end
 
   @doc """
+  Creates a project owner user for testing.
+  """
+  def project_owner_fixture(attrs \\ %{}) do
+    user = user_fixture(attrs)
+    {:ok, project_owner} = Accounts.promote_to_project_owner(user)
+    project_owner
+  end
+
+  @doc """
   Authenticates a user in the connection for testing.
   """
   def authenticate_user(conn, user) do
     conn
     |> Plug.Conn.put_session(:user_id, user.id)
+  end
+
+  @doc """
+  Authenticates a user and assigns them to the connection for plug testing.
+  This sets both the session and the assigns, simulating what RequireAuth does.
+  """
+  def authenticate_and_assign_user(conn, user) do
+    conn
+    |> Plug.Conn.put_session(:user_id, user.id)
+    |> Plug.Conn.assign(:current_user, user)
   end
 end

@@ -33,3 +33,5 @@ primary_region = "lax"
   memory = "1gb"
   cpu_kind = "shared"
   cpus = 1
+
+

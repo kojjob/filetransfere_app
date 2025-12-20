@@ -22,6 +22,7 @@ defmodule FiletransferCore.Accounts.User do
     field(:confirmed_at, :naive_datetime)
     field(:reset_password_token, :string)
     field(:reset_password_sent_at, :naive_datetime)
+    field(:is_active, :boolean, default: true)
 
     has_many(:transfers, FiletransferCore.Transfers.Transfer)
     has_many(:share_links, FiletransferCore.Sharing.ShareLink)
@@ -120,4 +121,13 @@ defmodule FiletransferCore.Accounts.User do
   Returns the list of valid roles.
   """
   def roles, do: @roles
+
+  @doc """
+  Changeset for updating user active status.
+  """
+  def status_changeset(user, attrs) do
+    user
+    |> cast(attrs, [:is_active])
+    |> validate_required([:is_active])
+  end
 end

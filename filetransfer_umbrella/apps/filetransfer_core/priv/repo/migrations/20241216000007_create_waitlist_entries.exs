@@ -21,3 +21,5 @@ defmodule FiletransferCore.Repo.Migrations.CreateWaitlistEntries do
     create index(:waitlist_entries, [:notified_at])
   end
 end
+
+

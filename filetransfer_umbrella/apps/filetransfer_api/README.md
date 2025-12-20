@@ -1,21 +1,25 @@
-# FiletransferApi
+# ZipShare API
 
-**TODO: Add description**
+REST API for the ZipShare file transfer platform.
 
-## Installation
+## Endpoints
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `filetransfer_api` to your list of dependencies in `mix.exs`:
+### Authentication
+- `POST /api/auth/register` - User registration
+- `POST /api/auth/login` - User login
+- `POST /api/auth/logout` - User logout
+- `GET /api/auth/me` - Current user info
 
-```elixir
-def deps do
-  [
-    {:filetransfer_api, "~> 0.1.0"}
-  ]
-end
-```
+### Transfers
+- `GET /api/transfers` - List transfers
+- `POST /api/transfers` - Create transfer
+- `GET /api/transfers/:id` - Get transfer details
+- `DELETE /api/transfers/:id` - Delete transfer
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/filetransfer_api>.
+### Share Links
+- `POST /api/transfers/:id/share` - Create share link
+- `GET /api/shares` - List share links
+- `GET /s/:token` - Access shared file (public)
 
+### Waitlist
+- `POST /api/waitlist` - Join waitlist (public)

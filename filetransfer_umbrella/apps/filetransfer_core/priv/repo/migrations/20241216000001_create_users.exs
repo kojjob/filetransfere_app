@@ -26,3 +26,5 @@ defmodule FiletransferCore.Repo.Migrations.CreateUsers do
     create index(:users, [:subscription_tier])
   end
 end
+
+

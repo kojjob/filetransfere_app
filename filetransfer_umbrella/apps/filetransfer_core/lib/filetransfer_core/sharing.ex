@@ -47,6 +47,71 @@ defmodule FiletransferCore.Sharing do
     |> Repo.all()
   end
 
+  @doc """
+  Returns the list of share links for a user with filtering options.
+
+  ## Options
+    * `:search` - Search by transfer filename
+    * `:status` - Filter by status ("active", "expired", "revoked")
+    * `:limit` - Limit number of results
+    * `:sort_by` - Sort field (:inserted_at, :expires_at, :download_count)
+    * `:sort_order` - Sort direction (:asc, :desc)
+  """
+  def list_user_share_links(user_id, opts) do
+    search = Keyword.get(opts, :search, "")
+    status = Keyword.get(opts, :status)
+    limit = Keyword.get(opts, :limit)
+    sort_by = Keyword.get(opts, :sort_by, :inserted_at)
+    sort_order = Keyword.get(opts, :sort_order, :desc)
+
+    query = from(s in ShareLink, where: s.user_id == ^user_id, preload: [:transfer])
+
+    query =
+      if search != "" do
+        search_term = "%#{search}%"
+        from(s in query, join: t in assoc(s, :transfer), where: ilike(t.file_name, ^search_term))
+      else
+        query
+      end
+
+    query =
+      if status && status != "" do
+        now = DateTime.utc_now()
+        case status do
+          "active" ->
+            from(s in query, where: s.is_active == true and (is_nil(s.expires_at) or s.expires_at > ^now))
+          "expired" ->
+            from(s in query, where: not is_nil(s.expires_at) and s.expires_at <= ^now)
+          "revoked" ->
+            from(s in query, where: s.is_active == false)
+          _ ->
+            query
+        end
+      else
+        query
+      end
+
+    query =
+      case {sort_by, sort_order} do
+        {:inserted_at, :asc} -> from(s in query, order_by: [asc: s.inserted_at])
+        {:inserted_at, :desc} -> from(s in query, order_by: [desc: s.inserted_at])
+        {:expires_at, :asc} -> from(s in query, order_by: [asc: s.expires_at])
+        {:expires_at, :desc} -> from(s in query, order_by: [desc: s.expires_at])
+        {:download_count, :asc} -> from(s in query, order_by: [asc: s.download_count])
+        {:download_count, :desc} -> from(s in query, order_by: [desc: s.download_count])
+        _ -> from(s in query, order_by: [desc: s.inserted_at])
+      end
+
+    query =
+      if limit do
+        from(s in query, limit: ^limit)
+      else
+        query
+      end
+
+    Repo.all(query)
+  end
+
   def validate_share_link(token, password \\ nil) do
     case get_share_link_by_token(token) do
       nil ->
@@ -90,6 +155,43 @@ defmodule FiletransferCore.Sharing do
   end
 
   def delete_share_link(share_link), do: Repo.delete(share_link)
+
+  @doc """
+  Deletes a share link only if it belongs to the specified user.
+
+  Returns `{:ok, share_link}` if deleted, `{:error, :not_found}` if not found
+  or doesn't belong to user.
+  """
+  def delete_share_link(user_id, share_link_id) do
+    case get_user_share_link(user_id, share_link_id) do
+      nil -> {:error, :not_found}
+      share_link -> delete_share_link(share_link)
+    end
+  end
+
+  @doc """
+  Revokes a share link (sets is_active to false) only if it belongs to the specified user.
+
+  Returns `{:ok, share_link}` if revoked, `{:error, :not_found}` if not found
+  or doesn't belong to user.
+  """
+  def revoke_share_link(user_id, share_link_id) do
+    case get_user_share_link(user_id, share_link_id) do
+      nil -> {:error, :not_found}
+      share_link -> update_share_link(share_link, %{is_active: false})
+    end
+  end
+
+  @doc """
+  Gets a share link by ID only if it belongs to the specified user.
+  """
+  def get_user_share_link(user_id, share_link_id) do
+    Repo.get_by(ShareLink, id: share_link_id, user_id: user_id)
+    |> case do
+      nil -> nil
+      share_link -> Repo.preload(share_link, :transfer)
+    end
+  end
 
   def share_url(share_link, base_url \\ "https://zipshare.io") do
     "#{base_url}/s/#{share_link.token}"

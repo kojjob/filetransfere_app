@@ -34,3 +34,5 @@ defmodule FiletransferCore.Waitlist.WaitlistEntry do
     |> cast(attrs, [:notified_at, :converted_at])
   end
 end
+
+

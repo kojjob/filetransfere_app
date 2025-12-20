@@ -122,31 +122,34 @@ defmodule FiletransferWeb.Layouts do
   """
   def theme_toggle(assigns) do
     ~H"""
-    <div class="card relative flex flex-row items-center border-2 border-base-300 bg-base-300 rounded-full">
-      <div class="absolute w-1/3 h-full rounded-full border-1 border-base-200 bg-base-100 brightness-200 left-0 [[data-theme=light]_&]:left-1/3 [[data-theme=dark]_&]:left-2/3 transition-[left]" />
+    <div class="relative flex flex-row items-center bg-white/5 [[data-theme=light]_&]:bg-black/5 rounded-lg p-0.5">
+      <div class="absolute w-1/3 h-[calc(100%-4px)] rounded-md bg-white/10 [[data-theme=light]_&]:bg-black/10 left-0.5 [[data-theme=light]_&]:left-[calc(33.33%+2px)] [[data-theme=dark]_&]:left-[calc(66.66%+2px)] transition-all duration-200" />
 
       <button
-        class="flex p-2 cursor-pointer w-1/3"
+        class="relative flex items-center justify-center p-2 cursor-pointer w-1/3 z-10 transition-colors"
         phx-click={JS.dispatch("phx:set-theme")}
         data-phx-theme="system"
+        title="System theme"
       >
-        <.icon name="hero-computer-desktop-micro" class="size-4 opacity-75 hover:opacity-100" />
+        <.icon name="hero-computer-desktop-micro" class="size-4 obsidian-text-secondary hover:obsidian-text-primary transition-colors" />
       </button>
 
       <button
-        class="flex p-2 cursor-pointer w-1/3"
+        class="relative flex items-center justify-center p-2 cursor-pointer w-1/3 z-10 transition-colors"
         phx-click={JS.dispatch("phx:set-theme")}
         data-phx-theme="light"
+        title="Light theme"
       >
-        <.icon name="hero-sun-micro" class="size-4 opacity-75 hover:opacity-100" />
+        <.icon name="hero-sun-micro" class="size-4 obsidian-text-secondary hover:obsidian-text-primary transition-colors" />
       </button>
 
       <button
-        class="flex p-2 cursor-pointer w-1/3"
+        class="relative flex items-center justify-center p-2 cursor-pointer w-1/3 z-10 transition-colors"
         phx-click={JS.dispatch("phx:set-theme")}
         data-phx-theme="dark"
+        title="Dark theme"
       >
-        <.icon name="hero-moon-micro" class="size-4 opacity-75 hover:opacity-100" />
+        <.icon name="hero-moon-micro" class="size-4 obsidian-text-secondary hover:obsidian-text-primary transition-colors" />
       </button>
     </div>
     """
@@ -241,13 +244,15 @@ defmodule FiletransferWeb.Layouts do
   @doc """
   User dashboard layout with sidebar navigation.
   For regular authenticated users to manage their file transfers.
+
+  This layout is used via `layout: {FiletransferWeb.Layouts, :user_dashboard}` in LiveView mount,
+  which passes content as `@inner_content` (not a slot).
   """
   attr :flash, :map, required: true
   attr :current_scope, :map, default: nil
   attr :current_user, :map, default: nil
   attr :page_title, :string, default: "Dashboard"
   attr :active_tab, :string, default: "dashboard"
-  slot :inner_block, required: true
 
   def user_dashboard(assigns) do
     ~H"""
@@ -306,7 +311,9 @@ defmodule FiletransferWeb.Layouts do
                 {if @current_user, do: @current_user.name || @current_user.email, else: "User"}
               </p>
               <p class="text-xs text-slate-500 dark:text-slate-400">
-                {if @current_user, do: String.capitalize(@current_user.subscription_tier || "free"), else: "Free"} Plan
+                {if @current_user,
+                  do: String.capitalize(@current_user.subscription_tier || "free"),
+                  else: "Free"} Plan
               </p>
             </div>
           </div>
@@ -323,7 +330,7 @@ defmodule FiletransferWeb.Layouts do
       <%!-- Main content --%>
       <main class="pl-64">
         <div class="p-8">
-          {render_slot(@inner_block)}
+          {@inner_content}
         </div>
       </main>
 
@@ -335,97 +342,114 @@ defmodule FiletransferWeb.Layouts do
   @doc """
   Project Owner dashboard layout with sidebar navigation.
   For project owners to manage the platform.
+
+  This layout is used via `layout: {FiletransferWeb.Layouts, :owner_dashboard}` in LiveView mount,
+  which passes content as `@inner_content` (not a slot).
   """
   attr :flash, :map, required: true
   attr :current_scope, :map, default: nil
   attr :current_user, :map, default: nil
   attr :page_title, :string, default: "Owner Dashboard"
   attr :active_tab, :string, default: "overview"
-  slot :inner_block, required: true
 
   def owner_dashboard(assigns) do
     ~H"""
-    <div class="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900">
+    <div class="min-h-screen bg-[#0f0d0a] dark:bg-[#0f0d0a] [[data-theme=light]_&]:bg-[#faf8f5]">
       <%!-- Sidebar --%>
-      <aside class="fixed inset-y-0 left-0 w-64 bg-slate-900/80 backdrop-blur-xl border-r border-purple-500/20">
-        <%!-- Logo with Owner badge --%>
-        <div class="flex items-center gap-3 px-6 py-5 border-b border-purple-500/20">
-          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center">
-            <.icon name="hero-shield-check" class="w-5 h-5 text-white" />
+      <aside class="obsidian-sidebar fixed inset-y-0 left-0 w-60 flex flex-col">
+        <%!-- Logo --%>
+        <div class="flex items-center gap-3 px-5 py-5 border-b border-[#d4af37]/10 [[data-theme=light]_&]:border-[#8b6914]/10">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#d4af37] to-[#c49b28] flex items-center justify-center shadow-lg shadow-[#d4af37]/20">
+            <.icon name="hero-paper-airplane" class="w-5 h-5 text-[#1a1612] -rotate-45" />
           </div>
           <div>
-            <h1 class="text-lg font-bold text-white">ZipShare</h1>
-            <p class="text-xs text-purple-300">Project Owner</p>
+            <h1 class="text-base font-bold obsidian-text-primary tracking-tight">FlowDownload</h1>
+            <p class="text-[10px] obsidian-accent-amber uppercase tracking-widest">Owner Portal</p>
           </div>
         </div>
 
         <%!-- Navigation --%>
-        <nav class="px-4 py-6 space-y-2">
-          <.owner_nav_link href="/owner" icon="hero-chart-pie" active={@active_tab == "overview"}>
+        <nav class="flex-1 px-3 py-4 space-y-1">
+          <.obsidian_nav_link href="/owner" icon="hero-squares-2x2" active={@active_tab == "overview"}>
             Overview
-          </.owner_nav_link>
-          <.owner_nav_link href="/owner/users" icon="hero-users" active={@active_tab == "users"}>
+          </.obsidian_nav_link>
+          <.obsidian_nav_link href="/owner/users" icon="hero-users" active={@active_tab == "users"}>
             Users
-          </.owner_nav_link>
-          <.owner_nav_link
-            href="/owner/analytics"
-            icon="hero-chart-bar-square"
-            active={@active_tab == "analytics"}
-          >
+          </.obsidian_nav_link>
+          <.obsidian_nav_link href="/owner/analytics" icon="hero-chart-bar" active={@active_tab == "analytics"}>
             Analytics
-          </.owner_nav_link>
-          <.owner_nav_link
-            href="/owner/settings"
-            icon="hero-cog-8-tooth"
-            active={@active_tab == "settings"}
-          >
+          </.obsidian_nav_link>
+          <.obsidian_nav_link href="/owner/settings" icon="hero-cog-6-tooth" active={@active_tab == "settings"}>
             Settings
-          </.owner_nav_link>
+          </.obsidian_nav_link>
         </nav>
 
-        <%!-- Divider --%>
-        <div class="px-4 py-2">
-          <div class="border-t border-purple-500/20"></div>
+        <%!-- Divider with label --%>
+        <div class="px-5">
+          <div class="obsidian-divider"></div>
         </div>
 
         <%!-- Quick Links --%>
-        <nav class="px-4 py-2 space-y-2">
-          <p class="px-4 text-xs font-semibold text-purple-400 uppercase tracking-wider">Quick Links</p>
-          <.owner_nav_link href="/dashboard" icon="hero-home" active={false}>
-            User Dashboard
-          </.owner_nav_link>
-          <.owner_nav_link href="/admin/waitlist" icon="hero-queue-list" active={false}>
-            Admin Panel
-          </.owner_nav_link>
+        <nav class="px-3 py-4 space-y-1">
+          <p class="px-3 mb-2 text-[10px] font-medium obsidian-text-tertiary uppercase tracking-widest">
+            Switch View
+          </p>
+          <.obsidian_nav_link href="/dashboard" icon="hero-home" active={false}>
+            Dashboard
+          </.obsidian_nav_link>
+          <.obsidian_nav_link href="/admin/waitlist" icon="hero-clipboard-document-list" active={false}>
+            Admin
+          </.obsidian_nav_link>
         </nav>
 
-        <%!-- User info & logout --%>
-        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-purple-500/20">
-          <div class="flex items-center gap-3 px-2 py-2 mb-2">
-            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center">
-              <.icon name="hero-shield-check-mini" class="w-4 h-4 text-white" />
+        <%!-- User section --%>
+        <div class="p-3 mt-auto border-t border-[#d4af37]/10 [[data-theme=light]_&]:border-[#8b6914]/10">
+          <div class="flex items-center gap-3 p-2">
+            <div class="obsidian-avatar-ring">
+              <div class="w-8 h-8 rounded-full bg-[#0f0d0a] [[data-theme=light]_&]:bg-white flex items-center justify-center">
+                <span class="text-xs font-bold obsidian-accent-amber">
+                  {if @current_user, do: String.first(@current_user.email) |> String.upcase(), else: "O"}
+                </span>
+              </div>
             </div>
             <div class="flex-1 min-w-0">
-              <p class="text-sm font-medium text-white truncate">
+              <p class="text-sm font-medium obsidian-text-primary truncate">
                 {if @current_user, do: @current_user.name || @current_user.email, else: "Owner"}
               </p>
-              <p class="text-xs text-purple-300">Project Owner</p>
+              <div class="flex items-center gap-1.5">
+                <span class="obsidian-live-dot"></span>
+                <span class="text-[10px] obsidian-text-tertiary">Active now</span>
+              </div>
             </div>
+            <a
+              href="/api/auth/logout"
+              class="p-2 rounded-lg obsidian-text-secondary hover:obsidian-accent-coral transition-colors hover:bg-white/5 [[data-theme=light]_&]:hover:bg-black/5"
+              title="Sign out"
+            >
+              <.icon name="hero-arrow-right-on-rectangle" class="w-4 h-4" />
+            </a>
           </div>
-          <a
-            href="/api/auth/logout"
-            class="flex items-center gap-2 px-4 py-2 text-purple-300 hover:text-white transition-colors"
-          >
-            <.icon name="hero-arrow-right-on-rectangle" class="w-4 h-4" />
-            <span class="text-sm">Sign out</span>
-          </a>
         </div>
       </aside>
 
       <%!-- Main content --%>
-      <main class="pl-64">
+      <main class="pl-60">
+        <%!-- Top bar with theme toggle --%>
+        <header class="sticky top-0 z-10 flex items-center justify-between px-8 py-4 bg-[#0f0d0a]/90 [[data-theme=light]_&]:bg-[#faf8f5]/90 backdrop-blur-xl border-b border-[#d4af37]/10 [[data-theme=light]_&]:border-[#8b6914]/10">
+          <div class="flex items-center gap-3">
+            <h2 class="text-lg font-semibold obsidian-text-primary">{@page_title}</h2>
+          </div>
+          <div class="flex items-center gap-4">
+            <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#d4af37]/10 [[data-theme=light]_&]:bg-[#8b6914]/10">
+              <span class="obsidian-live-dot"></span>
+              <span class="text-xs font-medium obsidian-accent-emerald">System Online</span>
+            </div>
+            <.theme_toggle />
+          </div>
+        </header>
+
         <div class="p-8">
-          {render_slot(@inner_block)}
+          {@inner_content}
         </div>
       </main>
 
@@ -478,6 +502,36 @@ defmodule FiletransferWeb.Layouts do
       <.icon name={@icon} class="w-5 h-5" />
       {render_slot(@inner_block)}
     </a>
+    """
+  end
+
+  attr :href, :string, required: true
+  attr :icon, :string, required: true
+  attr :active, :boolean, default: false
+  slot :inner_block, required: true
+
+  defp obsidian_nav_link(assigns) do
+    ~H"""
+    <a href={@href} class={["obsidian-nav-link", @active && "active"]}>
+      <.icon name={@icon} class="w-[18px] h-[18px]" />
+      <span>{render_slot(@inner_block)}</span>
+    </a>
+    """
+  end
+
+  @doc """
+  Auth layout for login and registration pages.
+  Clean, minimal layout optimized for authentication flows.
+
+  This layout is used via `layout: {FiletransferWeb.Layouts, :auth}` in LiveView mount,
+  which passes content as `@inner_content` (not a slot).
+  """
+  def auth(assigns) do
+    ~H"""
+    <div class="min-h-screen">
+      {@inner_content}
+      <.flash_group flash={@flash} />
+    </div>
     """
   end
 end

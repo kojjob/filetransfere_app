@@ -24,10 +24,27 @@ defmodule FiletransferWeb.Router do
     plug FiletransferWeb.Plugs.RequireAdmin
   end
 
+  pipeline :project_owner_auth do
+    plug FiletransferWeb.Plugs.RequireAuth
+    plug FiletransferWeb.Plugs.RequireProjectOwner
+  end
+
   scope "/", FiletransferWeb do
     pipe_through :browser
     get "/", PageController, :home
-    live "/dashboard", DashboardLive, :index
+  end
+
+  # Public auth routes (no authentication required)
+  scope "/", FiletransferWeb do
+    pipe_through :browser
+
+    live "/login", Auth.LoginLive, :index
+    live "/register", Auth.RegisterLive, :index
+
+    # Session management (POST for login, DELETE for logout)
+    post "/session", SessionController, :create
+    delete "/session", SessionController, :delete
+    post "/registration", SessionController, :register
   end
 
   scope "/api/auth", FiletransferWeb do
@@ -93,5 +110,31 @@ defmodule FiletransferWeb.Router do
     pipe_through [:api, :admin_auth]
     get "/waitlist/export", WaitlistController, :export
     get "/waitlist/stats", WaitlistController, :stats
+  end
+
+  # User Dashboard routes (authenticated users)
+  scope "/dashboard", FiletransferWeb.Dashboard do
+    pipe_through [:browser, :authenticated]
+
+    live "/", DashboardLive, :index
+    live "/transfers", TransfersLive, :index
+    live "/transfers/new", TransfersLive, :new
+    live "/shares", SharesLive, :index
+    live "/shares/new", SharesLive, :new
+    live "/shares/:id/edit", SharesLive, :edit
+    live "/shares/:id/stats", SharesLive, :stats
+    live "/settings", SettingsLive, :index
+  end
+
+  # Project Owner routes (restricted to project owners only)
+  scope "/owner", FiletransferWeb.Owner do
+    pipe_through [:browser, :project_owner_auth]
+
+    live "/", OwnerDashboardLive, :index
+    live "/users", UsersLive, :index
+    live "/users/:id", UsersLive, :show
+    live "/users/:id/edit", UsersLive, :edit
+    live "/analytics", AnalyticsLive, :index
+    live "/settings", SettingsLive, :index
   end
 end

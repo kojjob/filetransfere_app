@@ -15,6 +15,83 @@ defmodule FiletransferCore.Accounts do
   end
 
   @doc """
+  Returns the list of users with filtering options.
+
+  ## Options
+    * `:search` - Search by email or name
+    * `:role` - Filter by role ("user", "project_owner")
+    * `:status` - Filter by active status ("active", "inactive")
+    * `:sort_by` - Sort field (:inserted_at, :email, :name)
+    * `:sort_order` - Sort direction (:asc, :desc)
+    * `:limit` - Limit number of results
+    * `:offset` - Offset for pagination
+  """
+  def list_users(opts) do
+    search = Keyword.get(opts, :search, "")
+    role = Keyword.get(opts, :role)
+    status = Keyword.get(opts, :status)
+    sort_by = Keyword.get(opts, :sort_by, :inserted_at)
+    sort_order = Keyword.get(opts, :sort_order, :desc)
+    limit = Keyword.get(opts, :limit)
+    offset = Keyword.get(opts, :offset)
+
+    query = from(u in User)
+
+    query =
+      if search != "" do
+        search_term = "%#{search}%"
+        from(u in query, where: ilike(u.email, ^search_term) or ilike(u.name, ^search_term))
+      else
+        query
+      end
+
+    query =
+      if role && role != "" do
+        from(u in query, where: u.role == ^role)
+      else
+        query
+      end
+
+    query =
+      if status && status != "" do
+        case status do
+          "active" -> from(u in query, where: u.is_active == true)
+          "inactive" -> from(u in query, where: u.is_active == false)
+          _ -> query
+        end
+      else
+        query
+      end
+
+    query =
+      case {sort_by, sort_order} do
+        {:inserted_at, :asc} -> from(u in query, order_by: [asc: u.inserted_at])
+        {:inserted_at, :desc} -> from(u in query, order_by: [desc: u.inserted_at])
+        {:email, :asc} -> from(u in query, order_by: [asc: u.email])
+        {:email, :desc} -> from(u in query, order_by: [desc: u.email])
+        {:name, :asc} -> from(u in query, order_by: [asc: u.name])
+        {:name, :desc} -> from(u in query, order_by: [desc: u.name])
+        _ -> from(u in query, order_by: [desc: u.inserted_at])
+      end
+
+    query =
+      if limit do
+        from(u in query, limit: ^limit)
+      else
+        query
+      end
+
+    query =
+      if offset do
+        from(u in query, offset: ^offset)
+      else
+        query
+      end
+
+    Repo.all(query)
+  end
+
+  @doc """
   Gets a single user. Raises if not found.
   """
   def get_user!(id), do: Repo.get!(User, id)
@@ -191,4 +268,51 @@ defmodule FiletransferCore.Accounts do
     |> Repo.all()
     |> Enum.into(%{})
   end
+
+  # User Status Management Functions
+
+  @doc """
+  Toggles a user's active status.
+  """
+  def toggle_user_status(%User{} = user) do
+    user
+    |> User.status_changeset(%{is_active: !user.is_active})
+    |> Repo.update()
+  end
+
+  @doc """
+  Activates a user.
+  """
+  def activate_user(%User{} = user) do
+    user
+    |> User.status_changeset(%{is_active: true})
+    |> Repo.update()
+  end
+
+  @doc """
+  Deactivates a user.
+  """
+  def deactivate_user(%User{} = user) do
+    user
+    |> User.status_changeset(%{is_active: false})
+    |> Repo.update()
+  end
+
+  @doc """
+  Counts total users.
+  """
+  def count_users do
+    Repo.aggregate(User, :count)
+  end
+
+  @doc """
+  Counts active users.
+  """
+  def count_active_users do
+    User
+    |> where([u], u.is_active == true)
+    |> Repo.aggregate(:count)
+  end
 end
+
+

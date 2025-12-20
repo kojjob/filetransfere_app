@@ -191,7 +191,6 @@ defmodule FiletransferWeb.ShareController do
   defp share_error_message(:link_expired), do: "This share link has expired"
   defp share_error_message(:download_limit_exceeded), do: "Download limit exceeded"
   defp share_error_message(:invalid_password), do: "Invalid password"
-  defp share_error_message(:transfer_not_ready), do: "Transfer is not ready for sharing"
   defp share_error_message(_), do: "Unable to access share link"
 
   defp parse_int(val) when is_integer(val), do: val
