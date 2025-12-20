@@ -114,27 +114,33 @@ defmodule FiletransferWeb.Router do
 
   # User Dashboard routes (authenticated users)
   scope "/dashboard", FiletransferWeb.Dashboard do
-    pipe_through [:browser, :authenticated]
+    pipe_through :browser
 
-    live "/", DashboardLive, :index
-    live "/transfers", TransfersLive, :index
-    live "/transfers/new", TransfersLive, :new
-    live "/shares", SharesLive, :index
-    live "/shares/new", SharesLive, :new
-    live "/shares/:id/edit", SharesLive, :edit
-    live "/shares/:id/stats", SharesLive, :stats
-    live "/settings", SettingsLive, :index
+    live_session :authenticated_user,
+      on_mount: {FiletransferWeb.LiveAuth, :require_authenticated_user} do
+      live "/", DashboardLive, :index
+      live "/transfers", TransfersLive, :index
+      live "/transfers/new", TransfersLive, :new
+      live "/shares", SharesLive, :index
+      live "/shares/new", SharesLive, :new
+      live "/shares/:id/edit", SharesLive, :edit
+      live "/shares/:id/stats", SharesLive, :stats
+      live "/settings", SettingsLive, :index
+    end
   end
 
   # Project Owner routes (restricted to project owners only)
   scope "/owner", FiletransferWeb.Owner do
-    pipe_through [:browser, :project_owner_auth]
+    pipe_through :browser
 
-    live "/", OwnerDashboardLive, :index
-    live "/users", UsersLive, :index
-    live "/users/:id", UsersLive, :show
-    live "/users/:id/edit", UsersLive, :edit
-    live "/analytics", AnalyticsLive, :index
-    live "/settings", SettingsLive, :index
+    live_session :project_owner,
+      on_mount: {FiletransferWeb.LiveAuth, :require_project_owner} do
+      live "/", OwnerDashboardLive, :index
+      live "/users", UsersLive, :index
+      live "/users/:id", UsersLive, :show
+      live "/users/:id/edit", UsersLive, :edit
+      live "/analytics", AnalyticsLive, :index
+      live "/settings", SettingsLive, :index
+    end
   end
 end
