@@ -177,3 +177,131 @@ end
 ✅ User data correctly loaded into socket assigns
 ✅ No KeyError on socket.assigns.current_user
 ✅ Multiple successful dashboard mounts verified in server logs
+
+## LiveStream Enumeration Fixes
+
+### Problem
+LiveView streams don't implement the `Enumerable.slice/1` protocol, which means you cannot use `Enum.empty?/1` on streams. Attempting to do so results in:
+
+```
+** (RuntimeError) not implemented
+    (phoenix_live_view 1.1.19) lib/phoenix_live_view/live_stream.ex:135: Enumerable.Phoenix.LiveView.LiveStream.slice/1
+    (elixir 1.19.4) lib/enum.ex:993: Enum.empty?/1
+```
+
+This error occurred in three LiveView modules:
+- `transfers_live.ex:155` - ❌ `@streams.transfers |> Enum.empty?()`
+- `shares_live.ex:175` - ❌ `@streams.shares |> Enum.empty?()`
+
+### Solution
+Implemented a three-part fix pattern for both affected modules:
+
+1. **Load data into variable before streaming** - Load the collection into a variable in `mount/3` and `handle_params/3`
+2. **Check emptiness on the list** - Check if the list is empty before streaming (lists implement Enumerable)
+3. **Store result as boolean flag** - Add a boolean assign (`:has_transfers?`, `:has_shares?`) to socket
+4. **Stream the data** - Stream the data normally using `stream/3`
+5. **Use boolean flag in template** - Replace stream emptiness check with boolean flag
+
+**Example fix in `transfers_live.ex`**:
+```elixir
+# mount/3
+def mount(_params, _session, socket) do
+  user = socket.assigns.current_user
+  transfers = load_transfers(user, "all")  # Load into variable
+
+  socket =
+    socket
+    |> assign(:page_title, "My Transfers")
+    |> assign(:filter, "all")
+    |> assign(:search, "")
+    |> assign(:has_transfers?, transfers != [] && length(transfers) > 0)  # Check and store
+    |> stream(:transfers, transfers)  # Stream normally
+
+  {:ok, socket, layout: {FiletransferWeb.Layouts, :user_dashboard}}
+end
+
+# Template (line 155)
+# BEFORE: <div :if={@streams.transfers |> Enum.empty?()} class="p-12 text-center">
+# AFTER:  <div :if={!@has_transfers?} class="p-12 text-center">
+```
+
+### Files Modified
+- ✅ `apps/filetransfer_web/lib/filetransfer_web/live/dashboard/transfers_live.ex`
+  - Updated `mount/3` to add `:has_transfers?` flag
+  - Updated `handle_params/3` to update `:has_transfers?` flag
+  - Updated template line 155 to use `!@has_transfers?` instead of `Enum.empty?/1`
+
+- ✅ `apps/filetransfer_web/lib/filetransfer_web/live/dashboard/shares_live.ex`
+  - Updated `mount/3` to add `:has_shares?` flag
+  - Updated `handle_params/3` to update `:has_shares?` flag
+  - Updated template line 175 to use `!@has_shares?` instead of `Enum.empty?/1`
+
+### Verification
+✅ Both pages now load successfully without RuntimeError
+✅ Server logs show successful MOUNT and HANDLE PARAMS for both LiveViews
+✅ Empty state UI displays correctly when no data is present
+
+## FormData Protocol Fix
+
+### Problem
+`settings_live.ex` was throwing a Protocol.UndefinedError at line 18:
+
+```
+** (Protocol.UndefinedError) protocol Phoenix.HTML.FormData not implemented for Ecto.Changeset (a struct)
+    (phoenix_html 4.3.0) lib/phoenix_html/form_data.ex:1: Phoenix.HTML.FormData.impl_for!/1
+    (filetransfer_web 0.1.0) lib/filetransfer_web/live/dashboard/settings_live.ex:18
+```
+
+The code was passing Ecto.Changeset structs to `to_form/1`, which violates the project's convention stated in CLAUDE.md: **"Use `<.form for={@form}>` with `to_form/2`, never pass changesets directly"**.
+
+### Root Cause Analysis
+The project is configured to use **map-based forms** with `to_form`, not changeset-based forms. Three locations in `settings_live.ex` were incorrectly using changesets:
+
+1. **Line 18** (mount/3): `to_form(Accounts.change_user(user))` - Returns a changeset
+2. **Line 429** (save_profile success): `to_form(Accounts.change_user(updated_user))` - Returns a changeset
+3. **Line 435** (save_profile error): `to_form(changeset)` - Passing changeset directly
+
+### Solution (Complete Fix)
+
+**Fixed all three locations to use map-based forms**:
+
+1. **mount/3 line 18** - Changed to use plain map:
+   ```elixir
+   # BEFORE: to_form(Accounts.change_user(user))
+   # AFTER:  to_form(%{"email" => user.email, "name" => user.name || ""})
+   ```
+
+2. **save_profile success handler line 429** - Changed to use plain map:
+   ```elixir
+   # BEFORE: to_form(Accounts.change_user(updated_user))
+   # AFTER:  to_form(%{"email" => updated_user.email, "name" => updated_user.name || ""})
+   ```
+
+3. **save_profile error handler line 435** - Changed to use user_params map:
+   ```elixir
+   # BEFORE: to_form(changeset)
+   # AFTER:  to_form(user_params)  # Preserves user input on validation error
+   ```
+
+### Files Modified
+- ✅ `apps/filetransfer_web/lib/filetransfer_web/live/dashboard/settings_live.ex`
+  - Updated `mount/3` line 18 to use map-based form
+  - Updated `save_profile` success handler line 429 to use map-based form
+  - Updated `save_profile` error handler line 435 to use user_params map
+  - All `to_form` calls now follow project convention (4 total locations verified)
+
+### Verification (Complete Fix)
+✅ No changesets passed to `to_form` anywhere in settings_live.ex
+✅ Compilation succeeds with `--warnings-as-errors`
+✅ All form assignments use plain maps per project convention
+✅ Settings page FormData protocol error fully resolved
+
+## Current Status (Post-Fix)
+
+All three dashboard pages are now fully functional:
+
+- ✅ **Transfers Page** (`/dashboard/transfers`) - Loads without errors, displays empty state correctly
+- ✅ **Shares Page** (`/dashboard/shares`) - Loads without errors, displays empty state correctly
+- ✅ **Settings Page** (`/dashboard/settings`) - Loads without errors, form rendering works correctly
+
+Server logs confirm successful mounting and parameter handling for all three LiveViews with no errors.
