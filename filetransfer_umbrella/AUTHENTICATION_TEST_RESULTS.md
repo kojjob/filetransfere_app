@@ -611,9 +611,228 @@ Transfer:
 - ✅ Transfer creation with automatic chunking
 - ✅ Chunk upload progress updates (partial and complete)
 
+## Multi-Chunk File Upload Testing
+
+Testing file uploads with multiple chunks (files larger than 5 MB chunk size).
+
+### Test Setup
+
+**Created Multi-Chunk Transfer** (via `mix run --eval`):
+```elixir
+user = FiletransferCore.Accounts.get_user_by_email("user@test.com")
+
+transfer_attrs = %{
+  file_name: "large_video.mp4",
+  file_size: 12_582_912,  # 12 MB
+  file_type: "video/mp4",
+  user_id: user.id
+}
+
+{:ok, transfer} = FiletransferCore.Transfers.create_transfer(transfer_attrs)
+```
+
+**Transfer Created**:
+- Transfer ID: `334dfa93-996b-4fa7-93c5-f74c8cbb1ab5`
+- File size: 12,582,912 bytes (12 MB)
+- Chunk size: 5,242,880 bytes (5 MB default)
+- Total chunks: 3 (automatically calculated)
+
+**Chunks Created**:
+```
+Chunk 0:
+- ID: 5ed156da-5e2a-40aa-bd72-fc198a9bdecf
+- Size: 5,242,880 bytes (5 MB)
+- Status: pending
+
+Chunk 1:
+- ID: e56da863-0ce4-4be0-af22-6640922a1ec3
+- Size: 5,242,880 bytes (5 MB)
+- Status: pending
+
+Chunk 2:
+- ID: 7ff17d94-887e-49ac-8b79-0ea67733254e
+- Size: 2,097,152 bytes (2 MB - smaller final chunk)
+- Status: pending
+```
+
+### Test 1: Chunk 0 Partial Upload (50%)
+
+**Command**:
+```elixir
+transfer_id = "334dfa93-996b-4fa7-93c5-f74c8cbb1ab5"
+{:ok, result} = FiletransferCore.Transfers.update_chunk_progress(transfer_id, 0, 2_621_440)
+```
+
+**Result**:
+```
+✅ Partial upload successful!
+
+Transfer Updates:
+- Status: pending → uploading
+- Uploaded chunks: 0/3
+- Total bytes: 0 → 2,621,440 (20.8%)
+
+Chunk Updates:
+- Chunk 0 status: pending → uploading
+- Chunk 0 bytes: 0 → 2,621,440 (50% of chunk progress)
+
+Transfer state changed to "uploading"!
+```
+
+### Test 2: Chunk 0 Complete Upload (100%)
+
+**Command**:
+```elixir
+{:ok, result} = FiletransferCore.Transfers.update_chunk_progress(transfer_id, 0, 5_242_880)
+```
+
+**Result**:
+```
+✅ Chunk 0 complete!
+
+Transfer Updates:
+- Status: uploading (remains)
+- Uploaded chunks: 0 → 1/3
+- Total bytes: 2,621,440 → 5,242,880 (41.7%)
+
+Chunk Updates:
+- Chunk 0 status: uploading → completed
+- Chunk 0 bytes: 2,621,440 → 5,242,880 (100% of chunk)
+
+First chunk completed, transfer continues...
+```
+
+### Test 3: Chunk 1 Partial Upload (75%)
+
+**Command**:
+```elixir
+{:ok, result} = FiletransferCore.Transfers.update_chunk_progress(transfer_id, 1, 3_932_160)
+```
+
+**Result**:
+```
+✅ Chunk 1 partial upload successful!
+
+Transfer Updates:
+- Status: uploading (remains)
+- Uploaded chunks: 1/3
+- Total bytes: 5,242,880 → 9,175,040 (72.9%)
+
+Chunk Updates:
+- Chunk 1 status: pending → uploading
+- Chunk 1 bytes: 0 → 3,932,160 (75% of chunk progress)
+
+Second chunk in progress...
+```
+
+### Test 4: Chunk 1 Complete Upload (100%)
+
+**Command**:
+```elixir
+{:ok, result} = FiletransferCore.Transfers.update_chunk_progress(transfer_id, 1, 5_242_880)
+```
+
+**Result**:
+```
+✅ Chunk 1 complete!
+
+Transfer Updates:
+- Status: uploading (remains)
+- Uploaded chunks: 1 → 2/3
+- Total bytes: 9,175,040 → 10,485,760 (83.3%)
+
+Chunk Updates:
+- Chunk 1 status: uploading → completed
+- Chunk 1 bytes: 3,932,160 → 5,242,880 (100% of chunk)
+
+Second chunk completed, one more to go...
+```
+
+### Test 5: Chunk 2 Complete Upload (100% - Final Chunk)
+
+**Command**:
+```elixir
+{:ok, result} = FiletransferCore.Transfers.update_chunk_progress(transfer_id, 2, 2_097_152)
+```
+
+**Result**:
+```
+✅ Final chunk complete - Transfer COMPLETED!
+
+Transfer Updates:
+- Status: uploading → completed
+- Uploaded chunks: 2 → 3/3
+- Total bytes: 10,485,760 → 12,582,912 (100%)
+
+Chunk Updates:
+- Chunk 2 status: pending → completed
+- Chunk 2 bytes: 0 → 2,097,152 (100% of chunk)
+
+🎉 ALL CHUNKS UPLOADED - Transfer marked as COMPLETED!
+```
+
+### Final Verification
+
+**Command**:
+```elixir
+transfer = FiletransferCore.Transfers.get_transfer!("334dfa93-996b-4fa7-93c5-f74c8cbb1ab5")
+```
+
+**Final State**:
+```
+Transfer:
+- ID: 334dfa93-996b-4fa7-93c5-f74c8cbb1ab5
+- File: large_video.mp4 (video/mp4)
+- Status: completed ✅
+- File size: 12,582,912 bytes (12 MB)
+- Uploaded chunks: 3/3 ✅
+- Total bytes: 12,582,912/12,582,912 (100%) ✅
+- All chunks completed: true ✅
+- All bytes uploaded: true ✅
+```
+
+### Multi-Chunk Test Results
+
+**Verification**:
+- ✅ Transfer status: `pending` → `uploading` → `completed`
+- ✅ Chunk 0: `pending` → `uploading` → `completed`
+- ✅ Chunk 1: `pending` → `uploading` → `completed`
+- ✅ Chunk 2: `pending` → `completed` (single update for final chunk)
+- ✅ `uploaded_chunks` counter: 0 → 1 → 2 → 3
+- ✅ Total bytes tracked: 0 → 2,621,440 → 5,242,880 → 9,175,040 → 10,485,760 → 12,582,912
+- ✅ Partial progress works (50% and 75% tests)
+- ✅ Complete progress works (100% tests)
+- ✅ Final chunk completion triggers transfer completion
+- ✅ All chunks marked complete before transfer completes
+
+**Key Observations**:
+1. ✅ Automatic chunk size calculation (5 MB chunks, smaller final chunk: 2 MB)
+2. ✅ Progressive upload tracking across multiple chunks
+3. ✅ Transfer status changes to "completed" only when ALL chunks done
+4. ✅ `uploaded_chunks` counter increments correctly after each chunk completes
+5. ✅ Total bytes accumulate correctly across all chunks
+6. ✅ Each chunk can be uploaded partially before completion
+7. ✅ Transfer remains in "uploading" state until final chunk completes
+8. ✅ Database state persists correctly throughout multi-chunk upload
+9. ✅ No race conditions or state inconsistencies observed
+10. ✅ System correctly handles files > 5 MB with multiple chunks
+
+---
+
+**Status**: Production-ready for authentication, dashboard, profile updates, transfer creation, and multi-chunk upload progress.
+
+**Completed Tests**:
+- ✅ User authentication (login/logout)
+- ✅ Session management
+- ✅ Role-based access control
+- ✅ Dashboard page access
+- ✅ Profile updates
+- ✅ Transfer creation with automatic chunking
+- ✅ Single-chunk upload progress (files ≤ 5 MB)
+- ✅ Multi-chunk upload progress (files > 5 MB)
+
 **Next Steps**:
 1. Manual browser testing for UX verification
 2. Role promotion/demotion testing
 3. User management CRUD operations testing
 4. Analytics dashboard feature testing
-5. Multi-chunk file upload testing (files > 5 MB)
