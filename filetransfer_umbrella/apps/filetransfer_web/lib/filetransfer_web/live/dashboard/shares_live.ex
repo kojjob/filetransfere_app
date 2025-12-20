@@ -10,12 +10,14 @@ defmodule FiletransferWeb.Dashboard.SharesLive do
   @impl true
   def mount(_params, _session, socket) do
     user = socket.assigns.current_user
+    shares = load_shares(user, "active")
 
     socket =
       socket
       |> assign(:page_title, "Share Links")
       |> assign(:filter, "active")
-      |> stream(:shares, load_shares(user, "active"))
+      |> assign(:has_shares?, shares != [] && length(shares) > 0)
+      |> stream(:shares, shares)
 
     {:ok, socket, layout: {FiletransferWeb.Layouts, :user_dashboard}}
   end
@@ -23,11 +25,13 @@ defmodule FiletransferWeb.Dashboard.SharesLive do
   @impl true
   def handle_params(params, _uri, socket) do
     filter = Map.get(params, "filter", "active")
+    shares = load_shares(socket.assigns.current_user, filter)
 
     socket =
       socket
       |> assign(:filter, filter)
-      |> stream(:shares, load_shares(socket.assigns.current_user, filter), reset: true)
+      |> assign(:has_shares?, shares != [] && length(shares) > 0)
+      |> stream(:shares, shares, reset: true)
 
     {:noreply, socket}
   end
@@ -168,7 +172,7 @@ defmodule FiletransferWeb.Dashboard.SharesLive do
         </div>
         
     <!-- Empty State -->
-        <div :if={@streams.shares |> Enum.empty?()} class="p-12 text-center">
+        <div :if={!@has_shares?} class="p-12 text-center">
           <.icon name="hero-link" class="w-16 h-16 mx-auto text-gray-300 mb-4" />
           <h3 class="text-lg font-medium text-gray-900 mb-2">No share links found</h3>
           <p class="text-gray-500 mb-6">

@@ -10,13 +10,15 @@ defmodule FiletransferWeb.Dashboard.TransfersLive do
   @impl true
   def mount(_params, _session, socket) do
     user = socket.assigns.current_user
+    transfers = load_transfers(user, "all")
 
     socket =
       socket
       |> assign(:page_title, "My Transfers")
       |> assign(:filter, "all")
       |> assign(:search, "")
-      |> stream(:transfers, load_transfers(user, "all"))
+      |> assign(:has_transfers?, transfers != [] && length(transfers) > 0)
+      |> stream(:transfers, transfers)
 
     {:ok, socket, layout: {FiletransferWeb.Layouts, :user_dashboard}}
   end
@@ -25,14 +27,14 @@ defmodule FiletransferWeb.Dashboard.TransfersLive do
   def handle_params(params, _uri, socket) do
     filter = Map.get(params, "filter", "all")
     search = Map.get(params, "search", "")
+    transfers = load_transfers(socket.assigns.current_user, filter, search)
 
     socket =
       socket
       |> assign(:filter, filter)
       |> assign(:search, search)
-      |> stream(:transfers, load_transfers(socket.assigns.current_user, filter, search),
-        reset: true
-      )
+      |> assign(:has_transfers?, transfers != [] && length(transfers) > 0)
+      |> stream(:transfers, transfers, reset: true)
 
     {:noreply, socket}
   end
@@ -150,7 +152,7 @@ defmodule FiletransferWeb.Dashboard.TransfersLive do
         </div>
         
     <!-- Empty State -->
-        <div :if={@streams.transfers |> Enum.empty?()} class="p-12 text-center">
+        <div :if={!@has_transfers?} class="p-12 text-center">
           <.icon name="hero-cloud-arrow-up" class="w-16 h-16 mx-auto text-gray-300 mb-4" />
           <h3 class="text-lg font-medium text-gray-900 mb-2">No transfers found</h3>
           <p class="text-gray-500 mb-6">

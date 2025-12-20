@@ -6,7 +6,6 @@ defmodule FiletransferWeb.Dashboard.SettingsLive do
   use FiletransferWeb, :live_view
 
   alias FiletransferCore.Accounts
-  alias FiletransferCore.Accounts.User
 
   @impl true
   def mount(_params, _session, socket) do
@@ -16,7 +15,10 @@ defmodule FiletransferWeb.Dashboard.SettingsLive do
       socket
       |> assign(:page_title, "Settings")
       |> assign(:active_tab, "profile")
-      |> assign(:profile_form, to_form(Accounts.User.changeset(user, %{})))
+      |> assign(:profile_form, to_form(%{
+        "email" => user.email,
+        "name" => user.name || ""
+      }))
       |> assign(
         :password_form,
         to_form(%{"current_password" => "", "password" => "", "password_confirmation" => ""})
@@ -424,13 +426,17 @@ defmodule FiletransferWeb.Dashboard.SettingsLive do
         socket =
           socket
           |> assign(:current_user, updated_user)
-          |> assign(:profile_form, to_form(User.changeset(updated_user, %{})))
+          |> assign(:profile_form, to_form(%{
+            "email" => updated_user.email,
+            "name" => updated_user.name || ""
+          }))
           |> put_flash(:info, "Profile updated successfully.")
 
         {:noreply, socket}
 
-      {:error, changeset} ->
-        {:noreply, assign(socket, :profile_form, to_form(changeset))}
+      {:error, _changeset} ->
+        # Keep the user's input on error
+        {:noreply, assign(socket, :profile_form, to_form(user_params))}
     end
   end
 

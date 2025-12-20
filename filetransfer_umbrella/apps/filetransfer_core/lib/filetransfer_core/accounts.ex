@@ -134,6 +134,13 @@ defmodule FiletransferCore.Accounts do
   end
 
   @doc """
+  Returns an `%Ecto.Changeset{}` for tracking user changes.
+  """
+  def change_user(%User{} = user, attrs \\ %{}) do
+    User.changeset(user, attrs)
+  end
+
+  @doc """
   Authenticates a user by email and password.
   """
   def authenticate_user(email, password) do
