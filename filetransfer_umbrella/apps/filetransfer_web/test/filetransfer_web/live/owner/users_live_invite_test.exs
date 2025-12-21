@@ -8,12 +8,13 @@ defmodule FiletransferWeb.Owner.UsersLiveInviteTest do
   describe "User Invite Flow /owner/users/new" do
     setup %{conn: conn} do
       # Create user first
-      {:ok, owner} = Accounts.create_user(%{
-        email: "testowner@example.com",
-        password: "Password123!",
-        name: "Test Owner",
-        subscription_tier: "enterprise"
-      })
+      {:ok, owner} =
+        Accounts.create_user(%{
+          email: "testowner@example.com",
+          password: "Password123!",
+          name: "Test Owner",
+          subscription_tier: "enterprise"
+        })
 
       # Then update role to project_owner (registration_changeset doesn't include role)
       {:ok, owner} = Accounts.update_user_role(owner, "project_owner")
@@ -44,13 +45,15 @@ defmodule FiletransferWeb.Owner.UsersLiveInviteTest do
       {:ok, index_live, _html} = live(conn, ~p"/owner/users/new")
 
       assert index_live
-             |> form("#invite-user-form", user: %{
-               name: "New User",
-               email: "newuser@test.com",
-               password: "Password123!",
-               role: "user",
-               subscription_tier: "free"
-             })
+             |> form("#invite-user-form",
+               user: %{
+                 name: "New User",
+                 email: "newuser@test.com",
+                 password: "Password123!",
+                 role: "user",
+                 subscription_tier: "free"
+               }
+             )
              |> render_submit()
 
       assert_redirected(index_live, ~p"/owner/users")
@@ -64,11 +67,15 @@ defmodule FiletransferWeb.Owner.UsersLiveInviteTest do
 
       html =
         index_live
-        |> form("#invite-user-form", user: %{
-          name: "New User",
-          email: "",  # Invalid: empty email
-          password: "short"  # Invalid: too short password
-        })
+        |> form("#invite-user-form",
+          user: %{
+            name: "New User",
+            # Invalid: empty email
+            email: "",
+            # Invalid: too short password
+            password: "short"
+          }
+        )
         |> render_submit()
 
       assert html =~ "Failed to create user"

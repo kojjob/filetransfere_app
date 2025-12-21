@@ -15,10 +15,13 @@ defmodule FiletransferWeb.Dashboard.SettingsLive do
       socket
       |> assign(:page_title, "Settings")
       |> assign(:active_tab, "profile")
-      |> assign(:profile_form, to_form(%{
-        "email" => user.email,
-        "name" => user.name || ""
-      }))
+      |> assign(
+        :profile_form,
+        to_form(%{
+          "email" => user.email,
+          "name" => user.name || ""
+        })
+      )
       |> assign(
         :password_form,
         to_form(%{"current_password" => "", "password" => "", "password_confirmation" => ""})
@@ -426,10 +429,13 @@ defmodule FiletransferWeb.Dashboard.SettingsLive do
         socket =
           socket
           |> assign(:current_user, updated_user)
-          |> assign(:profile_form, to_form(%{
-            "email" => updated_user.email,
-            "name" => updated_user.name || ""
-          }))
+          |> assign(
+            :profile_form,
+            to_form(%{
+              "email" => updated_user.email,
+              "name" => updated_user.name || ""
+            })
+          )
           |> put_flash(:info, "Profile updated successfully.")
 
         {:noreply, socket}

@@ -833,7 +833,11 @@ defmodule FiletransferWeb.DashboardLive do
                 <div class={"p-2 border-t #{@t.border}"}>
                   <form action="/session" method="post" class="w-full">
                     <input type="hidden" name="_method" value="delete" />
-                    <input type="hidden" name="_csrf_token" value={Plug.CSRFProtection.get_csrf_token()} />
+                    <input
+                      type="hidden"
+                      name="_csrf_token"
+                      value={Plug.CSRFProtection.get_csrf_token()}
+                    />
                     <button
                       type="submit"
                       class="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-red-500/10 text-red-500"

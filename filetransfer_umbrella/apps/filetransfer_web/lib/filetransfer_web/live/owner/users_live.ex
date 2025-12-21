@@ -54,28 +54,40 @@ defmodule FiletransferWeb.Owner.UsersLive do
           socket
           |> assign(:page_title, "Edit User")
           |> assign(:editing_user, user)
-          |> assign(:user_form, to_form(%{
-            "email" => user.email,
-            "name" => user.name || "",
-            "subscription_tier" => to_string(user.subscription_tier),
-            "monthly_transfer_limit" => user.monthly_transfer_limit,
-            "max_file_size" => user.max_file_size,
-            "api_calls_limit" => user.api_calls_limit
-          }, as: :user))
+          |> assign(
+            :user_form,
+            to_form(
+              %{
+                "email" => user.email,
+                "name" => user.name || "",
+                "subscription_tier" => to_string(user.subscription_tier),
+                "monthly_transfer_limit" => user.monthly_transfer_limit,
+                "max_file_size" => user.max_file_size,
+                "api_calls_limit" => user.api_calls_limit
+              },
+              as: :user
+            )
+          )
 
         :new ->
           socket
           |> assign(:page_title, "Invite User")
-          |> assign(:invite_form, to_form(%{
-            "email" => "",
-            "name" => "",
-            "password" => "",
-            "role" => "user",
-            "subscription_tier" => "free",
-            "monthly_transfer_limit" => 5_368_709_120,
-            "max_file_size" => 2_147_483_648,
-            "api_calls_limit" => 0
-          }, as: :user))
+          |> assign(
+            :invite_form,
+            to_form(
+              %{
+                "email" => "",
+                "name" => "",
+                "password" => "",
+                "role" => "user",
+                "subscription_tier" => "free",
+                "monthly_transfer_limit" => 5_368_709_120,
+                "max_file_size" => 2_147_483_648,
+                "api_calls_limit" => 0
+              },
+              as: :user
+            )
+          )
 
         _ ->
           # Load users into variable to check if empty before streaming
@@ -314,7 +326,7 @@ defmodule FiletransferWeb.Owner.UsersLive do
               <div>
                 <h2 class="text-xl font-semibold obsidian-text-primary">User Details</h2>
                 <p class="text-sm obsidian-text-secondary mt-1">
-                  Viewing information for <%= @viewing_user.email %>
+                  Viewing information for {@viewing_user.email}
                 </p>
               </div>
               <button
@@ -335,7 +347,7 @@ defmodule FiletransferWeb.Owner.UsersLive do
                     Name
                   </label>
                   <p class="text-sm obsidian-text-primary font-medium">
-                    <%= @viewing_user.name || "Not set" %>
+                    {@viewing_user.name || "Not set"}
                   </p>
                 </div>
 
@@ -344,7 +356,7 @@ defmodule FiletransferWeb.Owner.UsersLive do
                     Email
                   </label>
                   <p class="text-sm obsidian-text-primary font-medium">
-                    <%= @viewing_user.email %>
+                    {@viewing_user.email}
                   </p>
                 </div>
 
@@ -355,13 +367,11 @@ defmodule FiletransferWeb.Owner.UsersLive do
                   <div>
                     <%= if @viewing_user.role == :project_owner do %>
                       <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-purple-500/20 text-purple-400 text-xs font-medium">
-                        <.icon name="hero-shield-check-solid" class="w-3.5 h-3.5" />
-                        Project Owner
+                        <.icon name="hero-shield-check-solid" class="w-3.5 h-3.5" /> Project Owner
                       </span>
                     <% else %>
                       <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-500/20 text-blue-400 text-xs font-medium">
-                        <.icon name="hero-user-solid" class="w-3.5 h-3.5" />
-                        User
+                        <.icon name="hero-user-solid" class="w-3.5 h-3.5" /> User
                       </span>
                     <% end %>
                   </div>
@@ -374,13 +384,11 @@ defmodule FiletransferWeb.Owner.UsersLive do
                   <div>
                     <%= if user_active?(@viewing_user) do %>
                       <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-green-500/20 text-green-400 text-xs font-medium">
-                        <.icon name="hero-check-circle-solid" class="w-3.5 h-3.5" />
-                        Active
+                        <.icon name="hero-check-circle-solid" class="w-3.5 h-3.5" /> Active
                       </span>
                     <% else %>
                       <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-red-500/20 text-red-400 text-xs font-medium">
-                        <.icon name="hero-x-circle-solid" class="w-3.5 h-3.5" />
-                        Inactive
+                        <.icon name="hero-x-circle-solid" class="w-3.5 h-3.5" /> Inactive
                       </span>
                     <% end %>
                   </div>
@@ -396,7 +404,7 @@ defmodule FiletransferWeb.Owner.UsersLive do
                       Tier
                     </label>
                     <p class="text-sm obsidian-text-primary font-medium capitalize">
-                      <%= @viewing_user.subscription_tier %>
+                      {@viewing_user.subscription_tier}
                     </p>
                   </div>
 
@@ -405,7 +413,7 @@ defmodule FiletransferWeb.Owner.UsersLive do
                       Monthly Transfer Limit
                     </label>
                     <p class="text-sm obsidian-text-primary font-medium">
-                      <%= format_bytes(@viewing_user.monthly_transfer_limit) %>
+                      {format_bytes(@viewing_user.monthly_transfer_limit)}
                     </p>
                   </div>
 
@@ -414,7 +422,7 @@ defmodule FiletransferWeb.Owner.UsersLive do
                       Max File Size
                     </label>
                     <p class="text-sm obsidian-text-primary font-medium">
-                      <%= format_bytes(@viewing_user.max_file_size) %>
+                      {format_bytes(@viewing_user.max_file_size)}
                     </p>
                   </div>
 
@@ -423,9 +431,9 @@ defmodule FiletransferWeb.Owner.UsersLive do
                       API Calls Limit
                     </label>
                     <p class="text-sm obsidian-text-primary font-medium">
-                      <%= if @viewing_user.api_calls_limit == 0,
+                      {if @viewing_user.api_calls_limit == 0,
                         do: "Unlimited",
-                        else: format_number(@viewing_user.api_calls_limit) %>
+                        else: format_number(@viewing_user.api_calls_limit)}
                     </p>
                   </div>
                 </div>
@@ -440,7 +448,7 @@ defmodule FiletransferWeb.Owner.UsersLive do
                       Created
                     </label>
                     <p class="text-sm obsidian-text-primary font-medium">
-                      <%= Calendar.strftime(@viewing_user.inserted_at, "%B %d, %Y at %I:%M %p") %>
+                      {Calendar.strftime(@viewing_user.inserted_at, "%B %d, %Y at %I:%M %p")}
                     </p>
                   </div>
 
@@ -449,7 +457,7 @@ defmodule FiletransferWeb.Owner.UsersLive do
                       Last Updated
                     </label>
                     <p class="text-sm obsidian-text-primary font-medium">
-                      <%= Calendar.strftime(@viewing_user.updated_at, "%B %d, %Y at %I:%M %p") %>
+                      {Calendar.strftime(@viewing_user.updated_at, "%B %d, %Y at %I:%M %p")}
                     </p>
                   </div>
                 </div>
