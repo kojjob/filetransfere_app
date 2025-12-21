@@ -137,6 +137,7 @@ defmodule FiletransferWeb.Router do
       on_mount: {FiletransferWeb.LiveAuth, :require_project_owner} do
       live "/", OwnerDashboardLive, :index
       live "/users", UsersLive, :index
+      live "/users/new", UsersLive, :new
       live "/users/:id", UsersLive, :show
       live "/users/:id/edit", UsersLive, :edit
       live "/analytics", AnalyticsLive, :index

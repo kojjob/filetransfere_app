@@ -326,13 +326,17 @@ defmodule FiletransferWeb.Layouts do
               </p>
             </div>
           </div>
-          <a
-            href="/api/auth/logout"
-            class="flex items-center gap-2 px-4 py-2 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors"
-          >
-            <.icon name="hero-arrow-right-on-rectangle" class="w-4 h-4" />
-            <span class="text-sm">Sign out</span>
-          </a>
+          <form action="/session" method="post" class="w-full">
+            <input type="hidden" name="_method" value="delete" />
+            <input type="hidden" name="_csrf_token" value={Plug.CSRFProtection.get_csrf_token()} />
+            <button
+              type="submit"
+              class="flex items-center gap-2 px-4 py-2 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors w-full text-left"
+            >
+              <.icon name="hero-arrow-right-on-rectangle" class="w-4 h-4" />
+              <span class="text-sm">Sign out</span>
+            </button>
+          </form>
         </div>
       </aside>
 
@@ -444,13 +448,17 @@ defmodule FiletransferWeb.Layouts do
                 <span class="text-[10px] obsidian-text-tertiary">Active now</span>
               </div>
             </div>
-            <a
-              href="/api/auth/logout"
-              class="p-2 rounded-lg obsidian-text-secondary hover:obsidian-accent-coral transition-colors hover:bg-white/5 [[data-theme=light]_&]:hover:bg-black/5"
-              title="Sign out"
-            >
-              <.icon name="hero-arrow-right-on-rectangle" class="w-4 h-4" />
-            </a>
+            <form action="/session" method="post">
+              <input type="hidden" name="_method" value="delete" />
+              <input type="hidden" name="_csrf_token" value={Plug.CSRFProtection.get_csrf_token()} />
+              <button
+                type="submit"
+                class="p-2 rounded-lg obsidian-text-secondary hover:obsidian-accent-coral transition-colors hover:bg-white/5 [[data-theme=light]_&]:hover:bg-black/5"
+                title="Sign out"
+              >
+                <.icon name="hero-arrow-right-on-rectangle" class="w-4 h-4" />
+              </button>
+            </form>
           </div>
         </div>
       </aside>
