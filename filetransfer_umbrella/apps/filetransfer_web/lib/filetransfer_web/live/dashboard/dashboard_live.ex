@@ -180,7 +180,7 @@ defmodule FiletransferWeb.Dashboard.DashboardLive do
           <.icon name="hero-document" class="w-5 h-5 text-blue-600" />
         </div>
         <div class="flex-1 min-w-0">
-          <p class="font-medium text-gray-900 truncate">{@transfer.filename || "Untitled"}</p>
+          <p class="font-medium text-gray-900 truncate">{@transfer.file_name || "Untitled"}</p>
           <p class="text-sm text-gray-500">
             {format_bytes(@transfer.file_size || 0)} · {format_datetime(@transfer.inserted_at)}
           </p>
@@ -201,7 +201,7 @@ defmodule FiletransferWeb.Dashboard.DashboardLive do
           <.icon name="hero-link" class="w-5 h-5 text-green-600" />
         </div>
         <div class="flex-1 min-w-0">
-          <p class="font-medium text-gray-900 truncate">{@share.name || "Share Link"}</p>
+          <p class="font-medium text-gray-900 truncate">{@share.transfer.file_name || "Share Link"}</p>
           <p class="text-sm text-gray-500">
             {pluralize(@share.download_count || 0, "download")} · Expires {format_datetime(
               @share.expires_at

@@ -9,16 +9,13 @@ defmodule FiletransferWeb.Dashboard.TransfersLive do
 
   @impl true
   def mount(_params, _session, socket) do
-    user = socket.assigns.current_user
-    transfers = load_transfers(user, "all")
-
     socket =
       socket
       |> assign(:page_title, "My Transfers")
       |> assign(:filter, "all")
       |> assign(:search, "")
-      |> assign(:has_transfers?, transfers != [] && length(transfers) > 0)
-      |> stream(:transfers, transfers)
+      |> assign(:has_transfers?, false)
+      |> stream(:transfers, [])
 
     {:ok, socket, layout: {FiletransferWeb.Layouts, :user_dashboard}}
   end
@@ -104,7 +101,7 @@ defmodule FiletransferWeb.Dashboard.TransfersLive do
     <!-- File Info -->
               <div class="flex-1 min-w-0">
                 <div class="flex items-center gap-2">
-                  <p class="font-medium text-gray-900 truncate">{transfer.filename || "Untitled"}</p>
+                  <p class="font-medium text-gray-900 truncate">{transfer.file_name || "Untitled"}</p>
                   <span class={"px-2 py-0.5 text-xs rounded-full #{status_badge(transfer.status)}"}>
                     {transfer.status}
                   </span>
@@ -239,7 +236,8 @@ defmodule FiletransferWeb.Dashboard.TransfersLive do
   # Helper Functions
 
   defp load_transfers(user, filter, search \\ "") do
-    opts = [filter: filter]
+    # Build opts with proper key name - Core expects :status, not :filter
+    opts = if filter != "all", do: [status: filter], else: []
     opts = if search != "", do: Keyword.put(opts, :search, search), else: opts
 
     case function_exported?(Transfers, :list_user_transfers, 2) do
@@ -287,7 +285,7 @@ defmodule FiletransferWeb.Dashboard.TransfersLive do
   end
 
   defp file_type_icon(transfer) do
-    extension = get_file_extension(transfer.filename)
+    extension = get_file_extension(transfer.file_name)
 
     case extension do
       ext when ext in ~w(jpg jpeg png gif webp svg) -> "hero-photo"
@@ -302,7 +300,7 @@ defmodule FiletransferWeb.Dashboard.TransfersLive do
   end
 
   defp file_type_bg(transfer) do
-    extension = get_file_extension(transfer.filename)
+    extension = get_file_extension(transfer.file_name)
 
     case extension do
       ext when ext in ~w(jpg jpeg png gif webp svg) -> "bg-pink-50"
@@ -315,7 +313,7 @@ defmodule FiletransferWeb.Dashboard.TransfersLive do
   end
 
   defp file_type_color(transfer) do
-    extension = get_file_extension(transfer.filename)
+    extension = get_file_extension(transfer.file_name)
 
     case extension do
       ext when ext in ~w(jpg jpeg png gif webp svg) -> "text-pink-600"

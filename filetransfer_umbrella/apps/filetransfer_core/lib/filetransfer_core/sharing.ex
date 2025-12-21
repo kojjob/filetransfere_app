@@ -85,7 +85,9 @@ defmodule FiletransferCore.Sharing do
             )
 
           "expired" ->
-            from(s in query, where: not is_nil(s.expires_at) and s.expires_at <= ^now)
+            from(s in query,
+              where: s.is_active == true and not is_nil(s.expires_at) and s.expires_at <= ^now
+            )
 
           "revoked" ->
             from(s in query, where: s.is_active == false)

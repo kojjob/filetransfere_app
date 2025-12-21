@@ -9,10 +9,12 @@ defmodule FiletransferWeb.Dashboard.SettingsLive do
 
   @impl true
   def mount(_params, _session, socket) do
-    user = socket.assigns.current_user
+    # Reload user from database to ensure we have the latest data
+    user = Accounts.get_user!(socket.assigns.current_user.id)
 
     socket =
       socket
+      |> assign(:user, user)
       |> assign(:page_title, "Settings")
       |> assign(:active_tab, "profile")
       |> assign(
@@ -60,13 +62,13 @@ defmodule FiletransferWeb.Dashboard.SettingsLive do
       <div class="bg-white rounded-xl shadow-sm border border-gray-100">
         <%= case @active_tab do %>
           <% "profile" -> %>
-            <.profile_tab form={@profile_form} user={@current_user} />
+            <.profile_tab form={@profile_form} user={@user} />
           <% "security" -> %>
             <.security_tab form={@password_form} />
           <% "notifications" -> %>
             <.notifications_tab />
           <% "billing" -> %>
-            <.billing_tab user={@current_user} />
+            <.billing_tab user={@user} />
         <% end %>
       </div>
     </div>
@@ -409,7 +411,7 @@ defmodule FiletransferWeb.Dashboard.SettingsLive do
       </div>
       <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
         <div
-          class={"h-full rounded-full #{if @percentage > 80, do: "bg-red-500", else: "bg-blue-500"}"}
+          class={"h-full rounded-full #{if @percentage >= 80, do: "bg-red-500", else: "bg-blue-500"}"}
           style={"width: #{@percentage}%"}
         >
         </div>
@@ -422,13 +424,13 @@ defmodule FiletransferWeb.Dashboard.SettingsLive do
 
   @impl true
   def handle_event("save_profile", %{"user" => user_params}, socket) do
-    user = socket.assigns.current_user
+    user = socket.assigns.user
 
     case Accounts.update_user(user, user_params) do
       {:ok, updated_user} ->
         socket =
           socket
-          |> assign(:current_user, updated_user)
+          |> assign(:user, updated_user)
           |> assign(
             :profile_form,
             to_form(%{

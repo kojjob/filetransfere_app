@@ -9,15 +9,12 @@ defmodule FiletransferWeb.Dashboard.SharesLive do
 
   @impl true
   def mount(_params, _session, socket) do
-    user = socket.assigns.current_user
-    shares = load_shares(user, "active")
-
     socket =
       socket
       |> assign(:page_title, "Share Links")
       |> assign(:filter, "active")
-      |> assign(:has_shares?, shares != [] && length(shares) > 0)
-      |> stream(:shares, shares)
+      |> assign(:has_shares?, false)
+      |> stream(:shares, [])
 
     {:ok, socket, layout: {FiletransferWeb.Layouts, :user_dashboard}}
   end
@@ -80,7 +77,7 @@ defmodule FiletransferWeb.Dashboard.SharesLive do
     <!-- Share Info -->
               <div class="flex-1 min-w-0">
                 <div class="flex items-center gap-2 mb-1">
-                  <p class="font-medium text-gray-900 truncate">{share.name || "Share Link"}</p>
+                  <p class="font-medium text-gray-900 truncate">{share.transfer.file_name || "Share Link"}</p>
                   <span class={"px-2 py-0.5 text-xs rounded-full #{share_status_badge(share)}"}>
                     {share_status_text(share)}
                   </span>
@@ -116,7 +113,7 @@ defmodule FiletransferWeb.Dashboard.SharesLive do
                       {share.download_count || 0}/{share.max_downloads} downloads
                     </span>
                   <% end %>
-                  <%= if share.password_protected do %>
+                  <%= if share.password_hash do %>
                     <span class="flex items-center gap-1">
                       <.icon name="hero-lock-closed" class="w-4 h-4" /> Password protected
                     </span>
@@ -278,8 +275,8 @@ defmodule FiletransferWeb.Dashboard.SharesLive do
   defp load_shares(user, filter) do
     opts =
       case filter do
-        "active" -> [status: :active]
-        "expired" -> [status: :expired]
+        "active" -> [status: "active"]
+        "expired" -> [status: "expired"]
         _ -> []
       end
 
@@ -318,7 +315,7 @@ defmodule FiletransferWeb.Dashboard.SharesLive do
     now = DateTime.utc_now()
 
     cond do
-      share.revoked_at -> false
+      not share.is_active -> false
       share.expires_at && DateTime.compare(share.expires_at, now) == :lt -> false
       share.max_downloads && (share.download_count || 0) >= share.max_downloads -> false
       true -> true
@@ -327,7 +324,7 @@ defmodule FiletransferWeb.Dashboard.SharesLive do
 
   defp share_status_text(share) do
     cond do
-      share.revoked_at -> "Revoked"
+      not share.is_active -> "Revoked"
       not is_active?(share) -> "Expired"
       true -> "Active"
     end
@@ -335,7 +332,7 @@ defmodule FiletransferWeb.Dashboard.SharesLive do
 
   defp share_status_badge(share) do
     cond do
-      share.revoked_at -> "bg-gray-100 text-gray-700"
+      not share.is_active -> "bg-gray-100 text-gray-700"
       not is_active?(share) -> "bg-red-100 text-red-700"
       true -> "bg-green-100 text-green-700"
     end
@@ -343,7 +340,7 @@ defmodule FiletransferWeb.Dashboard.SharesLive do
 
   defp share_status_bg(share) do
     cond do
-      share.revoked_at -> "bg-gray-50"
+      not share.is_active -> "bg-gray-50"
       not is_active?(share) -> "bg-red-50"
       true -> "bg-green-50"
     end
@@ -351,7 +348,7 @@ defmodule FiletransferWeb.Dashboard.SharesLive do
 
   defp share_status_icon_color(share) do
     cond do
-      share.revoked_at -> "text-gray-600"
+      not share.is_active -> "text-gray-600"
       not is_active?(share) -> "text-red-600"
       true -> "text-green-600"
     end

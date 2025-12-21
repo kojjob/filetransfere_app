@@ -39,9 +39,12 @@ defmodule FiletransferCore.Accounts.User do
       :email,
       :name,
       :subscription_tier,
+      :stripe_customer_id,
+      :stripe_subscription_id,
       :monthly_transfer_limit,
       :max_file_size,
-      :api_calls_limit
+      :api_calls_limit,
+      :api_calls_used
     ])
     |> validate_required([:email])
     |> validate_email()
