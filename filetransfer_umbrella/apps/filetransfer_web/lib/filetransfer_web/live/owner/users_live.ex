@@ -954,7 +954,16 @@ defmodule FiletransferWeb.Owner.UsersLive do
 
   defp build_filter_opts(filter, search) do
     opts = []
-    opts = if filter != "all", do: [{:filter, filter} | opts], else: opts
+
+    # Map filter values to correct option keys
+    opts =
+      case filter do
+        "active" -> [{:status, "active"} | opts]
+        "inactive" -> [{:status, "inactive"} | opts]
+        "project_owner" -> [{:role, "project_owner"} | opts]
+        _ -> opts
+      end
+
     opts = if search != "", do: [{:search, search} | opts], else: opts
     opts
   end
@@ -1026,8 +1035,8 @@ defmodule FiletransferWeb.Owner.UsersLive do
   end
 
   defp user_active?(user) do
-    # Check for active/deactivated_at field, default to true if not present
-    !Map.get(user, :deactivated_at)
+    # Check for is_active field, default to true if not present
+    Map.get(user, :is_active, true)
   end
 
   defp user_status(user) do
