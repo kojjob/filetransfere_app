@@ -169,7 +169,8 @@ defmodule FiletransferWeb.Owner.UsersLiveShowTest do
 
       # Verify enterprise limits are displayed
       assert html =~ "enterprise"
-      assert html =~ "Unlimited" # API calls limit should show Unlimited for 0
+      # API calls limit should show Unlimited for 0
+      assert html =~ "Unlimited"
     end
 
     test "displays formatted dates correctly", %{conn: conn, user: user} do

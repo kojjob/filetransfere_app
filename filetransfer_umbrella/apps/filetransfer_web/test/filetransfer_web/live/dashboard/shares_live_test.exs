@@ -420,7 +420,7 @@ defmodule FiletransferWeb.Dashboard.SharesLiveTest do
         })
 
       # Create active share (expires far in future)
-      {:ok, active_share} = Sharing.create_share_link(active_transfer, user, expires_in: 365 * 24 * 3600)
+      {:ok, _active_share} = Sharing.create_share_link(active_transfer, user, expires_in: 365 * 24 * 3600)
 
       # Create expired share (create with short expiry, then update to past)
       {:ok, expired_share} = Sharing.create_share_link(expired_transfer, user, expires_in: 1)

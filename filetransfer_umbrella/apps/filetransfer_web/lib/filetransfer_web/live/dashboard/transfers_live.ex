@@ -235,7 +235,7 @@ defmodule FiletransferWeb.Dashboard.TransfersLive do
 
   # Helper Functions
 
-  defp load_transfers(user, filter, search \\ "") do
+  defp load_transfers(user, filter, search) do
     # Build opts with proper key name - Core expects :status, not :filter
     opts = if filter != "all", do: [status: filter], else: []
     opts = if search != "", do: Keyword.put(opts, :search, search), else: opts

@@ -183,7 +183,8 @@ defmodule FiletransferWeb.Owner.UsersLiveEditTest do
         |> Plug.Conn.put_session(:user_id, user_id_string)
 
       # Try to access edit page - should redirect to dashboard with error
-      assert {:error, {:redirect, %{to: "/dashboard"}}} = live(conn, ~p"/owner/users/#{user.id}/edit")
+      assert {:error, {:redirect, %{to: "/dashboard"}}} =
+               live(conn, ~p"/owner/users/#{user.id}/edit")
     end
 
     test "cannot edit non-existent user", %{conn: conn} do
